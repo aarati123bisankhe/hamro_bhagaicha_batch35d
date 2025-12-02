@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/forgot_password_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/personal_detail_screen.dart';
 
 // import 'package:hamro_bhagaicha_batch35d/screens/login_screen.dart';
 // import 'package:hamro_bhagaicha_batch35d/screens/sign_up_page.dart';
@@ -12,7 +12,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ForgotPasswordScreen(),
+      home: PersonalDetailScreen(),
     );
   }
 }
