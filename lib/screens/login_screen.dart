@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/sign_up_page.dart';
 import 'package:hamro_bhagaicha_batch35d/widget/my_text_button.dart';
 import 'package:hamro_bhagaicha_batch35d/widget/my_text_field.dart';
 
@@ -10,11 +11,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
-
   final TextEditingController firstController = TextEditingController();
   final TextEditingController secondContorller = TextEditingController();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   errorText: "Please enter a email",
                 ),
 
-                SizedBox(height: 30),
+                SizedBox(height: 17),
                 MyTextField(
                   controller: secondContorller,
                   hintText: "Password",
@@ -117,7 +116,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(width: 3),
 
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SignupPage()),
+                        );
+                      },
                       child: Text(
                         "Create one.",
                         style: TextStyle(
