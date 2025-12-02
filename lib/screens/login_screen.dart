@@ -84,6 +84,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) => ForgotPasswordScreen(),
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
                     Text(
                       "Forgot Password?",
                       style: TextStyle(
