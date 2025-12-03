@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/splash_one_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/splash_two_screen.dart';
+
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -8,7 +9,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashOneScreen(),
+      home: SplashTwoScreen(),
     );
   }
 }
