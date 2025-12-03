@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/personal_detail_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/widget/my_text_button.dart';
+import 'package:hamro_bhagaicha_batch35d/widget/floating_button_action.dart';
+// import 'package:hamro_bhagaicha_batch35d/widget/my_text_button.dart';
 import 'package:hamro_bhagaicha_batch35d/widget/my_text_field.dart';
 
 class ChangedPasswordScreen extends StatefulWidget {
@@ -95,7 +96,7 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
                 const SizedBox(height: 30),
 
                 /// UPDATE BUTTON
-                MyTextButton(onPressed: () {}, text: "Update"),
+                MyFloatingButton(onPressed: () {}, text: "Update"),
               ],
             ),
           ),

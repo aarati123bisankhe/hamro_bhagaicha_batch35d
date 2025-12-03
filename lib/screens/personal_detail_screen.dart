@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/forgot_password_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/widget/my_text_button.dart';
+import 'package:hamro_bhagaicha_batch35d/widget/floating_button_action.dart';
+// import 'package:hamro_bhagaicha_batch35d/widget/my_text_button.dart';
 import 'package:hamro_bhagaicha_batch35d/widget/my_text_field.dart';
 
 class PersonalDetailScreen extends StatefulWidget {
@@ -84,12 +85,12 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
 
                 SizedBox(height: 20),
 
-                MyTextButton(onPressed: () {}, text: "Edit"),
+                MyFloatingButton(onPressed: () {}, text: "Edit"),
                 SizedBox(height: 20),
-                MyTextButton(
+                MyFloatingButton(
                   onPressed: () {},
                   text: "Change Password",
-                  backgroundColor: Color.fromARGB(255, 188, 199, 183),
+                  color: const Color.fromARGB(255, 188, 199, 183),
                 ),
               ],
             ),

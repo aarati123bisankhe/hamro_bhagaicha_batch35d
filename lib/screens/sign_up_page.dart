@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/login_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/widget/my_text_button.dart';
+import 'package:hamro_bhagaicha_batch35d/widget/floating_button_action.dart';
+// import 'package:hamro_bhagaicha_batch35d/widget/my_text_button.dart';
 import 'package:hamro_bhagaicha_batch35d/widget/my_text_field.dart';
 
 class SignupPage extends StatefulWidget {
@@ -111,7 +112,7 @@ class _SignupPageState extends State<SignupPage> {
 
                     SizedBox(height: 25),
 
-                    MyTextButton(
+                    MyFloatingButton(
                       text: "Sign Up",
                       onPressed: () {
                         // if (formKey.currentState!.validate()) {

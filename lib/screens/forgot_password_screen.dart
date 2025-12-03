@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/login_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/widget/my_text_button.dart';
+import 'package:hamro_bhagaicha_batch35d/widget/floating_button_action.dart';
+// import 'package:hamro_bhagaicha_batch35d/widget/my_text_button.dart';
 import 'package:hamro_bhagaicha_batch35d/widget/my_text_field.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -97,7 +98,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
                       SizedBox(height: 40),
 
-                      MyTextButton(onPressed: () {}, text: "Reset Password"),
+                      MyFloatingButton(
+                        onPressed: () {},
+                        text: "Reset Password",
+                      ),
                     ],
                   ),
                 ),

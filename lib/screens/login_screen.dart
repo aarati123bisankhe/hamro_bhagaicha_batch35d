@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/forgot_password_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/sign_up_page.dart';
+import 'package:hamro_bhagaicha_batch35d/widget/floating_button_action.dart';
 import 'package:hamro_bhagaicha_batch35d/widget/my_text_button.dart';
 import 'package:hamro_bhagaicha_batch35d/widget/my_text_field.dart';
 
@@ -13,6 +15,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController firstController = TextEditingController();
   final TextEditingController secondContorller = TextEditingController();
+
+  final _loginForm = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
+          child: SingleChildScrollView(
+            // child: Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -60,87 +65,105 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 SizedBox(height: 80),
 
-                Text(
-                  "Login",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  child: Container(
+                    // color: Colors.grey,
+                    width: double.infinity,
+                    child: Form(
+                      key: _loginForm,
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Login",
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
 
-                SizedBox(height: 30),
+                          SizedBox(height: 30),
 
-                MyTextField(
-                  controller: firstController,
-                  hintText: "Email",
-                  errorText: "Please enter a email",
-                ),
+                          MyTextField(
+                            controller: firstController,
+                            hintText: "Email",
+                            errorText: "Please enter a email",
+                          ),
 
-                SizedBox(height: 17),
-                MyTextField(
-                  controller: secondContorller,
-                  hintText: "Password",
-                  errorText: "Please enter a password",
-                ),
+                          SizedBox(height: 17),
+                          MyTextField(
+                            controller: secondContorller,
+                            hintText: "Password",
+                            errorText: "Please enter a password",
+                          ),
 
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => ForgotPasswordScreen(),
-                    //       ),
-                    //     );
-                    //   },
-                    // ),
-                    Text(
-                      "Forgot Password?",
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromARGB(255, 1, 11, 125),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(198, 0, 0, 0),
+                            child: MyTextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ForgotPasswordScreen(),
+                                  ),
+                                );
+                              },
+
+                              text: 'Forget Password?',
+                              textColor: const Color.fromARGB(255, 1, 23, 88),
+                            ),
+                          ),
+
+                          SizedBox(height: 20),
+
+                          MyFloatingButton(
+                            onPressed: () {},
+                            text: "Login",
+                            // color: Color(0xFF050925),
+                            // borderRadius: 6,
+                          ),
+
+                          SizedBox(height: 9),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Don't have an account?",
+                                style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              SizedBox(width: 3),
+
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SignupPage(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  "Create one.",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-
-                SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.center,
-                  child: MyTextButton(onPressed: () {}, text: "Login"),
-                ),
-
-                SizedBox(height: 9),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account?",
-                      style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontSize: 15,
-                      ),
-                    ),
-                    SizedBox(width: 3),
-
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SignupPage()),
-                        );
-                      },
-                      child: Text(
-                        "Create one.",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),
@@ -148,5 +171,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+    // );
   }
 }
