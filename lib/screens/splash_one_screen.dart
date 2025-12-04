@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/splash_two_screen.dart';
 
 class SplashOneScreen extends StatelessWidget {
   const SplashOneScreen({super.key});
@@ -7,11 +8,17 @@ class SplashOneScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 40),
+        padding: const EdgeInsets.only(bottom: 20),
+
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SplashTwoScreen()),
+            );
+          },
+
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(221, 2, 1, 25),
             padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 16),
@@ -19,6 +26,7 @@ class SplashOneScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(40),
             ),
           ),
+
           child: const Text(
             'Get Started',
             style: TextStyle(
@@ -46,7 +54,7 @@ class SplashOneScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 90),
+                SizedBox(height: 50),
 
                 Text(
                   "Welcome to",
@@ -81,7 +89,7 @@ class SplashOneScreen extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: 40),
+                SizedBox(height: 30),
 
                 Center(
                   child: Image.asset("assets/icons/icon.png", height: 310),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/splash_three_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/login_screen.dart';
 
-class SplashTwoScreen extends StatelessWidget {
-  const SplashTwoScreen({super.key});
+class SplashThreeScreen extends StatelessWidget {
+  const SplashThreeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class SplashTwoScreen extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "Hamro Bhagaicha 🌿",
+                      "Find Nearby Nurseries",
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w700,
@@ -38,22 +38,22 @@ class SplashTwoScreen extends StatelessWidget {
                   ],
                 ),
 
-                SizedBox(height: 13),
+                SizedBox(height: 15),
 
                 Text(
-                  "“Scan plants instantly and know them instantly”",
+                  "“Locate the nearest plant nurseries instantly!”",
                   style: TextStyle(
                     fontSize: 19,
                     color: Color.fromARGB(221, 3, 0, 69),
                   ),
                 ),
 
-                SizedBox(height: 30),
+                SizedBox(height: 60),
 
                 Center(
-                  child: Image.asset("assets/icons/icon_scan.png", height: 400),
+                  child: Image.asset("assets/images/map.png", height: 340),
                 ),
-                SizedBox(height: 60),
+                SizedBox(height: 90),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -63,7 +63,7 @@ class SplashTwoScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SplashThreeScreen(),
+                            builder: (context) => LoginScreen(),
                           ),
                         );
                       },

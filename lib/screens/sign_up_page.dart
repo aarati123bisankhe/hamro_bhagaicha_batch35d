@@ -43,7 +43,6 @@ class _SignupPageState extends State<SignupPage> {
                   children: [
                     Image.asset("assets/icons/house_icon.png", height: 140),
 
-                    // SizedBox(height: 0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -58,7 +57,7 @@ class _SignupPageState extends State<SignupPage> {
                       ],
                     ),
 
-                    SizedBox(height: 50),
+                    SizedBox(height: 35),
 
                     Align(
                       alignment: Alignment.centerLeft,
