@@ -13,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 3), () {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => SplashOneScreen()),
@@ -27,13 +27,14 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [Color(0xFFD8F3DC), Color(0xFF475E4F)],
           ),
         ),
+
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -43,7 +44,8 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 200,
               fit: BoxFit.contain,
             ),
-            const SizedBox(height: 20),
+
+            SizedBox(height: 30),
 
             Text(
               "Hamro Bhagaicha 🌿",
