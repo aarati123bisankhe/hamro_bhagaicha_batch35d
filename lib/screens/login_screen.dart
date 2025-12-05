@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/home_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/forgot_password_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/sign_up_page.dart';
 import 'package:hamro_bhagaicha_batch35d/widget/floating_button_action.dart';
@@ -121,7 +122,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(height: 20),
 
                           MyFloatingButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomeScreen(),
+                                ),
+                              );
+                            },
                             text: "Login",
                             // color: Color(0xFF050925),
                             // borderRadius: 6,
