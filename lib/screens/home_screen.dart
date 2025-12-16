@@ -63,54 +63,53 @@ class HomeScreen extends StatelessWidget {
             ),
             SizedBox(height: 20),
             TextField(
-              decoration: InputDecoration(
-                hintText: 'Search nearest nursery...',
-                prefixIcon: const Icon(Icons.search),
-                filled: true,
-                fillColor: const Color.fromARGB(255, 255, 253, 253),
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 0,
-                  horizontal: 20,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
+            decoration: InputDecoration(
+            hintText: 'Search nearest nursery...',
+            prefixIcon: const Icon(Icons.search),
+            filled: true,
+            fillColor: const Color.fromARGB(255, 255, 253, 253),
+            contentPadding: const EdgeInsets.symmetric(
+            vertical: 0,
+            horizontal: 20,
+    ),
+            border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide.none,
+    ),
+  ),
+),
 
-            
-            Expanded(child: ListView(
-             children: [
-
-              
+     SizedBox(height: 33),
+            ListView(
+            shrinkWrap: true, 
+            physics: const NeverScrollableScrollPhysics(), // optional, disable scrolling inside Column
+            padding: EdgeInsets.zero,
+              children: const [
+                HomeButtonCard(
+                   icon: '🌱',
+                  title: 'Plants',
+                  subtitle: 'Give this plant a new home – make your garden greener!',
+    ),
+             SizedBox(height: 10),
               HomeButtonCard(
-                    icon: '🌱',
-                    title: 'Plants',
-                    subtitle: 'Give this plant a new home – make your garden greener!',
-                  ),
-                  SizedBox(height: 15),
-                  HomeButtonCard(
-                    icon: '🪴',
-                    title: 'Pot',
-                    subtitle: 'Add this pot to your garden collection and style your plants beautifully',
-                  ),
-                  SizedBox(height: 15),
-                  HomeButtonCard(
-                    icon: '🌱🪴',
-                    title: 'Plant + Pot Combo',
-                    subtitle: 'Get this plant + pot combo and brighten your garden – a perfect duo for your green space',
-                  ),
-                  SizedBox(height: 15),
-                  HomeButtonCard(
-                    icon: '💡',
-                    title: 'Today\'s Tips',
-                    subtitle: 'Water early the morning for the best growth!',
-                  ),
-                  SizedBox(height: 50),
-                  ],
-            )
-            )
+                icon: '🪴',
+                title: 'Pot',
+                 subtitle: 'Add this pot to your garden collection and style your plants beautifully',
+    ),
+            SizedBox(height: 10),
+              HomeButtonCard(
+               icon: '🌱🪴',
+                title: 'Plant + Pot Combo',
+                subtitle: 'Get this plant + pot combo and brighten your garden – a perfect duo for your green space',
+    ),
+              SizedBox(height: 10),
+                HomeButtonCard(
+                 icon: '💡',
+                 title: 'Today\'s Tips',
+                subtitle: 'Water early the morning for the best growth!',
+    ),
+  ],
+),
           ],
         ),
       ),
