@@ -5,7 +5,11 @@ class SplashTwoScreen extends StatelessWidget {
   const SplashTwoScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+     Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool isTablet = constraints.maxWidth >= 600;
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -19,18 +23,19 @@ class SplashTwoScreen extends StatelessWidget {
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(
+              horizontal: isTablet ? 50 : 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 30),
+                SizedBox(height: isTablet ? 120 : 80),
 
                 Row(
                   children: [
                     Text(
                       "Hamro Bhagaicha 🌿",
                       style: TextStyle(
-                        fontSize: 28,
+                        fontSize: isTablet ? 45 : 28,
                         fontWeight: FontWeight.w700,
                         color: Colors.black,
                       ),
@@ -43,17 +48,18 @@ class SplashTwoScreen extends StatelessWidget {
                 Text(
                   "“Scan plants instantly and know them instantly”",
                   style: TextStyle(
-                    fontSize: 19,
+                    fontSize: isTablet ? 30 : 19,
                     color: Color.fromARGB(221, 3, 0, 69),
                   ),
                 ),
 
-                SizedBox(height: 30),
+                SizedBox(height: isTablet ? 0 : 50),
 
                 Center(
-                  child: Image.asset("assets/icons/icon_scan.png", height: 400),
+                  child: Image.asset("assets/icons/icon_scan.png", 
+                  height: isTablet ? 800 : 400),
                 ),
-                SizedBox(height: 60),
+                SizedBox(height: isTablet ? 120 :150),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -70,7 +76,7 @@ class SplashTwoScreen extends StatelessWidget {
                       child: Text(
                         "Next",
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: isTablet ? 40 : 25,
                           fontWeight: FontWeight.w600,
                           color: const Color.fromARGB(255, 13, 2, 75),
                         ),
@@ -83,6 +89,9 @@ class SplashTwoScreen extends StatelessWidget {
           ),
         ),
       ),
+   
+    );
+      }
     );
   }
 }

@@ -18,14 +18,17 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+             crossAxisAlignment: CrossAxisAlignment.start, 
           children: [
+              SizedBox(height: 40),
             Center(
               child: Text(
+                
                 'Hamro Bhagaicha 🌿',
                 style: const TextStyle(
-                  fontSize: 28,
+                  fontSize: 25,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
@@ -75,101 +78,96 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            // SizedBox(height: 20),
-            //           // Cards
-            //           Expanded(
-            //             child: ListView(
-            //               children: [
-            //                 _buildCard(
-            //                   icon: '🌱',
-            //                   title: 'Plants',
-            //                   subtitle:
-            //                       '“Give this plant a new home – make your garden greener!”',
-            //                 ),
-            //                 _buildCard(
-            //                   icon: '🪴',
-            //                   title: 'Pot',
-            //                   subtitle:
-            //                       '“Add this pot to your garden collection and style your plants beautifully”',
-            //                 ),
-            //                 _buildCard(
-            //                   icon: '🌱🪴',
-            //                   title: 'plant + plot combo',
-            //                   subtitle:
-            //                       '“Get this plant + pot combo and brighten your garden – a perfect duo for your green space”',
-            //                 ),
-            //                 _buildCard(
-            //                   icon: '💡',
-            //                   title: 'Today’s Tips:',
-            //                   subtitle: 'Water early the morning for the best growth!',
-            //                 ),
-            //               ],
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //     bottomNavigationBar: BottomAppBar(
-            //       shape: const CircularNotchedRectangle(),
-            //       notchMargin: 8,
-            //       child: SizedBox(
-            //         height: 60,
-            //         child: Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //           children: [
-            //             IconButton(onPressed: () {}, icon: const Icon(Icons.home)),
-            //             IconButton(onPressed: () {}, icon: const Icon(Icons.inventory)),
-            //             const SizedBox(width: 40), // Space for middle button
-            //             IconButton(onPressed: () {}, icon: const Icon(Icons.shopping_cart)),
-            //             IconButton(onPressed: () {}, icon: const Icon(Icons.person)),
-            //           ],
-            //         ),
-            //       ),
-            //     ),
-            //     floatingActionButton: FloatingActionButton(
-            //       onPressed: () {},
-            //       child: const Icon(Icons.add),
-            //     ),
-            //     floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-            //   );
-            // }
 
-            // Widget _buildCard({required String icon, required String title, required String subtitle}) {
-            //   return Card(
-            //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            //     color: Colors.white.withOpacity(0.8),
-            //     margin: const EdgeInsets.symmetric(vertical: 8),
-            //     child: Padding(
-            //       padding: const EdgeInsets.all(15),
-            //       child: Row(
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         children: [
-            //           Text(
-            //             icon,
-            //             style: const TextStyle(fontSize: 28),
-            //           ),
-            //           const SizedBox(width: 15),
-            //           Expanded(
-            //             child: Column(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: [
-            //                 Text(
-            //                   title,
-            //                   style: const TextStyle(
-            //                     fontSize: 18,
-            //                     fontWeight: FontWeight.bold,
-            //                   ),
-            //                 ),
-            //                 const SizedBox(height: 5),
-            //                 Text(
-            //                   subtitle,
-            //                   style: const TextStyle(fontSize: 14),
-            //                 ),
-            //               ],
-            //             ),
-            //           ),
+            
+            Expanded(child: ListView(
+             children: [
+
+              
+              HomeButtonCard(
+                    icon: '🌱',
+                    title: 'Plants',
+                    subtitle: 'Give this plant a new home – make your garden greener!',
+                  ),
+                  SizedBox(height: 15),
+                  HomeButtonCard(
+                    icon: '🪴',
+                    title: 'Pot',
+                    subtitle: 'Add this pot to your garden collection and style your plants beautifully',
+                  ),
+                  SizedBox(height: 15),
+                  HomeButtonCard(
+                    icon: '🌱🪴',
+                    title: 'Plant + Pot Combo',
+                    subtitle: 'Get this plant + pot combo and brighten your garden – a perfect duo for your green space',
+                  ),
+                  SizedBox(height: 15),
+                  HomeButtonCard(
+                    icon: '💡',
+                    title: 'Today\'s Tips',
+                    subtitle: 'Water early the morning for the best growth!',
+                  ),
+                  SizedBox(height: 50),
+                  ],
+            )
+            )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class HomeButtonCard extends StatelessWidget {
+  final String icon;
+  final String title;
+  final String subtitle;
+
+  const HomeButtonCard({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: const Color(0xFFE3EED9),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        children: [
+          Text(
+            icon,
+            style: const TextStyle(fontSize: 30),
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black87,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

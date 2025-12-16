@@ -16,6 +16,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool isTablet = constraints.maxWidth >= 600;
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -34,7 +37,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
-                SizedBox(height: 60),
+                SizedBox(height: isTablet ? 130 : 60),
                 Stack(
                   alignment: Alignment.center,
                   children: [
@@ -59,7 +62,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     Text(
                       "Forgot Password",
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize: isTablet ? 40 : 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -75,7 +78,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         "Enter your email below. We'll send you",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: isTablet ? 23 : 15,
                           color: Color.fromARGB(255, 4, 17, 5),
                         ),
                       ),
@@ -83,7 +86,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         "instructions to reset your password.",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: isTablet ? 23 : 15,
                           color: Color.fromARGB(255, 4, 17, 5),
                         ),
                       ),
@@ -115,7 +118,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       "Already have an account?",
                       style: TextStyle(
                         fontStyle: FontStyle.italic,
-                        fontSize: 15,
+                        fontSize: isTablet ? 25 : 15,
                       ),
                     ),
                     SizedBox(width: 6),
@@ -128,12 +131,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ),
                         );
                       },
-                      child: const Text(
+                      child: Text(
                         "Login",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF000B38),
-                          fontSize: 15,
+                          color: const Color(0xFF000B38),
+                          fontSize: isTablet ? 22 :15,
                         ),
                       ),
                     ),
@@ -144,6 +147,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           ),
         ),
       ),
+    );
+      },
     );
   }
 }

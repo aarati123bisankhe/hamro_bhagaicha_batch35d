@@ -20,24 +20,27 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool isTablet = constraints.maxWidth >= 600;
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
+            begin:  Alignment.topCenter ,
             end: Alignment.bottomCenter,
             colors: [Color(0xFFD8F3DC), Color(0xFF475E4F)],
           ),
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: isTablet ? 30: 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 60),
+                SizedBox(height: isTablet ? 130 : 60),
 
                 Row(
                   children: [
@@ -52,22 +55,22 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
                       },
                       child: Image.asset(
                         "assets/icons/arrow icon.png",
-                        height: 28,
-                        width: 28,
+                        height: isTablet ? 30: 28,
+                        width: isTablet ? 29 : 28,
                       ),
                     ),
                     SizedBox(width: 60),
                     Text(
                       "Personal Details",
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize: isTablet ? 40 : 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
 
-                SizedBox(height: 80),
+                SizedBox(height: isTablet ? 150 : 80),
 
                 MyTextField(
                   controller: fullnameController,
@@ -97,6 +100,8 @@ class _PersonalDetailScreenState extends State<PersonalDetailScreen> {
           ),
         ),
       ),
+    );
+      }
     );
   }
 }

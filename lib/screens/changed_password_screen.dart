@@ -20,6 +20,9 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool isTablet = constraints.maxWidth >= 600;
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -37,7 +40,7 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 80),
+                 SizedBox(height: isTablet ? 130 : 80),
 
                 Row(
                   children: [
@@ -57,17 +60,17 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
                       ),
                     ),
                     const SizedBox(width: 50),
-                    const Text(
+                     Text(
                       "Change Password",
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize:isTablet ? 40 : 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
 
-                SizedBox(height: 70),
+                SizedBox(height: isTablet ? 130 : 70),
 
                 MyTextField(
                   controller: currentpasswordController,
@@ -102,6 +105,8 @@ class _ChangedPasswordScreenState extends State<ChangedPasswordScreen> {
           ),
         ),
       ),
+    );
+      }
     );
   }
 }

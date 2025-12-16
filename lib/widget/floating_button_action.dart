@@ -16,20 +16,24 @@ class MyFloatingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = MediaQuery.of(context).size.width >= 600;
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding:  EdgeInsets.symmetric(
+            horizontal: isTablet ? 40 : 20, 
+            vertical: isTablet ? 20 : 10),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
+            borderRadius: BorderRadius.circular(isTablet ? borderRadius + 4 :borderRadius),
           ),
         ),
         onPressed: onPressed,
         child: Text(
           text,
-          style: const TextStyle(color: Colors.white, fontSize: 20),
+          style: TextStyle(color: Colors.white, 
+          fontSize: isTablet ? 24 : 20),
         ),
       ),
     );

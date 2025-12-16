@@ -6,10 +6,13 @@ class SplashOneScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool isTablet = constraints.maxWidth >= 600;
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 20),
+        padding: EdgeInsets.only(bottom: isTablet ? 40 : 20),
 
         child: ElevatedButton(
           onPressed: () {
@@ -21,16 +24,18 @@ class SplashOneScreen extends StatelessWidget {
 
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(221, 2, 1, 25),
-            padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 16),
+            padding:  EdgeInsets.symmetric(
+              horizontal: isTablet ? 200 : 100, 
+              vertical: isTablet ? 25 : 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(40),
             ),
           ),
 
-          child: const Text(
+          child: Text(
             'Get Started',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: isTablet ? 30 : 18,
               color: Colors.white,
               fontWeight: FontWeight.w600,
             ),
@@ -50,16 +55,16 @@ class SplashOneScreen extends StatelessWidget {
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: isTablet ? 50 : 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 50),
+                SizedBox(height: isTablet ? 120 : 80),
 
                 Text(
                   "Welcome to",
                   style: TextStyle(
-                    fontSize: 26,
+                    fontSize: isTablet ? 40 : 26,
                     fontWeight: FontWeight.w600,
                     color: Color.fromARGB(221, 10, 40, 19),
                   ),
@@ -71,7 +76,7 @@ class SplashOneScreen extends StatelessWidget {
                     Text(
                       "Hamro Bhagaicha 🌿",
                       style: TextStyle(
-                        fontSize: 28,
+                        fontSize: isTablet ? 50 : 28,
                         fontWeight: FontWeight.w700,
                         color: Colors.black,
                       ),
@@ -84,15 +89,16 @@ class SplashOneScreen extends StatelessWidget {
                 Text(
                   "“A digital space where plant lovers grow, share, and learn together.”",
                   style: TextStyle(
-                    fontSize: 15,
+                    fontSize: isTablet ? 28 : 15,
                     color: Color.fromARGB(221, 3, 0, 69),
                   ),
                 ),
 
-                SizedBox(height: 30),
+                SizedBox(height: 85),
 
                 Center(
-                  child: Image.asset("assets/icons/icon.png", height: 310),
+                  child: Image.asset("assets/icons/icon.png", 
+                  height: isTablet ? 610 : 310),
                 ),
               ],
             ),
@@ -100,5 +106,8 @@ class SplashOneScreen extends StatelessWidget {
         ),
       ),
     );
+      },
+    );
   }
 }
+

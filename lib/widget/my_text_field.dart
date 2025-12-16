@@ -17,12 +17,19 @@ class MyTextField extends StatelessWidget {
   final bool obscureText;
 
   @override
+
   Widget build(BuildContext context) {
+    final bool isTablet = MediaQuery.of(context).size.width >= 600;
+
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
       obscureText: obscureText,
+       style: TextStyle(
+        fontSize: isTablet ? 18 : 15,
+      ),
       validator: (value) {
+       
         if (value == null || value.isEmpty) {
           return errorText;
         }
@@ -30,11 +37,14 @@ class MyTextField extends StatelessWidget {
       },
       decoration: InputDecoration(
         hintText: hintText,
+        hintStyle: TextStyle(
+          fontSize: isTablet ? 18 : 15,
+        ),
         filled: true,
         fillColor: const Color(0xFFD8E4D2), // light green like screenshot
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 14,
-          horizontal: 20,
+        contentPadding:  EdgeInsets.symmetric(
+          vertical: isTablet ? 25 : 14,
+          horizontal: isTablet ? 25: 20,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),

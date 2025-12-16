@@ -21,6 +21,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+        return LayoutBuilder(
+      builder: (context, constraints) {
+        bool isTablet = constraints.maxWidth >= 600;
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -39,12 +43,13 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 30),
+                SizedBox(height: isTablet ? 130 : 30),
 
                 Center(
                   child: Column(
                     children: [
-                      Image.asset("assets/icons/house_icon.png", height: 140),
+                      Image.asset("assets/icons/house_icon.png", 
+                      height: isTablet ? 240 : 140),
 
                       // SizedBox(height: 1),
                       Row(
@@ -53,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Text(
                             "Hamro Bhagaicha 🌿",
                             style: TextStyle(
-                              fontSize: 28,
+                              fontSize: isTablet ? 48 : 28,
                               fontWeight: FontWeight.w600,
                               color: const Color.fromARGB(255, 4, 17, 5),
                             ),
@@ -67,8 +72,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 80),
 
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: Container(
+                  padding: EdgeInsets.fromLTRB(isTablet ? 20 : 15, 0, 15, 0),
+                  child: SizedBox(
                     // color: Colors.grey,
                     width: double.infinity,
                     child: Form(
@@ -80,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Text(
                               "Login",
                               style: TextStyle(
-                                fontSize: 22,
+                                fontSize: isTablet ? 40 : 22,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -102,7 +107,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
 
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(198, 0, 0, 0),
+                            padding: EdgeInsets.fromLTRB
+                            (isTablet ? 825 : 246, 0, 0, 0),
                             child: MyTextButton(
                               onPressed: () {
                                 Navigator.push(
@@ -115,7 +121,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
 
                               text: 'Forget Password?',
-                              textColor: const Color.fromARGB(255, 1, 23, 88),
+                              
+                              textColor:
+                               const Color.fromARGB(255, 1, 23, 88),
                             ),
                           ),
 
@@ -144,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 "Don't have an account?",
                                 style: TextStyle(
                                   fontStyle: FontStyle.italic,
-                                  fontSize: 15,
+                                  fontSize: isTablet ? 25 : 15,
                                 ),
                               ),
                               SizedBox(width: 3),
@@ -162,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   "Create one.",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 15,
+                                    fontSize: isTablet ? 22 : 15,
                                   ),
                                 ),
                               ),
@@ -180,5 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
     // );
+      },
+        );
   }
 }

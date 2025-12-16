@@ -6,6 +6,10 @@ class SplashThreeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool isTablet = constraints.maxWidth >= 600;
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -19,18 +23,19 @@ class SplashThreeScreen extends StatelessWidget {
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(
+              horizontal: isTablet ? 50 : 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 30),
+                SizedBox(height: isTablet ? 120 : 85),
 
                 Row(
                   children: [
                     Text(
                       "Find Nearby Nurseries",
                       style: TextStyle(
-                        fontSize: 28,
+                        fontSize: isTablet ? 50 :  28,
                         fontWeight: FontWeight.w700,
                         color: Colors.black,
                       ),
@@ -38,22 +43,23 @@ class SplashThreeScreen extends StatelessWidget {
                   ],
                 ),
 
-                SizedBox(height: 15),
+                SizedBox(height: 18),
 
                 Text(
                   "“Locate the nearest plant nurseries instantly!”",
                   style: TextStyle(
-                    fontSize: 19,
+                    fontSize: isTablet ? 30 : 19,
                     color: Color.fromARGB(221, 3, 0, 69),
                   ),
                 ),
 
-                SizedBox(height: 60),
+                SizedBox(height: isTablet ? 130 : 80),
 
                 Center(
-                  child: Image.asset("assets/images/map.png", height: 340),
+                  child: Image.asset("assets/images/map.png", 
+                  height: isTablet ? 630 : 340),
                 ),
-                SizedBox(height: 90),
+                SizedBox(height: 150),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -70,7 +76,7 @@ class SplashThreeScreen extends StatelessWidget {
                       child: Text(
                         "Next",
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: isTablet ? 40 : 25,
                           fontWeight: FontWeight.w600,
                           color: const Color.fromARGB(255, 13, 2, 75),
                         ),
@@ -83,6 +89,8 @@ class SplashThreeScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+      },
     );
   }
 }

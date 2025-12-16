@@ -22,6 +22,10 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool isTablet = constraints.maxWidth >= 600;
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -36,12 +40,14 @@ class _SignupPageState extends State<SignupPage> {
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
+              padding:  EdgeInsets.symmetric(
+                horizontal: 25),
               child: Form(
                 key: formKey,
                 child: Column(
                   children: [
-                    Image.asset("assets/icons/house_icon.png", height: 140),
+                    Image.asset("assets/icons/house_icon.png", 
+                    height: isTablet ? 240 :  140),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -49,7 +55,7 @@ class _SignupPageState extends State<SignupPage> {
                         Text(
                           "Hamro Bhagaicha 🌿",
                           style: TextStyle(
-                            fontSize: 23,
+                            fontSize: isTablet ? 40 : 23,
                             fontWeight: FontWeight.w600,
                             color: Color.fromARGB(255, 4, 17, 5),
                           ),
@@ -57,14 +63,14 @@ class _SignupPageState extends State<SignupPage> {
                       ],
                     ),
 
-                    SizedBox(height: 35),
+                    SizedBox(height: isTablet ? 70 : 35),
 
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "Sign Up",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: isTablet ? 29 :  18,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF000B38),
                         ),
@@ -129,7 +135,7 @@ class _SignupPageState extends State<SignupPage> {
                           "Already have an account?",
                           style: TextStyle(
                             fontStyle: FontStyle.italic,
-                            fontSize: 15,
+                            fontSize: isTablet ? 25 : 15,
                           ),
                         ),
                         SizedBox(width: 6),
@@ -142,12 +148,12 @@ class _SignupPageState extends State<SignupPage> {
                               ),
                             );
                           },
-                          child: const Text(
+                          child: Text(
                             "Login",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF000B38),
-                              fontSize: 15,
+                              color: const Color(0xFF000B38),
+                              fontSize: isTablet ? 22 : 15,
                             ),
                           ),
                         ),
@@ -162,6 +168,8 @@ class _SignupPageState extends State<SignupPage> {
           ),
         ),
       ),
+    );
+      },
     );
   }
 }
