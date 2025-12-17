@@ -225,7 +225,7 @@ class DashboardHomeScreen extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 46),
+                const SizedBox(height: 45),
 
                 // Welcome Row
                 Row(
