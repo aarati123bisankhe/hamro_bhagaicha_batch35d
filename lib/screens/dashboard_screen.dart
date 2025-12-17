@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
 
-// class DashboardHomeScreen extends StatelessWidget {
-//   const DashboardHomeScreen({super.key});
+// class HomeScreen extends StatelessWidget {
+//   const HomeScreen({super.key});
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -172,149 +172,52 @@
 //   }
 // }
 
-
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/widget/home_button_card.dart';
-import 'package:flutter/services.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/buttom_nav_screen/account_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/buttom_nav_screen/cart_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/buttom_nav_screen/home_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/buttom_nav_screen/order_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/buttom_nav_screen/scan_screen.dart';
 
-class DashboardHomeScreen extends StatelessWidget {
-  const DashboardHomeScreen({super.key});
+class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
 
   @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+
+  int _selectedIndex = 0;
+
+  List<Widget>lstBottomScreen = [
+    const DashboardHomeScreen(),
+    const OrderScreen(),
+    const ScanScreen(),
+    const CartScreen(),
+    const AccountScreen(),
+  ];
+  @override
   Widget build(BuildContext context) {
-    // Make status bar transparent
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent, // transparent status bar
-        statusBarIconBrightness: Brightness.dark,
-      ),
-    );
-
     return Scaffold(
-      extendBodyBehindAppBar: true, // allows body to go behind notch
-      backgroundColor: Colors.transparent,
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFFD8F3DC), Color(0xFF475E4F)],
-          ),
+      body: lstBottomScreen[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.search),label: 'Order'),
+          BottomNavigationBarItem(icon: Icon(Icons.add),label: 'scan'),
+          BottomNavigationBarItem(icon: Icon(Icons.message),label: 'Cart'),
+          BottomNavigationBarItem(icon: Icon(Icons.person),label: 'Account'),
+        ],
+        
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
         ),
-        child: SafeArea(
-          top: true, // keeps content below notch
-          bottom: true,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20),
-
-                // App Name / Logo
-                const Center(
-                  child: Text(
-                    'Hamro Bhagaicha 🌿',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 46),
-
-                // Welcome Row
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: const [
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            'https://i.pravatar.cc/150?img=3',
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          'Welcome Aarati!',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.notifications_outlined),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 20),
-
-                // Search Field
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search nearest nursery...',
-                    prefixIcon: const Icon(Icons.search),
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 0, horizontal: 20),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 30),
-
-                // Home Buttons
-                Expanded(
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: const [
-                      HomeButtonCard(
-                        icon: '🌱',
-                        title: 'Plants',
-                        subtitle:
-                            'Give this plant a new home – make your garden greener!',
-                      ),
-                      SizedBox(height: 14),
-                      HomeButtonCard(
-                        icon: '🪴',
-                        title: 'Pot',
-                        subtitle:
-                            'Add this pot to your garden collection and style your plants beautifully',
-                      ),
-                      SizedBox(height: 14),
-                      HomeButtonCard(
-                        icon: '🌱🪴',
-                        title: 'Plant + Pot Combo',
-                        subtitle:
-                            'Get this plant + pot combo and brighten your garden – a perfect duo for your green space',
-                      ),
-                      SizedBox(height: 14),
-                      HomeButtonCard(
-                        icon: '💡',
-                        title: "Today's Tips",
-                        subtitle:
-                            'Water early in the morning for the best growth!',
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

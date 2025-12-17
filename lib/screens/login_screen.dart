@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/home_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/dashboard_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/forgot_password_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/sign_up_page.dart';
 import 'package:hamro_bhagaicha_batch35d/widget/floating_button_action.dart';
@@ -134,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => HomeScreen(),
+                                  builder: (context) => DashboardScreen(),
                                 ),
                               );
                             },
