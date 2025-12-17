@@ -201,13 +201,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: lstBottomScreen[_selectedIndex],
+      
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.search),label: 'Order'),
-          BottomNavigationBarItem(icon: Icon(Icons.add),label: 'scan'),
-          BottomNavigationBarItem(icon: Icon(Icons.message),label: 'Cart'),
+          BottomNavigationBarItem(icon: Icon(Icons.inventory),label: 'Order'),
+          BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner, size: 50,),label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart),label: 'Cart'),
           BottomNavigationBarItem(icon: Icon(Icons.person),label: 'Account'),
         ],
         

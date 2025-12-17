@@ -286,21 +286,21 @@ class DashboardHomeScreen extends StatelessWidget {
                         subtitle:
                             'Give this plant a new home – make your garden greener!',
                       ),
-                      SizedBox(height: 14),
+                      SizedBox(height: 12),
                       HomeButtonCard(
                         icon: '🪴',
                         title: 'Pot',
                         subtitle:
                             'Add this pot to your garden collection and style your plants beautifully',
                       ),
-                      SizedBox(height: 14),
+                      SizedBox(height: 12),
                       HomeButtonCard(
                         icon: '🌱🪴',
                         title: 'Plant + Pot Combo',
                         subtitle:
                             'Get this plant + pot combo and brighten your garden – a perfect duo for your green space',
                       ),
-                      SizedBox(height: 14),
+                      SizedBox(height: 12),
                       HomeButtonCard(
                         icon: '💡',
                         title: "Today's Tips",
