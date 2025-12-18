@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/plant_section.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/pot_section_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/widget/home_button_card.dart';
 import 'package:flutter/services.dart';
 
@@ -125,6 +126,12 @@ class DashboardHomeScreen extends StatelessWidget {
                         title: 'Pot',
                         subtitle:
                             'Add this pot to your garden collection and style your plants beautifully',
+                            onTap: () {
+                           Navigator.push(
+                           context,
+                           MaterialPageRoute(builder: (context) => PotSectionScreen()),
+                          );
+                        },
                       ),
                       SizedBox(height: 12),
                       HomeButtonCard(
