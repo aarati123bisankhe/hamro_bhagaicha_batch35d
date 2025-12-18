@@ -34,7 +34,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           
           BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.inventory),label: 'Order'),
-          BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner, size: 50,),label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner, ),label: 'Scanner'),
           BottomNavigationBarItem(icon: Icon(Icons.shopping_cart),label: 'Cart'),
           BottomNavigationBarItem(icon: Icon(Icons.person),label: 'Account'),
         ],
