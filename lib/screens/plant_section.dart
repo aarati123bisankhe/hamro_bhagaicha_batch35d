@@ -97,7 +97,7 @@ class PlantScreen extends StatelessWidget {
                 hintText: 'Search for a specific plant...',
                 prefixIcon: const Icon(Icons.search),
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Color.fromARGB(255, 242, 251, 233),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 20),
                 border: OutlineInputBorder(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/combo_set_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/plant_section.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/pot_section_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/today_tips.dart';
 import 'package:hamro_bhagaicha_batch35d/widget/home_button_card.dart';
 import 'package:flutter/services.dart';
 
@@ -12,13 +14,13 @@ class DashboardHomeScreen extends StatelessWidget {
     // Make status bar transparent
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent, // transparent status bar
+        statusBarColor: Colors.transparent, 
         statusBarIconBrightness: Brightness.dark,
       ),
     );
 
     return Scaffold(
-      extendBodyBehindAppBar: true, // allows body to go behind notch
+      extendBodyBehindAppBar: true, 
       backgroundColor: Colors.transparent,
       body: Container(
         width: double.infinity,
@@ -31,7 +33,7 @@ class DashboardHomeScreen extends StatelessWidget {
           ),
         ),
         child: SafeArea(
-          top: true, // keeps content below notch
+          top: true, 
           bottom: true,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -40,7 +42,6 @@ class DashboardHomeScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 20),
 
-                // App Name / Logo
                 const Center(
                   child: Text(
                     'Hamro Bhagaicha 🌿',
@@ -54,7 +55,6 @@ class DashboardHomeScreen extends StatelessWidget {
 
                 const SizedBox(height: 45),
 
-                // Welcome Row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -90,7 +90,8 @@ class DashboardHomeScreen extends StatelessWidget {
                     hintText: 'Search nearest nursery...',
                     prefixIcon: const Icon(Icons.search),
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: Color.fromARGB(255, 242, 251, 233),
+                    
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 0, horizontal: 20),
                     border: OutlineInputBorder(
@@ -139,6 +140,12 @@ class DashboardHomeScreen extends StatelessWidget {
                         title: 'Plant + Pot Combo',
                         subtitle:
                             'Get this plant + pot combo and brighten your garden – a perfect duo for your green space',
+                            onTap: () {
+                           Navigator.push(
+                           context,
+                           MaterialPageRoute(builder: (context) => ComboSetScreen()),
+                          );
+                        },
                       ),
                       SizedBox(height: 12),
                       HomeButtonCard(
@@ -146,6 +153,12 @@ class DashboardHomeScreen extends StatelessWidget {
                         title: "Today's Tips",
                         subtitle:
                             'Water early in the morning for the best growth!',
+                            onTap: () {
+                           Navigator.push(
+                           context,
+                           MaterialPageRoute(builder: (context) => TodayTips()),
+                          );
+                        },
                       ),
                     ],
                   ),

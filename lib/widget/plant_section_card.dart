@@ -23,7 +23,7 @@ class PlantCard extends StatelessWidget {
       onTap: onTap, 
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.9),
+          color: const Color(0xFFE2E8DC),
           borderRadius: BorderRadius.circular(15),
         ),
         padding: const EdgeInsets.all(8),
