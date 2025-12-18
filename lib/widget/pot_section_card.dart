@@ -17,14 +17,16 @@ class PotSectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600; 
     return GestureDetector(
       onTap: onTap, 
       child: Container(
         decoration: BoxDecoration(
           color: const Color(0xFFE2E8DC),
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular( isTablet ? 20 :15),
         ),
-        padding: const EdgeInsets.all(8),
+        padding:  EdgeInsets.all( isTablet ? 16 :8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -39,37 +41,29 @@ class PotSectionCard extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 8),
+             SizedBox(height: isTablet ? 15 : 8),
             
             Text(
               name,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: isTablet ? 23 : 14,
                 color: Color.fromARGB(255, 41, 3, 181),
               ),
             ),
-
-            // Text(
-              
-            //   maxLines: 2,
-            //   overflow: TextOverflow.ellipsis,
-            //   style: const TextStyle(
-            //     fontSize: 12,
-            //     color: Color.fromARGB(255, 115, 115, 115),
-            //   ),
-            // ),
 
             const SizedBox(height: 10),
 
             Text(
               'NRP $price',
-              style: const TextStyle(
+              style:  TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: isTablet ? 20 : 14,
                 color: Color.fromARGB(255, 42, 119, 45),
               ),
             ),
 
-            const SizedBox(height: 6),
+             SizedBox(height: isTablet ? 10 :  6),
 
             Row(
               children: List.generate(
@@ -77,7 +71,7 @@ class PotSectionCard extends StatelessWidget {
                 (index) => Icon(
                   index < rating ? Icons.star : Icons.star_border,
                   color: const Color.fromARGB(255, 60, 137, 62),
-                  size: 15,
+                  size: isTablet ? 20 :  15,
                 ),
               ),
             ),
@@ -87,15 +81,15 @@ class PotSectionCard extends StatelessWidget {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 6),
+                  padding:  EdgeInsets.symmetric(
+                      horizontal: isTablet ? 20 : 12, vertical:isTablet ? 12 : 6),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 onPressed: () {
                 },
-                child: const Text('+ Add'),
+                child:  Text('+ Add',style: TextStyle(fontSize: isTablet ? 18 : 14),),
               ),
             ),
           ],

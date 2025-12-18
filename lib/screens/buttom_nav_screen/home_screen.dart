@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/combo_set_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/screens/notification.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/plant_section.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/pot_section_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/screens/today_tips.dart';
@@ -11,13 +12,15 @@ class DashboardHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Make status bar transparent
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent, 
         statusBarIconBrightness: Brightness.dark,
       ),
     );
+
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600; 
 
     return Scaffold(
       extendBodyBehindAppBar: true, 
@@ -36,74 +39,83 @@ class DashboardHomeScreen extends StatelessWidget {
           top: true, 
           bottom: true,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: isTablet ? 50 : 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 20),
+                 SizedBox(height: isTablet ? 45 : 20),
 
-                const Center(
+                 Center(
                   child: Text(
                     'Hamro Bhagaicha 🌿',
                     style: TextStyle(
-                      fontSize: 25,
+                      fontSize: isTablet ? 50 : 25 ,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 45),
+                 SizedBox(height: isTablet ? 87 :  45),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
-                      children: const [
+                      children:  [
                         CircleAvatar(
+                          radius: isTablet ? 30 : 15,
                           backgroundImage: NetworkImage(
                             'https://i.pravatar.cc/150?img=3',
                           ),
                         ),
-                        SizedBox(width: 10),
+                        SizedBox(width : 10),
                         Text(
                           'Welcome Aarati!',
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: isTablet ? 30 : 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
                     IconButton(
-                      onPressed: () {},
+                      iconSize: isTablet ? 38 : 28,
+                      onPressed: () {
+                        
+                        Navigator.push(
+                           context,
+                           MaterialPageRoute(builder: (context) => NotificationScreen()),
+                          );
+                      },
                       icon: const Icon(Icons.notifications_outlined),
                     ),
                   ],
                 ),
 
-                const SizedBox(height: 20),
-
-                // Search Field
+                 SizedBox(height: isTablet ? 50 : 20),
                 TextField(
                   decoration: InputDecoration(
                     hintText: 'Search nearest nursery...',
-                    prefixIcon: const Icon(Icons.search),
+                    prefixIcon:  Icon(Icons.search,
+                    size: isTablet ? 35 : 20,),
+                    hintStyle: TextStyle(
+                   fontSize: isTablet ? 20 : 14,
+                    ),
                     filled: true,
                     fillColor: Color.fromARGB(255, 242, 251, 233),
+
                     
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 0, horizontal: 20),
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: isTablet ? 25: 0, horizontal:  20),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(isTablet ? 40 :20),
                       borderSide: BorderSide.none,
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 30),
-
-                // Home Buttons
+               SizedBox( height: 30),
                 Expanded(
                   child: ListView(
                     padding: EdgeInsets.zero,
@@ -121,7 +133,7 @@ class DashboardHomeScreen extends StatelessWidget {
                         },
                       ),
                       
-                      SizedBox(height: 12),
+                      SizedBox(height: isTablet ? 24 : 12),
                       HomeButtonCard(
                         icon: '🪴',
                         title: 'Pot',
@@ -134,7 +146,7 @@ class DashboardHomeScreen extends StatelessWidget {
                           );
                         },
                       ),
-                      SizedBox(height: 12),
+                      SizedBox(height:isTablet ? 24 : 12),
                       HomeButtonCard(
                         icon: '🌱🪴',
                         title: 'Plant + Pot Combo',
@@ -147,7 +159,7 @@ class DashboardHomeScreen extends StatelessWidget {
                           );
                         },
                       ),
-                      SizedBox(height: 12),
+                      SizedBox(height: isTablet ? 24 : 12),
                       HomeButtonCard(
                         icon: '💡',
                         title: "Today's Tips",

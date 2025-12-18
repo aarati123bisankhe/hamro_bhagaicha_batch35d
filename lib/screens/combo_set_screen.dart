@@ -7,6 +7,8 @@ class ComboSetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600; 
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -21,13 +23,13 @@ class ComboSetScreen extends StatelessWidget {
             ],
           ),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding:  EdgeInsets.symmetric(horizontal: isTablet ? 32 :  16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 90),
+             SizedBox(height: isTablet ? 100 :  90),
 
-            // Header
+            
             Row(
               children: [
                 GestureDetector(
@@ -41,16 +43,16 @@ class ComboSetScreen extends StatelessWidget {
                   },
                   child: Image.asset(
                     "assets/icons/arrow icon.png",
-                    height: 28,
-                    width: 28,
+                    height: isTablet ? 40 :  28,
+                    width: isTablet ? 40 :  28,
                   ),
                 ),
-                const Expanded(
+                 Expanded(
                   child: Center(
                     child: Text(
                       'Hamro Bhagaicha 🌿',
                       style: TextStyle(
-                        fontSize: 26,
+                        fontSize:  isTablet ? 34 :26,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
                       ),
@@ -60,30 +62,30 @@ class ComboSetScreen extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 40),
+             SizedBox(height: isTablet ? 80 : 40),
 
             // Subtitle
-            const Text(
+             Text(
               "Start Your Garden Today! Hand-picked Plants & Perfect Plots",
              
               style: TextStyle(
-                fontSize: 18,
+                fontSize: isTablet ? 27 : 18,
                 color: Color.fromARGB(221, 128, 56, 1),
               ),
             ),
 
-         const SizedBox(height: 0),
-            const Text(
+          SizedBox(height: isTablet ? 10 :  10),
+             Text(
               "(or आजै आफ्नो बगैंचा सुरु गर्नुहोस्!)🌱",
              
               style: TextStyle(
-                fontSize: 18,
+                fontSize: isTablet ? 27 :  18,
                 fontWeight: FontWeight.bold,
                 color: Color.fromARGB(221, 9, 46, 16),
               ),
             ),
 
-            const SizedBox(height: 35),
+             SizedBox(height: isTablet ? 60 :  35),
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,

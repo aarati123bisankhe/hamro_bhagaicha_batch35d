@@ -19,7 +19,7 @@ class MyOutlinedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity,   // full width like your MyButton
+      width: double.infinity,   
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(

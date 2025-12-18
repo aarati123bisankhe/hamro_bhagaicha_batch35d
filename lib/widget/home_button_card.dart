@@ -5,22 +5,24 @@ class HomeButtonCard extends StatelessWidget {
   final String icon;
   final String title;
   final String subtitle;
-  final VoidCallback? onTap; // <-- Add this
+  final VoidCallback? onTap; 
 
   const HomeButtonCard({
     super.key,
     required this.icon,
     required this.title,
     required this.subtitle,
-    this.onTap, // <-- Add this
+    this.onTap, 
   });
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
     return GestureDetector(
-      onTap: onTap, // <-- Handle tap
+      onTap: onTap, 
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding:  EdgeInsets.all(isTablet ? 29 :20),
         decoration: BoxDecoration(
           color: const Color(0xFFE3EED9),
           borderRadius: BorderRadius.circular(20),
@@ -29,7 +31,7 @@ class HomeButtonCard extends StatelessWidget {
           children: [
             Text(
               icon,
-              style: const TextStyle(fontSize: 30),
+              style:  TextStyle(fontSize: isTablet ? 60 :  30),
             ),
             const SizedBox(width: 15),
             Expanded(
@@ -38,16 +40,16 @@ class HomeButtonCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      fontSize: 18,
+                    style:  TextStyle(
+                      fontSize: isTablet ? 31 : 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 5),
                   Text(
                     subtitle,
-                    style: const TextStyle(
-                      fontSize: 14,
+                    style:  TextStyle(
+                      fontSize: isTablet ? 25 : 14,
                       color: Colors.black87,
                     ),
                   ),

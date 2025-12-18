@@ -6,13 +6,13 @@ class MyFloatingButton extends StatelessWidget {
     required this.onPressed,
     required this.text,
     this.color = const Color(0xFF050925),
-    this.borderRadius = 8, // Optional border radius
+    this.borderRadius = 8, 
   });
 
   final VoidCallback onPressed;
   final String text;
   final Color color;
-  final double borderRadius; // Optional parameter
+  final double borderRadius; 
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TipCard extends StatelessWidget {
+class TipCard extends StatefulWidget {
   final String imageUrl;
   final String title;
   final String description;
@@ -15,48 +15,97 @@ class TipCard extends StatelessWidget {
   });
 
   @override
+  State<TipCard> createState() => _TipCardState();
+}
+
+class _TipCardState extends State<TipCard> {
+  bool isSaved = false;
+
+  @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(isTablet ? 20 : 16),
+      ),
       color: const Color(0xFFE2E8DC),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: EdgeInsets.all(isTablet ? 16 : 8),
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                imageUrl,
-                width: 150,
-                height: 150,
-                fit: BoxFit.cover,
-              ),
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    widget.imageUrl,
+                    width: isTablet ? 250 : 150,
+                    height: isTablet ? 250 : 150,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+
+                Positioned(
+                  top: isTablet ? 12 : 8,
+                  right: isTablet ? 12 : 8,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isSaved = !isSaved;
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(isTablet ? 10 : 6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.85),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        isSaved
+                            ? Icons.bookmark
+                            : Icons.bookmark_border,
+                        color: Colors.green,
+                        size: isTablet ? 30 : 22,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 12),
+
+            SizedBox(width: isTablet ? 22 : 12),
+
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16,
-                        color: Color.fromARGB(255, 32, 66, 93)),
+                    widget.title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: isTablet ? 26 : 16,
+                      color: const Color.fromARGB(255, 32, 66, 93),
+                    ),
                   ),
-                  const SizedBox(height: 6),
+                  SizedBox(height: isTablet ? 15 : 6),
                   Text(
-                    description,
-                    maxLines: 8,
+                    widget.description,
+                    maxLines: isTablet ? 8 : 4,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 14, color: Colors.black87),
+                    style: TextStyle(
+                      fontSize: isTablet ? 24 : 14,
+                      color: Colors.black87,
+                    ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: isTablet ? 12 : 8),
                   Text(
-                    readTime,
-                    style: const TextStyle(
-                        fontSize: 12,
-                        color: Color.fromARGB(255, 138, 136, 136),
-                        ),
+                    widget.readTime,
+                    style: TextStyle(
+                      fontSize: isTablet ? 20 : 12,
+                      color: const Color.fromARGB(255, 138, 136, 136),
+                    ),
                   ),
                 ],
               ),
@@ -67,3 +116,4 @@ class TipCard extends StatelessWidget {
     );
   }
 }
+

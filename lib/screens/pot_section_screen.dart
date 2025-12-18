@@ -11,21 +11,23 @@ class PotSectionScreen extends StatelessWidget {
     BuildContext context,
     String label, {
     required VoidCallback onTap,
+    bool isTablet = false,
   }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(right: 8),
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+        padding:  EdgeInsets.symmetric(horizontal: isTablet ? 25 :  15, 
+        vertical: isTablet ? 11 :  6),
         decoration: BoxDecoration(
           color: Colors.green,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(isTablet ? 25 :10),
           border: Border.all(color: Colors.green),
         ),
-        child: const Text(
+        child:  Text(
           'Filter',
           style: TextStyle(
-            fontSize: 14,
+            fontSize: isTablet ? 20:  14,
             fontWeight: FontWeight.w600,
             color: Colors.white,
           ),
@@ -36,6 +38,8 @@ class PotSectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600; 
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -50,18 +54,18 @@ class PotSectionScreen extends StatelessWidget {
             ],
           ),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding:  EdgeInsets.symmetric(horizontal: isTablet ? 32 : 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 90),
+             SizedBox(height: isTablet ? 100 : 90),
 
-            // 🔹 Header
+           
             Row(
               children: [
                 GestureDetector(
                   onTap: () {
-                    // Navigate to home/dashboard
+                   
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -71,16 +75,16 @@ class PotSectionScreen extends StatelessWidget {
                   },
                   child: Image.asset(
                     "assets/icons/arrow icon.png",
-                    height: 28,
-                    width: 28,
+                    height: isTablet ? 40 : 28,
+                    width:  isTablet ? 40 :28,
                   ),
                 ),
-                const Expanded(
+                 Expanded(
                   child: Center(
                     child: Text(
                       'Hamro Bhagaicha 🌿',
                       style: TextStyle(
-                        fontSize: 26,
+                        fontSize: isTablet ? 34 : 26,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
                       ),
@@ -90,7 +94,7 @@ class PotSectionScreen extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 40),
+             SizedBox(height: isTablet ? 60 : 40),
 
             // 🔹 Only Filter Chip
             SingleChildScrollView(
@@ -108,21 +112,22 @@ class PotSectionScreen extends StatelessWidget {
                         ),
                       );
                     },
+                    isTablet: isTablet,
                   ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 30),
+             SizedBox(height: isTablet ? 50 :30),
 
             // 🔹 Grid of Pots (image, name, price, rating)
             Expanded(
               child: GridView.count(
                 padding: EdgeInsets.zero,
-                crossAxisCount: 2,
-                mainAxisSpacing: 15,
-                crossAxisSpacing: 15,
-                childAspectRatio: 0.65,
+                crossAxisCount: isTablet ? 2: 2,
+                mainAxisSpacing:  isTablet ? 20 :15,
+                crossAxisSpacing:  isTablet ? 20 :15,
+                childAspectRatio:  isTablet ? 0.8 :0.65,
                 children: const [
                   PotSectionCard(
                     imagePath: 'assets/images/pot1.png',

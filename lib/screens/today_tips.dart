@@ -6,6 +6,8 @@ class TodayTips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600; 
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -20,13 +22,13 @@ class TodayTips extends StatelessWidget {
             ],
           ),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding:  EdgeInsets.symmetric(horizontal: isTablet ? 32 :  16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 90),
+             SizedBox(height: isTablet ? 100 :  90),
 
-            // Header with arrow
+          
             Row(
               children: [
                 GestureDetector(
@@ -35,16 +37,16 @@ class TodayTips extends StatelessWidget {
                   },
                   child: Image.asset(
                     "assets/icons/arrow icon.png",
-                    height: 28,
-                    width: 28,
+                    height: isTablet ? 40 : 28,
+                    width: isTablet ? 40 : 28,
                   ),
                 ),
-                const Expanded(
+                 Expanded(
                   child: Center(
                     child: Text(
                       'Hamro Bhagaicha 🌿',
                       style: TextStyle(
-                        fontSize: 26,
+                        fontSize:  isTablet ? 34 : 26,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
                       ),
@@ -54,38 +56,36 @@ class TodayTips extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 40),
-
-            // Subtitle
-            const Text(
+            SizedBox(height: isTablet ? 80 :  40),
+             Text(
               "Today Tips",
               style: TextStyle(
-                fontSize: 18,
+                fontSize: isTablet ? 28 : 18,
                 fontWeight: FontWeight.bold,
                 color: Color.fromARGB(221, 128, 56, 1),
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: isTablet ? 40 :  20),
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(isTablet ? 40 :20),
                 ),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                     EdgeInsets.symmetric(horizontal: isTablet ? 40 : 20, 
+                     vertical: isTablet ? 11 :  10),
               ),
-              child: const Text(
+              child:  Text(
                 "All Tips",
-                style: TextStyle(color: Colors.white),
+                
+                style: TextStyle(color: Colors.white, fontSize: isTablet ? 21 :14),
               ),
             ),
            
 
             const SizedBox(height: 35),
-
-            // Tips List
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,

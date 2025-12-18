@@ -13,21 +13,23 @@ class PlantScreen extends StatelessWidget {
     String label, {
     bool selected = false,
     required VoidCallback onTap,
+    bool isTablet = false,
   }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(right: 8),
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+        margin:  EdgeInsets.only(right: 8),
+        padding:  EdgeInsets.symmetric(horizontal: isTablet ? 25 :  15, 
+        vertical: isTablet ? 11 :6),
         decoration: BoxDecoration(
           color: selected ? Colors.green : Colors.white,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(isTablet ? 25 :10),
           border: Border.all(color: Colors.green),
         ),
         child: Text(
           label,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: isTablet ? 20: 14,
             fontWeight: FontWeight.w600,
             color: selected ? Colors.white : Colors.green,
           ),
@@ -38,6 +40,8 @@ class PlantScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600; // simple tablet check
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -52,11 +56,11 @@ class PlantScreen extends StatelessWidget {
             ],
           ),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding:  EdgeInsets.symmetric(horizontal: isTablet ? 32 : 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 80),
+             SizedBox(height: isTablet ? 100 : 80),
 
             Row(
               children: [
@@ -71,16 +75,16 @@ class PlantScreen extends StatelessWidget {
                   },
                   child: Image.asset(
                     "assets/icons/arrow icon.png",
-                    height: 28,
-                    width: 28,
+                    height: isTablet ? 40 : 28,
+                    width: isTablet ? 40 : 28,
                   ),
                 ),
-                const Expanded(
+                 Expanded(
                   child: Center(
                     child: Text(
                       'Hamro Bhagaicha 🌿',
                       style: TextStyle(
-                        fontSize: 26,
+                        fontSize: isTablet ? 34 : 26,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
                       ),
@@ -90,24 +94,28 @@ class PlantScreen extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 30),
+             SizedBox(height: isTablet ? 60 : 30),
 
             TextField(
               decoration: InputDecoration(
                 hintText: 'Search for a specific plant...',
-                prefixIcon: const Icon(Icons.search),
+                prefixIcon:  Icon(Icons.search,
+                size: isTablet ? 35 : 24,),
+                hintStyle: TextStyle(fontSize: isTablet ? 20 : 14),
                 filled: true,
                 fillColor: Color.fromARGB(255, 242, 251, 233),
                 contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 20),
+                     EdgeInsets.symmetric(
+                      vertical: isTablet ? 19 : 12,
+                      horizontal: 20),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(isTablet ? 40 :20),
                   borderSide: BorderSide.none,
                 ),
               ),
             ),
 
-            const SizedBox(height: 25),
+             SizedBox(height: isTablet ? 45 : 25),
 
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -117,8 +125,10 @@ class PlantScreen extends StatelessWidget {
                     context,
                     'Filter',
                     selected: true,
-                    onTap: () {
-                    },
+                    onTap: () {},
+                    isTablet: isTablet,
+                    
+                    
                   ),
                   buildFilterChip(
                     context,
@@ -131,6 +141,7 @@ class PlantScreen extends StatelessWidget {
                         ),
                       );
                     },
+                    isTablet: isTablet,
                   ),
                   buildFilterChip(
                     context,
@@ -143,20 +154,21 @@ class PlantScreen extends StatelessWidget {
                         ),
                       );
                     },
+                     isTablet: isTablet,
                   ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 26),
+             SizedBox(height: isTablet ? 45 :  26),
 
             Expanded(
               child: GridView.count(
                 padding: EdgeInsets.zero,
-                crossAxisCount: 2,
-                mainAxisSpacing: 15,
-                crossAxisSpacing: 15,
-                childAspectRatio: 0.65,
+                crossAxisCount: isTablet ? 3 : 2,
+                mainAxisSpacing: isTablet ? 20 : 15,
+                crossAxisSpacing:  isTablet ? 20 :15,
+                childAspectRatio: isTablet ? 0.8 : 0.65,
                 children: const [
                   PlantCard(
                     imagePath: 'assets/images/moneyplant.png',
