@@ -139,8 +139,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             },
                             text: "Login",
-                            // color: Color(0xFF050925),
-                            // borderRadius: 6,
                           ),
 
                           SizedBox(height: 9),
