@@ -6,7 +6,6 @@ import 'package:hamro_bhagaicha_batch35d/core/widget/pot_section_card.dart';
 class PotSectionScreen extends StatelessWidget {
   const PotSectionScreen({super.key});
 
-  // 🔹 Filter Chip
   Widget buildFilterChip(
     BuildContext context,
     String label, {
@@ -58,9 +57,7 @@ class PotSectionScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             SizedBox(height: isTablet ? 100 : 90),
-
-           
+             SizedBox(height: isTablet ? 100 : 90),  
             Row(
               children: [
                 GestureDetector(
@@ -95,8 +92,6 @@ class PotSectionScreen extends StatelessWidget {
             ),
 
              SizedBox(height: isTablet ? 60 : 40),
-
-            // 🔹 Only Filter Chip
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -120,7 +115,6 @@ class PotSectionScreen extends StatelessWidget {
 
              SizedBox(height: isTablet ? 50 :30),
 
-            // 🔹 Grid of Pots (image, name, price, rating)
             Expanded(
               child: GridView.count(
                 padding: EdgeInsets.zero,

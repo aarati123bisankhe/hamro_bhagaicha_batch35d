@@ -64,7 +64,6 @@ class ComboSetScreen extends StatelessWidget {
 
              SizedBox(height: isTablet ? 80 : 40),
 
-            // Subtitle
              Text(
               "Start Your Garden Today! Hand-picked Plants & Perfect Plots",
              

@@ -41,7 +41,7 @@ class PlantScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
      final screenWidth = MediaQuery.of(context).size.width;
-    final isTablet = screenWidth > 600; // simple tablet check
+    final isTablet = screenWidth > 600; 
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -126,9 +126,7 @@ class PlantScreen extends StatelessWidget {
                     'Filter',
                     selected: true,
                     onTap: () {},
-                    isTablet: isTablet,
-                    
-                    
+                    isTablet: isTablet,           
                   ),
                   buildFilterChip(
                     context,
