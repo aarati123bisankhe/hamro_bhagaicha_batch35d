@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/splash_three_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/pages/login_screen.dart';
 
-class SplashTwoScreen extends StatelessWidget {
-  const SplashTwoScreen({super.key});
+class SplashThreeScreen extends StatelessWidget {
+  const SplashThreeScreen({super.key});
 
   @override
-     Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         bool isTablet = constraints.maxWidth >= 600;
@@ -28,14 +28,14 @@ class SplashTwoScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: isTablet ? 120 : 80),
+                SizedBox(height: isTablet ? 120 : 85),
 
                 Row(
                   children: [
                     Text(
-                      "Hamro Bhagaicha 🌿",
+                      "Find Nearby Nurseries",
                       style: TextStyle(
-                        fontSize: isTablet ? 45 : 28,
+                        fontSize: isTablet ? 50 :  28,
                         fontWeight: FontWeight.w700,
                         color: Colors.black,
                       ),
@@ -43,23 +43,23 @@ class SplashTwoScreen extends StatelessWidget {
                   ],
                 ),
 
-                SizedBox(height: 13),
+                SizedBox(height: 18),
 
                 Text(
-                  "“Scan plants instantly and know them instantly”",
+                  "“Locate the nearest plant nurseries instantly!”",
                   style: TextStyle(
                     fontSize: isTablet ? 30 : 19,
                     color: Color.fromARGB(221, 3, 0, 69),
                   ),
                 ),
 
-                SizedBox(height: isTablet ? 0 : 50),
+                SizedBox(height: isTablet ? 130 : 80),
 
                 Center(
-                  child: Image.asset("assets/icons/icon_scan.png", 
-                  height: isTablet ? 800 : 400),
+                  child: Image.asset("assets/images/map.png", 
+                  height: isTablet ? 630 : 340),
                 ),
-                SizedBox(height: isTablet ? 120 :150),
+                SizedBox(height: 150),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -69,7 +69,7 @@ class SplashTwoScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SplashThreeScreen(),
+                            builder: (context) => LoginScreen(),
                           ),
                         );
                       },
@@ -89,9 +89,8 @@ class SplashTwoScreen extends StatelessWidget {
           ),
         ),
       ),
-   
     );
-      }
+      },
     );
   }
 }

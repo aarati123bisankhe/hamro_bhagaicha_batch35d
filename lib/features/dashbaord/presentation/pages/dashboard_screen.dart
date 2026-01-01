@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/buttom_nav_screen/account_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/buttom_nav_screen/cart_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/buttom_nav_screen/home_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/buttom_nav_screen/order_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/buttom_nav_screen/scan_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/buttom_nav_screen/account_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/buttom_nav_screen/cart_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/buttom_nav_screen/home_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/buttom_nav_screen/order_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/buttom_nav_screen/scan_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});

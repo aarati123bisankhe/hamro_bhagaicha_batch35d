@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/widget/tip_card.dart';
+import 'package:hamro_bhagaicha_batch35d/core/widget/tip_card.dart';
 
 class TodayTips extends StatelessWidget {
   const TodayTips({super.key});

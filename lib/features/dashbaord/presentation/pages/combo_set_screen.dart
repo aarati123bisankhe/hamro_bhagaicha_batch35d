@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/dashboard_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/widget/combo_set_card.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/dashboard_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/core/widget/combo_set_card.dart';
 
 class ComboSetScreen extends StatelessWidget {
   const ComboSetScreen({super.key});

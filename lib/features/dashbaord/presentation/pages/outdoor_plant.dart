@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/plant_section.dart';
-import 'package:hamro_bhagaicha_batch35d/widget/plant_section_card.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/plant_section.dart';
+import 'package:hamro_bhagaicha_batch35d/core/widget/plant_section_card.dart';
 
-class IndoorPlantScreen extends StatelessWidget {
-  const IndoorPlantScreen({super.key});
+class OutdoorPlantScreen extends StatelessWidget {
+  const OutdoorPlantScreen({super.key});
 
   Widget buildFilterChip(
     BuildContext context,
@@ -15,18 +15,18 @@ class IndoorPlantScreen extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin:  EdgeInsets.only(right: 8),
+        margin: const EdgeInsets.only(right: 8),
         padding:  EdgeInsets.symmetric(horizontal: isTablet ? 25 : 15, 
         vertical: isTablet ? 11 : 6),
         decoration: BoxDecoration(
           color: selected ? Colors.green : Colors.white,
-          borderRadius: BorderRadius.circular(isTablet ? 25: 10),
+          borderRadius: BorderRadius.circular( isTablet ? 25 : 10),
           border: Border.all(color: Colors.green),
         ),
         child: Text(
           label,
           style: TextStyle(
-            fontSize: isTablet ? 20:  14,
+            fontSize: isTablet ? 20: 14,
             fontWeight: FontWeight.w600,
             color: selected ? Colors.white : Colors.green,
           ),
@@ -74,9 +74,9 @@ class IndoorPlantScreen extends StatelessWidget {
                 Expanded(
                   child: Center(
                     child: Text(
-                      'Indoor Plants 🌱',
+                      'Outdoor Plants 🌿',
                       style: TextStyle(
-                        fontSize: isTablet ? 34 :  26,
+                        fontSize: isTablet ? 34 : 26,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
                       ),
@@ -86,7 +86,7 @@ class IndoorPlantScreen extends StatelessWidget {
               ],
             ),
 
-             SizedBox(height:  isTablet ? 60 :30),
+             SizedBox(height: isTablet ? 60 :  30),
 
             TextField(
               decoration: InputDecoration(
@@ -107,8 +107,7 @@ class IndoorPlantScreen extends StatelessWidget {
               ),
             ),
 
-             SizedBox(height: isTablet ? 45 : 25),
-
+             SizedBox(height:  isTablet ? 45 : 25),
 
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -125,65 +124,69 @@ class IndoorPlantScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    isTablet: isTablet,
+                     isTablet: isTablet,
                   ),
                   buildFilterChip(
                     context,
-                    'Indoor Plants',
+                    'Outdoor Plants',
                     selected: true,
                     onTap: () {},
-                    isTablet: isTablet,
+                     isTablet: isTablet,
                   ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 26),
+             SizedBox(height: isTablet ? 45 :  26),
 
             Expanded(
               child: GridView.count(
                 padding: EdgeInsets.zero,
                 crossAxisCount: isTablet ? 3 : 2,
-                mainAxisSpacing: isTablet ? 20: 15,
-                crossAxisSpacing: isTablet ? 20 : 15,
-                childAspectRatio: isTablet ? 0.8 : 0.65,
+                mainAxisSpacing: isTablet ? 20 :  15,
+                crossAxisSpacing:  isTablet ? 20 : 15,
+                childAspectRatio:  isTablet ? 0.5 : 0.65,
                 children: const [
                   PlantCard(
-                    imagePath: 'assets/images/tradescantta plant.png',
-                    name: 'Tradescantta Plant',
-                    description: 'An easy-to-grow, trailing plant that is great for beginners',
-                    price: 800,
+                    imagePath: 'assets/images/rose.png',
+                    name: 'Rose Plant',
+                    description:
+                        'A woody perennial flowering plant of the genus Rosa.',
+                    price: 500,
+                    rating: 5,
+                  ),
+                  PlantCard(
+                    imagePath: 'assets/images/marigoldplant.png',
+                    name: 'Marigold Plant',
+                    description:
+                        'A hardy flowering plant that blooms all summer.',
+                    price: 300,
                     rating: 4,
                   ),
                   PlantCard(
-                    imagePath: 'assets/images/snakeplant.png',
-                    name: 'Snake Plant',
-                    description: 'Low light & air purifier',
-                    price: 350,
-                    rating: 3,
-                  ),
-                  PlantCard(
-                    imagePath: 'assets/images/ruberplant.png',
-                    name: 'Rubber Plant',
-                    description: 'Fertilize every two weeks when actively growing from spring through fall',
-                    price: 670,
+                    imagePath: 'assets/images/sunflowerplant.png',
+                    name: 'Sunflower Plant',
+                    description:
+                        'Tall, bright flowers that thrive in full sunlight.',
+                    price: 450,
                     rating: 5,
                   ),
                   PlantCard(
-                    imagePath: 'assets/images/castironplant.png',
-                    name: 'Cast iron Plant',
-                    description: 'A good choice for dimly lit rooms and rooms with northern exposure.',
-                    price: 670,
-                    rating: 5,
+                    imagePath: 'assets/images/hibiscusplant.png',
+                    name: 'Hibiscus Plant',
+                    description:
+                        'Large, colorful blooms that grow well outdoors.',
+                    price: 600,
+                    rating: 4,
                   ),
                   PlantCard(
-                    imagePath: 'assets/images/peacelilyplant.png',
-                    name: 'Peace Lily Plant',
-                    description: 'Pure white spathes surrounding creamy white flower spikes bloom',
-                    price: 670,
+                    imagePath: 'assets/images/jasminplant.png',
+                    name: 'Jasmine Plant',
+                    description:
+                        'Fragrant flowers perfect for gardens and balconies.',
+                    price: 550,
                     rating: 5,
                   ),
-              
                 ],
               ),
             ),
@@ -193,3 +196,4 @@ class IndoorPlantScreen extends StatelessWidget {
     );
   }
 }
+

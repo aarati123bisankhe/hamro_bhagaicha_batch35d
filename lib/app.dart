@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/splash_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/onboarding/presentation/pages/splash_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/theme/theme_data.dart';
 
 class App extends StatelessWidget {

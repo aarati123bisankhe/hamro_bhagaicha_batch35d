@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/splash_two_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/splash/presentation/pages/splash_two_screen.dart';
 
 class SplashOneScreen extends StatelessWidget {
   const SplashOneScreen({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/combo_set_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/notification.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/plant_section.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/pot_section_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/today_tips.dart';
-import 'package:hamro_bhagaicha_batch35d/widget/home_button_card.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/combo_set_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/notification.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/plant_section.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/pot_section_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/today_tips.dart';
+import 'package:hamro_bhagaicha_batch35d/core/widget/home_button_card.dart';
 import 'package:flutter/services.dart';
 
 class DashboardHomeScreen extends StatelessWidget {

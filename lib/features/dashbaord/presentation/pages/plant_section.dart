@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/plant_section.dart';
-import 'package:hamro_bhagaicha_batch35d/widget/plant_section_card.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/dashboard_screen.dart';
 
-class OutdoorPlantScreen extends StatelessWidget {
-  const OutdoorPlantScreen({super.key});
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/indoor_plant_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/outdoor_plant.dart';
+import 'package:hamro_bhagaicha_batch35d/core/widget/plant_section_card.dart';
+
+class PlantScreen extends StatelessWidget {
+  const PlantScreen({super.key});
 
   Widget buildFilterChip(
     BuildContext context,
@@ -15,12 +18,12 @@ class OutdoorPlantScreen extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(right: 8),
-        padding:  EdgeInsets.symmetric(horizontal: isTablet ? 25 : 15, 
-        vertical: isTablet ? 11 : 6),
+        margin:  EdgeInsets.only(right: 8),
+        padding:  EdgeInsets.symmetric(horizontal: isTablet ? 25 :  15, 
+        vertical: isTablet ? 11 :6),
         decoration: BoxDecoration(
           color: selected ? Colors.green : Colors.white,
-          borderRadius: BorderRadius.circular( isTablet ? 25 : 10),
+          borderRadius: BorderRadius.circular(isTablet ? 25 :10),
           border: Border.all(color: Colors.green),
         ),
         child: Text(
@@ -37,8 +40,8 @@ class OutdoorPlantScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isTablet = screenWidth > 600; 
+     final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600; // simple tablet check
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -63,7 +66,12 @@ class OutdoorPlantScreen extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const DashboardScreen(),
+                      ),
+                    );
                   },
                   child: Image.asset(
                     "assets/icons/arrow icon.png",
@@ -71,10 +79,10 @@ class OutdoorPlantScreen extends StatelessWidget {
                     width: isTablet ? 40 : 28,
                   ),
                 ),
-                Expanded(
+                 Expanded(
                   child: Center(
                     child: Text(
-                      'Outdoor Plants 🌿',
+                      'Hamro Bhagaicha 🌿',
                       style: TextStyle(
                         fontSize: isTablet ? 34 : 26,
                         fontWeight: FontWeight.bold,
@@ -86,7 +94,7 @@ class OutdoorPlantScreen extends StatelessWidget {
               ],
             ),
 
-             SizedBox(height: isTablet ? 60 :  30),
+             SizedBox(height: isTablet ? 60 : 30),
 
             TextField(
               decoration: InputDecoration(
@@ -107,7 +115,7 @@ class OutdoorPlantScreen extends StatelessWidget {
               ),
             ),
 
-             SizedBox(height:  isTablet ? 45 : 25),
+             SizedBox(height: isTablet ? 45 : 25),
 
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -116,21 +124,36 @@ class OutdoorPlantScreen extends StatelessWidget {
                   buildFilterChip(
                     context,
                     'Filter',
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const PlantScreen(),
-                        ),
-                      );
-                    },
-                     isTablet: isTablet,
+                    selected: true,
+                    onTap: () {},
+                    isTablet: isTablet,
+                    
+                    
                   ),
                   buildFilterChip(
                     context,
-                    'Outdoor Plants',
-                    selected: true,
-                    onTap: () {},
+                    'Indoor Plants',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const IndoorPlantScreen(),
+                        ),
+                      );
+                    },
+                    isTablet: isTablet,
+                  ),
+                  buildFilterChip(
+                    context,
+                    'Outdoot Plant',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const OutdoorPlantScreen(),
+                        ),
+                      );
+                    },
                      isTablet: isTablet,
                   ),
                 ],
@@ -143,48 +166,61 @@ class OutdoorPlantScreen extends StatelessWidget {
               child: GridView.count(
                 padding: EdgeInsets.zero,
                 crossAxisCount: isTablet ? 3 : 2,
-                mainAxisSpacing: isTablet ? 20 :  15,
-                crossAxisSpacing:  isTablet ? 20 : 15,
-                childAspectRatio:  isTablet ? 0.5 : 0.65,
+                mainAxisSpacing: isTablet ? 20 : 15,
+                crossAxisSpacing:  isTablet ? 20 :15,
+                childAspectRatio: isTablet ? 0.8 : 0.65,
                 children: const [
+                  PlantCard(
+                    imagePath: 'assets/images/moneyplant.png',
+                    name: 'Money Plant',
+                    description: 'Easy to care for',
+                    price: 400,
+                    rating: 4,
+                  ),
+                  PlantCard(
+                    imagePath: 'assets/images/snakeplant.png',
+                    name: 'Snake Plant',
+                    description:
+                        'Evergreen perennial typically grown as a houseplant',
+                    price: 350,
+                    rating: 3,
+                  ),
                   PlantCard(
                     imagePath: 'assets/images/rose.png',
                     name: 'Rose Plant',
                     description:
-                        'A woody perennial flowering plant of the genus Rosa.',
-                    price: 500,
-                    rating: 5,
-                  ),
-                  PlantCard(
-                    imagePath: 'assets/images/marigoldplant.png',
-                    name: 'Marigold Plant',
-                    description:
-                        'A hardy flowering plant that blooms all summer.',
+                        'Filling the garden with colour, fragrance, and beauty',
                     price: 300,
                     rating: 4,
                   ),
                   PlantCard(
-                    imagePath: 'assets/images/sunflowerplant.png',
-                    name: 'Sunflower Plant',
-                    description:
-                        'Tall, bright flowers that thrive in full sunlight.',
-                    price: 450,
-                    rating: 5,
-                  ),
-                  PlantCard(
-                    imagePath: 'assets/images/hibiscusplant.png',
-                    name: 'Hibiscus Plant',
-                    description:
-                        'Large, colorful blooms that grow well outdoors.',
-                    price: 600,
+                    imagePath: 'assets/images/pathosplant.png',
+                    name: 'Pothos Plant',
+                    description: 'Genus of Plants',
+                    price: 500,
                     rating: 4,
                   ),
                   PlantCard(
-                    imagePath: 'assets/images/jasminplant.png',
-                    name: 'Jasmine Plant',
+                    imagePath: 'assets/images/spiderplant.png',
+                    name: 'Spider Plant',
+                    description: 'Easy to care',
+                    price: 350,
+                    rating: 4,
+                  ),
+                  PlantCard(
+                    imagePath: 'assets/images/rubberplant.png',
+                    name: 'Rubber Plant',
                     description:
-                        'Fragrant flowers perfect for gardens and balconies.',
-                    price: 550,
+                        'easy-to-care-for plant lives for at least five years',
+                    price: 300,
+                    rating: 3,
+                  ),
+                  PlantCard(
+                    imagePath: 'assets/images/catpam.png',
+                    name: 'Cat Palm',
+                    description:
+                        'Cat palms grow best in bright, indirect light.',
+                    price: 500,
                     rating: 5,
                   ),
                 ],
@@ -196,4 +232,3 @@ class OutdoorPlantScreen extends StatelessWidget {
     );
   }
 }
-

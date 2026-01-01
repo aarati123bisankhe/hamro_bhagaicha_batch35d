@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/dashboard_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/plant_section.dart';
+import 'package:hamro_bhagaicha_batch35d/core/widget/plant_section_card.dart';
 
-import 'package:hamro_bhagaicha_batch35d/screens/indoor_plant_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/outdoor_plant.dart';
-import 'package:hamro_bhagaicha_batch35d/widget/plant_section_card.dart';
-
-class PlantScreen extends StatelessWidget {
-  const PlantScreen({super.key});
+class IndoorPlantScreen extends StatelessWidget {
+  const IndoorPlantScreen({super.key});
 
   Widget buildFilterChip(
     BuildContext context,
@@ -19,17 +16,17 @@ class PlantScreen extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin:  EdgeInsets.only(right: 8),
-        padding:  EdgeInsets.symmetric(horizontal: isTablet ? 25 :  15, 
-        vertical: isTablet ? 11 :6),
+        padding:  EdgeInsets.symmetric(horizontal: isTablet ? 25 : 15, 
+        vertical: isTablet ? 11 : 6),
         decoration: BoxDecoration(
           color: selected ? Colors.green : Colors.white,
-          borderRadius: BorderRadius.circular(isTablet ? 25 :10),
+          borderRadius: BorderRadius.circular(isTablet ? 25: 10),
           border: Border.all(color: Colors.green),
         ),
         child: Text(
           label,
           style: TextStyle(
-            fontSize: isTablet ? 20: 14,
+            fontSize: isTablet ? 20:  14,
             fontWeight: FontWeight.w600,
             color: selected ? Colors.white : Colors.green,
           ),
@@ -40,8 +37,8 @@ class PlantScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final screenWidth = MediaQuery.of(context).size.width;
-    final isTablet = screenWidth > 600; // simple tablet check
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600; 
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -66,12 +63,7 @@ class PlantScreen extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const DashboardScreen(),
-                      ),
-                    );
+                    Navigator.pop(context);
                   },
                   child: Image.asset(
                     "assets/icons/arrow icon.png",
@@ -79,12 +71,12 @@ class PlantScreen extends StatelessWidget {
                     width: isTablet ? 40 : 28,
                   ),
                 ),
-                 Expanded(
+                Expanded(
                   child: Center(
                     child: Text(
-                      'Hamro Bhagaicha 🌿',
+                      'Indoor Plants 🌱',
                       style: TextStyle(
-                        fontSize: isTablet ? 34 : 26,
+                        fontSize: isTablet ? 34 :  26,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
                       ),
@@ -94,7 +86,7 @@ class PlantScreen extends StatelessWidget {
               ],
             ),
 
-             SizedBox(height: isTablet ? 60 : 30),
+             SizedBox(height:  isTablet ? 60 :30),
 
             TextField(
               decoration: InputDecoration(
@@ -117,6 +109,7 @@ class PlantScreen extends StatelessWidget {
 
              SizedBox(height: isTablet ? 45 : 25),
 
+
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -124,105 +117,73 @@ class PlantScreen extends StatelessWidget {
                   buildFilterChip(
                     context,
                     'Filter',
-                    selected: true,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const PlantScreen(),
+                        ),
+                      );
+                    },
                     isTablet: isTablet,
-                    
-                    
                   ),
                   buildFilterChip(
                     context,
                     'Indoor Plants',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const IndoorPlantScreen(),
-                        ),
-                      );
-                    },
+                    selected: true,
+                    onTap: () {},
                     isTablet: isTablet,
-                  ),
-                  buildFilterChip(
-                    context,
-                    'Outdoot Plant',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const OutdoorPlantScreen(),
-                        ),
-                      );
-                    },
-                     isTablet: isTablet,
                   ),
                 ],
               ),
             ),
 
-             SizedBox(height: isTablet ? 45 :  26),
+            const SizedBox(height: 26),
 
             Expanded(
               child: GridView.count(
                 padding: EdgeInsets.zero,
                 crossAxisCount: isTablet ? 3 : 2,
-                mainAxisSpacing: isTablet ? 20 : 15,
-                crossAxisSpacing:  isTablet ? 20 :15,
+                mainAxisSpacing: isTablet ? 20: 15,
+                crossAxisSpacing: isTablet ? 20 : 15,
                 childAspectRatio: isTablet ? 0.8 : 0.65,
                 children: const [
                   PlantCard(
-                    imagePath: 'assets/images/moneyplant.png',
-                    name: 'Money Plant',
-                    description: 'Easy to care for',
-                    price: 400,
+                    imagePath: 'assets/images/tradescantta plant.png',
+                    name: 'Tradescantta Plant',
+                    description: 'An easy-to-grow, trailing plant that is great for beginners',
+                    price: 800,
                     rating: 4,
                   ),
                   PlantCard(
                     imagePath: 'assets/images/snakeplant.png',
                     name: 'Snake Plant',
-                    description:
-                        'Evergreen perennial typically grown as a houseplant',
+                    description: 'Low light & air purifier',
                     price: 350,
                     rating: 3,
                   ),
                   PlantCard(
-                    imagePath: 'assets/images/rose.png',
-                    name: 'Rose Plant',
-                    description:
-                        'Filling the garden with colour, fragrance, and beauty',
-                    price: 300,
-                    rating: 4,
-                  ),
-                  PlantCard(
-                    imagePath: 'assets/images/pathosplant.png',
-                    name: 'Pothos Plant',
-                    description: 'Genus of Plants',
-                    price: 500,
-                    rating: 4,
-                  ),
-                  PlantCard(
-                    imagePath: 'assets/images/spiderplant.png',
-                    name: 'Spider Plant',
-                    description: 'Easy to care',
-                    price: 350,
-                    rating: 4,
-                  ),
-                  PlantCard(
-                    imagePath: 'assets/images/rubberplant.png',
+                    imagePath: 'assets/images/ruberplant.png',
                     name: 'Rubber Plant',
-                    description:
-                        'easy-to-care-for plant lives for at least five years',
-                    price: 300,
-                    rating: 3,
-                  ),
-                  PlantCard(
-                    imagePath: 'assets/images/catpam.png',
-                    name: 'Cat Palm',
-                    description:
-                        'Cat palms grow best in bright, indirect light.',
-                    price: 500,
+                    description: 'Fertilize every two weeks when actively growing from spring through fall',
+                    price: 670,
                     rating: 5,
                   ),
+                  PlantCard(
+                    imagePath: 'assets/images/castironplant.png',
+                    name: 'Cast iron Plant',
+                    description: 'A good choice for dimly lit rooms and rooms with northern exposure.',
+                    price: 670,
+                    rating: 5,
+                  ),
+                  PlantCard(
+                    imagePath: 'assets/images/peacelilyplant.png',
+                    name: 'Peace Lily Plant',
+                    description: 'Pure white spathes surrounding creamy white flower spikes bloom',
+                    price: 670,
+                    rating: 5,
+                  ),
+              
                 ],
               ),
             ),

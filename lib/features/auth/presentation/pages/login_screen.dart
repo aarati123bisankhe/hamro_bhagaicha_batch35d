@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/dashboard_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/forgot_password_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/sign_up_page.dart';
-import 'package:hamro_bhagaicha_batch35d/widget/floating_button_action.dart';
-import 'package:hamro_bhagaicha_batch35d/widget/my_text_button.dart';
-import 'package:hamro_bhagaicha_batch35d/widget/my_text_field.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/dashboard_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/pages/forgot_password_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/pages/sign_up_page.dart';
+import 'package:hamro_bhagaicha_batch35d/core/widget/floating_button_action.dart';
+import 'package:hamro_bhagaicha_batch35d/core/widget/my_text_button.dart';
+import 'package:hamro_bhagaicha_batch35d/core/widget/my_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

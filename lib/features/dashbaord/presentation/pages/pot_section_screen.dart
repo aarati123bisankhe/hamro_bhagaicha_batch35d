@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/dashboard_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/screens/plant_section.dart';
-import 'package:hamro_bhagaicha_batch35d/widget/pot_section_card.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/dashboard_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/plant_section.dart';
+import 'package:hamro_bhagaicha_batch35d/core/widget/pot_section_card.dart';
 
 class PotSectionScreen extends StatelessWidget {
   const PotSectionScreen({super.key});
