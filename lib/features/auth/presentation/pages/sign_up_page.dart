@@ -180,7 +180,7 @@ import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_hive_mode
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/pages/login_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/core/widget/floating_button_action.dart';
 import 'package:hamro_bhagaicha_batch35d/core/widget/my_text_field.dart';
-
+import 'package:hamro_bhagaicha_batch35d/core/utils/snackbar_utils.dart';
 
 class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
@@ -219,7 +219,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
             child: SafeArea(
               child: Center(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  padding: EdgeInsets.symmetric(horizontal: isTablet ? 50 : 25),
                   child: Form(
                     key: formKey,
                     child: Column(
@@ -228,10 +228,11 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                           "assets/icons/house_icon.png",
                           height: isTablet ? 240 : 140,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: isTablet ? 10 : 10),
                         Text(
                           "Hamro Bhagaicha 🌿",
                           style: TextStyle(
+                            fontFamily: 'OpenSans Regular',
                             fontSize: isTablet ? 40 : 23,
                             fontWeight: FontWeight.w600,
                             color: const Color.fromARGB(255, 4, 17, 5),
@@ -243,46 +244,47 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                           child: Text(
                             "Sign Up",
                             style: TextStyle(
+                              fontFamily: 'OpenSans Bold',
                               fontSize: isTablet ? 29 : 18,
                               fontWeight: FontWeight.bold,
                               color: const Color(0xFF000B38),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: isTablet ? 25 : 20),
                         MyTextField(
                           controller: fullNameController,
                           hintText: "Full Name",
                           errorText: "Full Name cannot be empty",
                         ),
-                        const SizedBox(height: 15),
+                        SizedBox(height: isTablet ? 20 : 15),
                         MyTextField(
                           controller: emailController,
                           hintText: "Email",
                           errorText: "Email cannot be empty",
                           keyboardType: TextInputType.emailAddress,
                         ),
-                        const SizedBox(height: 15),
+                        SizedBox(height: isTablet ? 20 : 15),
                         MyTextField(
                           controller: passwordController,
                           hintText: "Password",
                           errorText: "Password cannot be empty",
                           obscureText: true,
                         ),
-                        const SizedBox(height: 15),
+                        SizedBox(height: isTablet ? 20 : 15),
                         MyTextField(
                           controller: addressController,
                           hintText: "Address",
                           errorText: "Address cannot be empty",
                         ),
-                        const SizedBox(height: 15),
+                        SizedBox(height: isTablet ? 20 : 15),
                         MyTextField(
                           controller: phoneController,
                           hintText: "Phone Number",
                           errorText: "Phone Number cannot be empty",
                           keyboardType: TextInputType.phone,
                         ),
-                        const SizedBox(height: 25),
+                        SizedBox(height: isTablet ? 30 : 25),
                         isLoading
                             ? const CircularProgressIndicator()
                             : MyFloatingButton(
@@ -292,50 +294,48 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
                                   setState(() => isLoading = true);
 
-                                  final authLocal =
-                                      ref.read(authLocalDatasourceProvider);
+                                  try {
+                                    final authLocal =
+                                        ref.read(authLocalDatasourceProvider);
 
-                                  final newUser = AuthHiveModel(
-                                    fullName: fullNameController.text,
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                    address: addressController.text,
-                                    phoneNumber: phoneController.text,
-                                  );
-
-                                  final result = await authLocal.register(newUser);
-
-                                  setState(() => isLoading = false);
-
-                                  if (!mounted) return;
-
-                                  if (result) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                            "User registered successfully!"),
-                                      ),
+                                    final newUser = AuthHiveModel(
+                                      fullName: fullNameController.text,
+                                      email: emailController.text,
+                                      password: passwordController.text,
+                                      address: addressController.text,
+                                      phoneNumber: phoneController.text,
                                     );
 
-                                    // Navigate to login page
-                                    AppRoutes.pushReplacement(
-                                        context, const LoginScreen());
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content:
-                                              Text("Failed to register user")),
-                                    );
+                                    final result =
+                                        await authLocal.register(newUser);
+
+                                    if (!mounted) return;
+
+                                    if (result) {
+                                      SnackbarUtils.showSuccess(
+                                          context, "User registered successfully!");
+                                      AppRoutes.pushReplacement(
+                                          context, const LoginScreen());
+                                    } else {
+                                      SnackbarUtils.showError(
+                                          context, "Failed to register user");
+                                    }
+                                  } catch (e) {
+                                    SnackbarUtils.showError(
+                                        context, e.toString());
+                                  } finally {
+                                    setState(() => isLoading = false);
                                   }
                                 },
                               ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: isTablet ? 15 : 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "Already have an account?",
                               style: TextStyle(
+                                fontFamily: 'OpenSans Regular',
                                 fontStyle: FontStyle.italic,
                                 fontSize: isTablet ? 25 : 15,
                               ),
@@ -351,6 +351,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                               child: Text(
                                 "Login",
                                 style: TextStyle(
+                                  fontFamily: 'OpenSans Bold',
                                   fontWeight: FontWeight.bold,
                                   color: const Color(0xFF000B38),
                                   fontSize: isTablet ? 22 : 15,
@@ -359,7 +360,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: isTablet ? 20 : 15),
                       ],
                     ),
                   ),
@@ -372,3 +373,4 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     );
   }
 }
+ 
