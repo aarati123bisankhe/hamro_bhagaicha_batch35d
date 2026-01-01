@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/entities/auth_entity.dart';
 
 
-enum AuthStatus { initial, loading, authenticated, unauthenticated, error}
+enum AuthStatus { initial, loading, authenticated, unauthenticated, registered, error}
 
 class AuthState extends Equatable{
   final AuthStatus status;
@@ -29,7 +29,6 @@ class AuthState extends Equatable{
     }
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [status, authEntity, errorMessage];
 
 }
