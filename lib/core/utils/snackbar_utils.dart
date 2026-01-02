@@ -32,7 +32,7 @@ class SnackbarUtils {
     _showSnackBar(
       context,
       message,
-      backgroundColor: Colors.orange, // or any color from your theme
+      backgroundColor: Colors.orange, 
       icon: Icons.warning_amber_rounded,
     );
   }
@@ -58,7 +58,7 @@ class SnackbarUtils {
                   fontSize: isTablet ? 18 : 14,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
-                  fontFamily: 'OpenSans Regular', // use your theme font
+                  fontFamily: 'OpenSans Regular',
                 ),
               ),
             ),
