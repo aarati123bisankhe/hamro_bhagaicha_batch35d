@@ -26,6 +26,7 @@ class AuthLocalDatasource implements IAuthDatasource {
     }
   }
 
+  
   @override
   Future<bool> register(AuthHiveModel model) async {
     try{
@@ -35,6 +36,9 @@ class AuthLocalDatasource implements IAuthDatasource {
       return Future.value(false);
     }
   }
+
+  
+  
   
   @override
   Future<AuthHiveModel?> getCurrentUser() {
@@ -42,3 +46,5 @@ class AuthLocalDatasource implements IAuthDatasource {
     throw UnimplementedError();
   }
 }
+
+

@@ -62,6 +62,65 @@
 //  }
 
 
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:hamro_bhagaicha_batch35d/core/config/hive_table_constant.dart';
+// import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_hive_model.dart';
+// import 'package:hive/hive.dart';
+// import 'package:path_provider/path_provider.dart';
+
+// final hiveServiceProvider = Provider<HiveService>((ref) => HiveService());
+
+// class HiveService {
+//   Box<AuthHiveModel>? _authBox;
+
+//   /// Initialize Hive
+//   Future<void> init() async {
+//     final directory = await getApplicationDocumentsDirectory();
+//     Hive.init(directory.path);
+
+//     _registerAdapters();
+//     await _openBoxes();
+//   }
+
+//   void _registerAdapters() {
+//     if (!Hive.isAdapterRegistered(HiveTableConstant.authTypeId)) {
+//       Hive.registerAdapter(AuthHiveModelAdapter());
+//     }
+//   }
+
+//   Future<void> _openBoxes() async {
+//     _authBox = await Hive.openBox<AuthHiveModel>(HiveTableConstant.authTable);
+//   }
+
+//   // Register user
+//   Future<bool> registerUser(AuthHiveModel model) async {
+//     if (_authBox == null) return false;
+//     try {
+//       await _authBox!.put(model.email, model); // use email as key
+//       return true;
+//     } catch (e) {
+//       return false;
+//     }
+//   }
+
+
+
+//   /// Login user
+//   Future<AuthHiveModel?> loginUser(String email, String password) async {
+//     if (_authBox == null) return null;
+//     try {
+//       final user = _authBox!.get(email);
+//       if (user != null && user.password == password) return user;
+//       return null;
+//     } catch (e) {
+//       return null;
+//     }
+//   }
+
+// }
+
+
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/config/hive_table_constant.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_hive_model.dart';
@@ -82,36 +141,38 @@ class HiveService {
     await _openBoxes();
   }
 
+  /// Register Hive adapters
   void _registerAdapters() {
     if (!Hive.isAdapterRegistered(HiveTableConstant.authTypeId)) {
       Hive.registerAdapter(AuthHiveModelAdapter());
     }
   }
 
+  /// Open Hive boxes
   Future<void> _openBoxes() async {
     _authBox = await Hive.openBox<AuthHiveModel>(HiveTableConstant.authTable);
   }
 
   /// Register user
-  Future<bool> registerUser(AuthHiveModel model) async {
-    if (_authBox == null) return false;
-    try {
-      await _authBox!.put(model.email, model); // use email as key
-      return true;
-    } catch (e) {
-      return false;
-    }
+  Future<void> registerUser(AuthHiveModel user) async {
+    if (_authBox == null) return;
+    // Use email as the key (lowercased and trimmed)
+    await _authBox!.put(user.email.trim().toLowerCase(), user);
   }
 
   /// Login user
   Future<AuthHiveModel?> loginUser(String email, String password) async {
     if (_authBox == null) return null;
-    try {
-      final user = _authBox!.get(email);
-      if (user != null && user.password == password) return user;
-      return null;
-    } catch (e) {
-      return null;
+    final user = _authBox!.get(email.trim().toLowerCase());
+    if (user != null && user.password.trim() == password.trim()) {
+      return user;
     }
+    return null;
+  }
+
+  /// Get current user by authId (optional)
+  AuthHiveModel? getCurrentUser(String authId) {
+    if (_authBox == null) return null;
+    return _authBox!.get(authId);
   }
 }

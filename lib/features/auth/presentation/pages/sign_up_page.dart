@@ -298,12 +298,20 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                                     final authLocal =
                                         ref.read(authLocalDatasourceProvider);
 
+                                    // final newUser = AuthHiveModel(
+                                    //   fullName: fullNameController.text,
+                                    //   email: emailController.text,
+                                    //   password: passwordController.text,
+                                    //   address: addressController.text,
+                                    //   phoneNumber: phoneController.text,
+                                    // );
+
                                     final newUser = AuthHiveModel(
-                                      fullName: fullNameController.text,
-                                      email: emailController.text,
-                                      password: passwordController.text,
-                                      address: addressController.text,
-                                      phoneNumber: phoneController.text,
+                                    fullName: fullNameController.text.trim(),
+                                    email: emailController.text.trim().toLowerCase(), // lowercase
+                                    password: passwordController.text.trim(),          // trimmed
+                                    address: addressController.text.trim(),
+                                    phoneNumber: phoneController.text.trim(),
                                     );
 
                                     final result =
@@ -374,3 +382,5 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   }
 }
  
+
+
