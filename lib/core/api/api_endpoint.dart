@@ -2,13 +2,14 @@ class ApiEndpoints {
   ApiEndpoints._();
 
   // Base URL 
-   static const String baseUrl = 'http://localhost:5050';
+   static const String baseUrl = 'http://localhost:5050/api';
 
   static const Duration connectionTimeout = Duration(seconds: 30);
   static const Duration receiveTimeout = Duration(seconds: 30);
 
-  // static const String auth='/auth';
-  static const String authLogin='/auth/login';
+
+  static const String auth = '/auth';
+  static const String authLogin = '/auth/login';
   static const String authRegister = '/auth/register';
 
 }

@@ -13,15 +13,13 @@ final apiClientProvider = Provider<ApiClient>((ref) {
 
 class ApiClient {
   late final Dio _dio;
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
-  static const _tokenKey = 'auth_token';
 
   ApiClient() {
     _dio = Dio(
       BaseOptions(
         baseUrl: ApiEndpoints.baseUrl,
-        connectTimeout: const Duration(seconds: 15),
-        receiveTimeout: const Duration(seconds: 15),
+        connectTimeout: ApiEndpoints.connectionTimeout,
+        receiveTimeout: ApiEndpoints.receiveTimeout,
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -29,10 +27,10 @@ class ApiClient {
       ),
     );
 
-    // Auth Interceptor to attach token
-    _dio.interceptors.add(_AuthInterceptor(storage: _storage));
+    // Add interceptors
+    _dio.interceptors.add(_AuthInterceptor());
 
-    // Retry failed requests automatically
+    // Auto retry on network failures
     _dio.interceptors.add(
       RetryInterceptor(
         dio: _dio,
@@ -43,9 +41,10 @@ class ApiClient {
           Duration(seconds: 3),
         ],
         retryEvaluator: (error, attempt) {
+          // Retry on connection errors and timeouts, not on 4xx/5xx
           return error.type == DioExceptionType.connectionTimeout ||
-              error.type == DioExceptionType.receiveTimeout ||
               error.type == DioExceptionType.sendTimeout ||
+              error.type == DioExceptionType.receiveTimeout ||
               error.type == DioExceptionType.connectionError;
         },
       ),
@@ -122,7 +121,7 @@ class ApiClient {
     );
   }
 
-  // File upload
+  // Multipart request for file uploads
   Future<Response> uploadFile(
     String path, {
     required FormData formData,
@@ -136,52 +135,40 @@ class ApiClient {
       onSendProgress: onSendProgress,
     );
   }
-
-  // Save token for auth
-  Future<void> saveToken(String token) async {
-    await _storage.write(key: _tokenKey, value: token);
-  }
-
-  // Get token
-  Future<String?> getToken() async {
-    return _storage.read(key: _tokenKey);
-  }
-
-  // Remove token
-  Future<void> clearToken() async {
-    await _storage.delete(key: _tokenKey);
-  }
 }
 
 class _AuthInterceptor extends Interceptor {
-  final FlutterSecureStorage storage;
+  final _storage = const FlutterSecureStorage();
+  static const _tokenKey = 'auth_token';
+
   static const List<String> _publicEndpoints = [
     ApiEndpoints.authLogin,
     ApiEndpoints.authRegister,
   ];
 
-  _AuthInterceptor({required this.storage});
-
   bool _isPublicEndpoint(String path) {
-    return _publicEndpoints.any((endpoint) => path.startsWith(endpoint));
+    return _publicEndpoints.any((e) => path.startsWith(e));
   }
 
   @override
   Future<void> onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     if (!_isPublicEndpoint(options.path)) {
-      final token = await storage.read(key: 'auth_token');
+      final token = await _storage.read(key: _tokenKey);
       if (token != null && token.isNotEmpty) {
         options.headers['Authorization'] = 'Bearer $token';
       }
     }
+
     handler.next(options);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     if (err.response?.statusCode == 401) {
-      storage.delete(key: 'auth_token');
+      _storage.delete(key: _tokenKey);
     }
     handler.next(err);
   }

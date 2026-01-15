@@ -2,10 +2,16 @@ import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_api_model
 import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_hive_model.dart';
 
 abstract interface class IAuthLocalDatasource {
-  Future<AuthHiveModel> register(AuthHiveModel model);
+   Future<bool> register(AuthHiveModel model);
   Future<AuthHiveModel?> login(String phoneNumber, String password);
   Future<bool> isPhoneNumberExists(String phoneNumber);
   Future<AuthHiveModel?> getUserByPhoneNumber(String phoneNumber);
+
+  Future<dynamic> isEmailExists(String email) async {}
+
+  Future<dynamic> getUserByEmail(String s) async {}
+
+  Future<dynamic> getCurrentUser() async {}
 }
 
 abstract interface class IAuthRemoteDatasource {
