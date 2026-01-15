@@ -51,4 +51,16 @@ class AuthRepository implements IAuthRepository{
       return Left(LocalDatabaseFailure(message: e.toString()));
     }
   }
+  
+  @override
+  Future<Either<Failure, AuthEntity>> getUserByPhoneNumber(String phoneNumber) {
+    // TODO: implement getUserByPhoneNumber
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<Either<Failure, bool>> isPhoneNumberExists(String phoneNumber) {
+    // TODO: implement isPhoneNumberExists
+    throw UnimplementedError();
+  }
 }
