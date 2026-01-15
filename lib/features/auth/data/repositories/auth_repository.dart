@@ -13,9 +13,9 @@ final authRepositoryProvider = Provider<IAuthRepository>((ref){
 });
 
 class AuthRepository implements IAuthRepository{
-  final IAuthDatasource _authDatasource;
+  final IAuthLocalDatasource _authDatasource;
 
-  AuthRepository({required IAuthDatasource authDataSource})
+  AuthRepository({required IAuthLocalDatasource authDataSource})
   : _authDatasource = authDataSource;
 
   @override

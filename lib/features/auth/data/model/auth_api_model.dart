@@ -1,69 +1,70 @@
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/entities/auth_entity.dart';
 
 class AuthApiModel {
-  final String? authId;
+  final String? id;
   final String fullname;
   final String email;
-  final String password;
   final String address;
   final String phoneNumber;
+  final String? password;
 
   AuthApiModel({
-    this.authId,
+    this.id,
     required this.fullname,
     required this.email,
-    required this.password,
     required this.address,
-    required this.phoneNumber
+    required this.phoneNumber,
+    this.password,
   });
 
-
-  //tojson
-
-  Map<String, dynamic> tojson() {
+  // toJSON
+  Map<String, dynamic> toJson() {
     return {
-      'authId': authId,
-      'fullname': fullname,
-      'email': email,
-      'password': password,
-      'address': address,
-      'phoneNumber': phoneNumber
+      "fullname": fullname,
+      "email": email,
+      "address": address,
+      "phoneNumber": phoneNumber,
+      "password": password,
     };
   }
 
-   //fromjson
-   factory AuthApiModel.fromjson(Map<String, dynamic> json) {
-     return AuthApiModel(
-       authId: json['authId'],
-       fullname: json['fullname'],
-       email: json['email'],
-       password: json['password'],
-       address: json['address'],
-       phoneNumber: json['phoneNumber']
-     );
-   }
+  // fromJSON
+  factory AuthApiModel.fromJson(Map<String, dynamic> json) {
+    return AuthApiModel(
+      id: json['_id'] as String?,
+      fullname: json['fullname'] as String,
+      email: json['email'] as String,
+      address: json['address'] as String,
+      phoneNumber: json['phoneNumber'] as String,
+    );
+  }
 
-   //toEntity
-   AuthEntity toEntity() {
-     return AuthEntity(
-       authId: authId,
-       fullname: fullname,
-       email: email,
-       password: password,
-       address: address,
-       phoneNumber: phoneNumber
-     );
-   }
+  // toEntity
+  AuthEntity toEntity() {
+    return AuthEntity(
+      authId: id,
+      fullname: fullname,
+      email: email,
+      password: password ?? '',
+      address: address,
+      phoneNumber: phoneNumber,
+    );
+  }
 
-   //fromEntity
-factory AuthApiModel.fromEntity(AuthEntity entity) {
-  return AuthApiModel(
-    authId: entity.authId,
-    fullname: entity.fullname,
-    email: entity.email,
-    password: entity.password,
-    address: entity.address,
-    phoneNumber: entity.phoneNumber,
-  );
-}
+  // fromEntity
+  factory AuthApiModel.fromEntity(AuthEntity entity) {
+    return AuthApiModel(
+      id: entity.authId,
+      fullname: entity.fullname,
+      email: entity.email,
+      address: entity.address,
+      phoneNumber: entity.phoneNumber,
+      password: entity.password,
+    );
+  }
+
+  // toEntityList
+  static List<AuthEntity> toEntityList(List<AuthApiModel> models) {
+    return models.map((model) => model.toEntity()).toList();
+  }
 }
