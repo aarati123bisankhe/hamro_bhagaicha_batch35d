@@ -27,7 +27,7 @@ class HiveService {
     _authBox = await Hive.openBox<AuthHiveModel>(HiveTableConstant.authTable);
   }
 
-  // ✅ REGISTER USER
+  // register user
   Future<AuthHiveModel> registerUser(AuthHiveModel user) async {
     if (_authBox == null) {
       throw Exception('Auth box not initialized');
@@ -35,8 +35,7 @@ class HiveService {
     await _authBox!.put(user.phoneNumber, user);
     return user;
   }
-
-  // ✅ LOGIN USER
+  // login user
   Future<AuthHiveModel?> login(String phoneNumber, String password) async {
     if (_authBox == null) return null;
 
@@ -47,19 +46,19 @@ class HiveService {
     return null;
   }
 
-  // ✅ CHECK IF PHONE NUMBER EXISTS
+  // check if phonne bumber is exits
   Future<bool> isPhoneNumberExists(String phoneNumber) async {
     if (_authBox == null) return false;
     return _authBox!.containsKey(phoneNumber);
   }
 
-  // ✅ GET USER BY PHONE NUMBER
+  // get user by phone number
   Future<AuthHiveModel?> getUserByPhoneNumber(String phoneNumber) async {
     if (_authBox == null) return null;
     return _authBox!.get(phoneNumber);
   }
 
-  // ✅ GET CURRENT USER (OPTIONAL)
+  // 
   AuthHiveModel? getCurrentUser(String phoneNumber) {
     if (_authBox == null) return null;
     return _authBox!.get(phoneNumber);

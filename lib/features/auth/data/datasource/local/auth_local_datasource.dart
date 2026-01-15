@@ -88,10 +88,9 @@ Future<AuthHiveModel?> login(String phoneNumber, String password) async {
     final user = await _hiveService.login(phoneNumber, password);
 
     if (user != null && user.authId != null) {
-      // Save session correctly with all required fields
       await _userSessionService.saveUserSession(
         userId: user.authId!,
-        fullname: user.fullName,     // must match service parameter
+        fullname: user.fullName, 
         email: user.email,
         address: user.address,
         phoneNumber: user.phoneNumber,
