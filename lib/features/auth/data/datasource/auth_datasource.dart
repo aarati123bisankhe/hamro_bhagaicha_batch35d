@@ -1,16 +1,3 @@
-// import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_hive_model.dart';
-
-// abstract interface class IAuthDataSource{
-//   Future<AuthHiveModel> register(AuthHiveModel model);
-//   Future<AuthHiveModel?> login(String email, String password);
-//   Future<AuthHiveModel?> getCurrentUser();
-// }
-
-// abstract interface class IAuthRemoteDataSource{
-//   Future<AuthHiveModel> register(AuthHiveModel user);
-//   Future<AuthHiveModel?> login(String email, String password);
-
-
 import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_api_model.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_hive_model.dart';
 
