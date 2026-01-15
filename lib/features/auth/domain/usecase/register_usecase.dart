@@ -56,6 +56,6 @@ class RegisterUsecase implements UsecaseWithParams<bool, RegisterUsecaseParams> 
       phoneNumber: params.phoneNumber,
     );
 
-    return _authRepository.resgister(entity);
+    return _authRepository.register(entity);
   }
 }

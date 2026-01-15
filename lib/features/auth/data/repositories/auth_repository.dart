@@ -39,7 +39,7 @@ class AuthRepository implements IAuthRepository{
   }
 
   @override
-  Future<Either<Failure, bool>> resgister(AuthEntity entity) async {
+  Future<Either<Failure, bool>> register(AuthEntity entity) async {
    try {
       final model = AuthHiveModel.fromEntity(entity);
       final result = await _authDatasource.register(model);
@@ -63,4 +63,6 @@ class AuthRepository implements IAuthRepository{
     // TODO: implement isPhoneNumberExists
     throw UnimplementedError();
   }
+  
+
 }
