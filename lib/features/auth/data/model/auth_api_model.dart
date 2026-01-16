@@ -27,17 +27,15 @@ class AuthApiModel {
       "password": password,
     };
   }
-
-  // fromJSON
   factory AuthApiModel.fromJson(Map<String, dynamic> json) {
-    return AuthApiModel(
-      id: json['_id'] as String?,
-      fullname: json['fullname'] as String,
-      email: json['email'] as String,
-      address: json['address'] as String,
-      phoneNumber: json['phoneNumber'] as String,
-    );
-  }
+  return AuthApiModel(
+    id: json['_id']?.toString(),
+    fullname: json['fullname'] ?? '',
+    email: json['email'] ?? '',
+    address: json['address'] ?? '',
+    phoneNumber: json['phoneNumber'] ?? '',
+  );
+}
 
   // toEntity
   AuthEntity toEntity() {

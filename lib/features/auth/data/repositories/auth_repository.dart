@@ -83,6 +83,7 @@ class AuthRepository implements IAuthRepository {
     }
   }
 
+
   @override
   Future<Either<Failure, bool>> register(AuthEntity user) async {
     if (await _networkInfo.isConnected) {
@@ -90,6 +91,10 @@ class AuthRepository implements IAuthRepository {
       try {
         final apiModel = AuthApiModel.fromEntity(user);
         await _authRemoteDatasource.register(apiModel);
+
+        await _authDatasource.register(AuthHiveModel.fromEntity(user));
+
+
         return const Right(true);
       } on DioException catch (e) {
         return Left(ApiFailure(
@@ -136,3 +141,5 @@ class AuthRepository implements IAuthRepository {
 
 
 }
+
+
