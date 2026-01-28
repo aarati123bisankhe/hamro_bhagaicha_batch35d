@@ -54,6 +54,8 @@ class UserSessionService {
   }
 
   // Check login status
+  
+  // Check if user is logged in
   bool isLoggedIn() {
     return _prefs.getBool(_keyIsLoggedIn) ?? false;
   }

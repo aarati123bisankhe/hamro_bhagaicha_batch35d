@@ -4,8 +4,10 @@ import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_hive_mode
 abstract interface class IAuthLocalDatasource {
    Future<bool> register(AuthHiveModel model);
   Future<AuthHiveModel?> login(String phoneNumber, String password);
-  Future<bool> isPhoneNumberExists(String phoneNumber);
-  Future<AuthHiveModel?> getUserByPhoneNumber(String phoneNumber);
+  // Future<bool> isPhoneNumberExists(String phoneNumber);
+  // Future<AuthHiveModel?> getUserByPhoneNumber(String phoneNumber);
+
+   Future<bool> logout();
 
   Future<dynamic> isEmailExists(String email) async {}
 

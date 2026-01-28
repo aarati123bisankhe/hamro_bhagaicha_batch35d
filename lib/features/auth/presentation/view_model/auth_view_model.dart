@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/login_usecase.dart';
+import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/logout_usecase.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/register_usecase.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/state/auth_state.dart';
 
@@ -10,12 +11,14 @@ final authviewModelProvider =
 class AuthViewModel extends Notifier<AuthState>{
   late final RegisterUsecase _registerUsecase;
   late final LoginUsecase _loginUsecase;
+   late final LogoutUsecase _logoutUsecase;
 
 
   @override
   AuthState build() {
     _registerUsecase = ref.read(registerUsecaseProvider);
     _loginUsecase = ref.read(loginUsecaseProvider);
+       _logoutUsecase = ref.read(logoutUsecaseProvider);
     return AuthState();
   }
 
@@ -26,7 +29,7 @@ class AuthViewModel extends Notifier<AuthState>{
     required String address,
     required String phoneNumber,
   })async {
-    state = state.copywith(status: AuthStatus.loading);
+    state = state.copywith(status: AuthStatus.loading, user: null);
     final params = RegisterUsecaseParams(
       fullName: fullName,
       email: email,
@@ -40,16 +43,16 @@ class AuthViewModel extends Notifier<AuthState>{
       (failure) {
         state = state.copywith(
           status: AuthStatus.error,
-          errorMessage: failure.message
+          errorMessage: failure.message, user: null
         );
       },
       (isRegistered) {
         if(isRegistered){
-          state = state.copywith(status: AuthStatus.registered);
+          state = state.copywith(status: AuthStatus.registered, user: null);
         } else {
           state = state.copywith(
             status: AuthStatus.error,
-            errorMessage: 'Registration failed',
+            errorMessage: 'Registration failed', user: null,
           );
         }
       },
@@ -61,7 +64,7 @@ class AuthViewModel extends Notifier<AuthState>{
     required String email,
     required String password,
   }) async {
-    state = state.copywith(status: AuthStatus.loading);
+    state = state.copywith(status: AuthStatus.loading, user: null);
     final params = LoginUsecaseParams(
       email: email,
        password: password);
@@ -71,15 +74,42 @@ class AuthViewModel extends Notifier<AuthState>{
         (failure) {
           state = state.copywith(
             status:  AuthStatus.error,
-            errorMessage: failure.message
+            errorMessage: failure.message, user: null
           );
         },
         (authEntity){
           state = state.copywith(
             status: AuthStatus.authenticated,
-            authEntity: authEntity,
+            authEntity: authEntity, user: null,
           );
         }
        );
   }
+
+
+
+   //logout
+   Future<void> logout() async {
+     state = state.copywith(status: AuthStatus.loading, user: null);
+     final result = await _logoutUsecase.call();
+
+     result.fold(
+      (failure) {
+        state = state.copywith(
+          status: AuthStatus.error,
+          errorMessage: failure.message, user: null
+        );
+      },
+      (isLoggedOut) {
+        if(isLoggedOut){
+          state = state.copywith(status: AuthStatus.unauthenticated, user: null);
+        } else {
+          state = state.copywith(
+            status: AuthStatus.error,
+            errorMessage: 'Logout failed', user: null,
+          );
+        }
+      },
+     );
+   }
 }

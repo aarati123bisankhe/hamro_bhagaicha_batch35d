@@ -6,7 +6,8 @@ import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_hive_mode
 // Provider for AuthLocalDatasource
 final authLocalDatasourceProvider = Provider<IAuthLocalDatasource>((ref) {
   final hiveService = ref.read(hiveServiceProvider);
-  return AuthLocalDatasource(hiveService: hiveService);
+  return AuthLocalDatasource(
+    hiveService: hiveService,);
 });
 
 class AuthLocalDatasource implements IAuthLocalDatasource {
@@ -74,16 +75,28 @@ class AuthLocalDatasource implements IAuthLocalDatasource {
   }
   
   @override
-  Future<AuthHiveModel?> getUserByPhoneNumber(String phoneNumber) {
-    // TODO: implement getUserByPhoneNumber
-    throw UnimplementedError();
+  Future<bool> logout() async {
+    try {
+      await _hiveService.logout();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
   
-  @override
-  Future<bool> isPhoneNumberExists(String phoneNumber) {
-    // TODO: implement isPhoneNumberExists
-    throw UnimplementedError();
-  }
+ 
+  
+  // @override
+  // Future<AuthHiveModel?> getUserByPhoneNumber(String phoneNumber) {
+  //   // TODO: implement getUserByPhoneNumber
+  //   throw UnimplementedError();
+  // }
+  
+  // @override
+  // Future<bool> isPhoneNumberExists(String phoneNumber) {
+  //   // TODO: implement isPhoneNumberExists
+  //   throw UnimplementedError();
+  // }
 }
 
 

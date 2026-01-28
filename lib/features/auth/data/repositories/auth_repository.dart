@@ -126,19 +126,16 @@ class AuthRepository implements IAuthRepository {
       }
     }
   }
-
+  
   @override
-  Future<Either<Failure, AuthEntity>> getUserByPhoneNumber(String phoneNumber) {
-    // TODO: implement getUserByPhoneNumber
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> logout() async {
+      try {
+    await _authDatasource.logout();
+    return const Right(true);
+   }catch (e) {
+    return Left(LocalDatabaseFailure(message: e.toString()));
+   }
   }
-
-  @override
-  Future<Either<Failure, bool>> isPhoneNumberExists(String phoneNumber) {
-    // TODO: implement isPhoneNumberExists
-    throw UnimplementedError();
-  }
-
 
 }
 
