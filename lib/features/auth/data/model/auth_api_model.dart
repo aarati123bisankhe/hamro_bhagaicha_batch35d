@@ -8,6 +8,7 @@ class AuthApiModel {
   final String phoneNumber;
   final String? password;
   final String? profileUrl;
+  final String? token; // <- add this
 
   AuthApiModel({
     this.id,
@@ -16,7 +17,7 @@ class AuthApiModel {
     required this.address,
     required this.phoneNumber,
     this.password, 
-    this.profileUrl,
+    this.profileUrl, this.token,
   });
 
   // toJSON
@@ -37,6 +38,7 @@ class AuthApiModel {
     address: json['address'] ?? '',
     phoneNumber: json['phoneNumber'] ?? '',
      profileUrl: json['profileUrl'] ?? null, 
+     token: json['token'], // <- read token from backend
   );
 }
 

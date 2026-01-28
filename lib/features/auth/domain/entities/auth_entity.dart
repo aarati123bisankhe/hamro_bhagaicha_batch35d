@@ -8,6 +8,7 @@ class AuthEntity extends Equatable {
   final String address;
   final String phoneNumber;
   final String? profilePicture;
+  final String? token;
   // final String role;
 
   const AuthEntity({
@@ -17,7 +18,7 @@ class AuthEntity extends Equatable {
     required this.password,
     required this.address,
     required this.phoneNumber, 
-    this.profilePicture,
+    this.profilePicture, this.token,
     // this.role = 'user',
   });
 
@@ -31,6 +32,7 @@ class AuthEntity extends Equatable {
       address: json['address'] as String, 
       phoneNumber: json['phoneNumber'] as String,
       profilePicture: json['profileUrl'] as String?, // ✅ FIX 
+      token: json['token'] as String?, // nullable
       
     );
   }
@@ -55,5 +57,6 @@ class AuthEntity extends Equatable {
         address,
         phoneNumber,
         profilePicture,
+        token,
       ];
 }

@@ -76,6 +76,7 @@
 
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/api/api_client.dart';
 import 'package:hamro_bhagaicha_batch35d/core/services/storage/token_service.dart';
@@ -130,15 +131,44 @@ class AuthRemoteDatasource implements IAuthRemoteDatasource {
     );
 
     if (response.statusCode == 200) {
-      return AuthApiModel.fromJson(response.data);
+          final apiModel = AuthApiModel.fromJson(response.data['data']); // adjust if nested
+           final token = apiModel.token;
+
+           if (token != null) {
+      await _tokenService.saveToken(token); // <- save token
+    }
+
+    return apiModel;
+
+
     } else {
       return null;
     }
   }
 
+
+
   @override
-  Future<dynamic> updateProfileImage(File imageFile) {
-    // TODO: implement updateProfileImage
-    throw UnimplementedError();
+  Future<AuthApiModel> updateProfileImage(File imageFile) async {
+    final token = await _tokenService.getToken();
+    if (token == null) throw Exception('No authentication token found');
+
+    final response = await _apiClient.post(
+      '/auth/update-profile-image',
+      data: FormData.fromMap({
+        'image': await MultipartFile.fromFile(imageFile.path),
+      }),
+      options: Options(headers: {
+        'Authorization': 'Bearer $token',
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return AuthApiModel.fromJson(response.data);
+    } else {
+      throw Exception('Failed to update profile image: ${response.data}');
+    }
   }
+
+
 }
