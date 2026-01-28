@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -135,6 +137,12 @@ class AuthRepository implements IAuthRepository {
    }catch (e) {
     return Left(LocalDatabaseFailure(message: e.toString()));
    }
+  }
+
+  @override
+  Future<AuthEntity> updateProfileImage(File imageFile) {
+    // TODO: implement updateProfileImage
+    throw UnimplementedError();
   }
 
 }

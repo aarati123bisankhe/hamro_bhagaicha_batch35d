@@ -76,19 +76,31 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/api/api_client.dart';
+import 'package:hamro_bhagaicha_batch35d/core/services/storage/token_service.dart';
+import 'package:hamro_bhagaicha_batch35d/core/services/storage/user_session_service.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/data/datasource/auth_datasource.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_api_model.dart';
 
 
 final authRemoteDatasourceProvider = Provider<IAuthRemoteDatasource>((ref) {
   final apiClient = ref.read(apiClientProvider);
-  return AuthRemoteDatasource(apiClient: apiClient);
+  return AuthRemoteDatasource(apiClient: apiClient, 
+  userSessionService: ref.read(userSessionServiceProvider),
+    tokenService: ref.read(tokenServiceProvider),
+  );
 });
 
 class AuthRemoteDatasource implements IAuthRemoteDatasource {
   final ApiClient _apiClient;
+   final UserSessionService _userSessionService;
+   final TokenService _tokenService;
 
-  AuthRemoteDatasource({required ApiClient apiClient}) : _apiClient = apiClient;
+  AuthRemoteDatasource({required ApiClient apiClient, 
+  required UserSessionService userSessionService, 
+  required TokenService tokenService,}) 
+  : _apiClient = apiClient,
+  _userSessionService = userSessionService,
+       _tokenService = tokenService;
 
   @override
   Future<AuthApiModel> register(AuthApiModel model) async {
@@ -103,6 +115,7 @@ class AuthRemoteDatasource implements IAuthRemoteDatasource {
       throw Exception('Failed to register user: ${response.data}');
     }
   }
+
 
   @override
   Future<AuthApiModel?> login(String email, String password) async {

@@ -1,34 +1,3 @@
-// import 'package:equatable/equatable.dart';
-
-// class AuthEntity extends Equatable{
-//   final String? authId; 
-//   final String fullname;
-//   final String email;
-//   final String password;
-//   final String address;
-//   final String phoneNumber;
-
-//   const AuthEntity({
-//     this.authId,
-//     required this.fullname,
-//     required this.email, 
-//     required this.password,
-//     required this.address ,  
-//     required this.phoneNumber,
-    
-//   });
-
-//   @override
-//   List<Object?> get props => [
-//     fullname,
-//     email,
-//     password,
-//     address,
-//     phoneNumber, 
-//   ];
-// }
-
-
 import 'package:equatable/equatable.dart';
 
 class AuthEntity extends Equatable {
@@ -38,7 +7,8 @@ class AuthEntity extends Equatable {
   final String password;
   final String address;
   final String phoneNumber;
-  final String role;
+  final String? profilePicture;
+  // final String role;
 
   const AuthEntity({
     this.authId,
@@ -46,8 +16,9 @@ class AuthEntity extends Equatable {
     required this.email,
     required this.password,
     required this.address,
-    required this.phoneNumber,
-    this.role = 'user',
+    required this.phoneNumber, 
+    this.profilePicture,
+    // this.role = 'user',
   });
 
   // Factory method to parse from JSON safely
@@ -58,7 +29,9 @@ class AuthEntity extends Equatable {
       email: json['email'] as String, 
       password: json['password'] as String, 
       address: json['address'] as String, 
-      phoneNumber: json['phoneNumber'] as String, 
+      phoneNumber: json['phoneNumber'] as String,
+      profilePicture: json['profileUrl'] as String?, // ✅ FIX 
+      
     );
   }
 
@@ -81,5 +54,6 @@ class AuthEntity extends Equatable {
         password,
         address,
         phoneNumber,
+        profilePicture,
       ];
 }

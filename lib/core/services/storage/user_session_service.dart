@@ -51,6 +51,7 @@ class UserSessionService {
     await _prefs.remove(_keyUserEmail);
     await _prefs.remove(_keyUserAddress);
     await _prefs.remove(_keyUserPhoneNumber);
+    
   }
 
   // Check login status
