@@ -59,6 +59,8 @@ class AuthHiveModel extends HiveObject{
     return models.map((model) => model.toEntity()).toList();
   }
 
+  static fromApiModel(apiModel) {}
+
 }
 
 

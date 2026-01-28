@@ -138,12 +138,39 @@ class AuthRepository implements IAuthRepository {
     return Left(LocalDatabaseFailure(message: e.toString()));
    }
   }
+  
+@override
+Future<Either<Failure, AuthEntity>> updateProfileImage(File imageFile) async {
+  if (await _networkInfo.isConnected) {
+    try {
+      final apiModel =
+          await _authRemoteDatasource.updateProfileImage(imageFile);
 
-  @override
-  Future<AuthEntity> updateProfileImage(File imageFile) {
-    // TODO: implement updateProfileImage
-    throw UnimplementedError();
+      // OPTIONAL: cache updated user locally
+      await _authDatasource.saveCurrentUser(
+        AuthHiveModel.fromApiModel(apiModel),
+      );
+
+      return Right(apiModel.toEntity());
+    } on DioException catch (e) {
+      return Left(
+        ApiFailure(
+          message: e.response?.data['message'] ?? 'Update profile image failed',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
+  } else {
+    return const Left(
+      ApiFailure(message: 'No internet connection'),
+    );
   }
+}
+
+
+  
 
 }
 

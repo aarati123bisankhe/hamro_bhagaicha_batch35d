@@ -74,6 +74,8 @@
 // }
 
 
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/api/api_client.dart';
 import 'package:hamro_bhagaicha_batch35d/core/services/storage/token_service.dart';
@@ -132,5 +134,11 @@ class AuthRemoteDatasource implements IAuthRemoteDatasource {
     } else {
       return null;
     }
+  }
+
+  @override
+  Future<dynamic> updateProfileImage(File imageFile) {
+    // TODO: implement updateProfileImage
+    throw UnimplementedError();
   }
 }

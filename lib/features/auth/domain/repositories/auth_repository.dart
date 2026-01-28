@@ -10,6 +10,6 @@ abstract interface class IAuthRepository {
   // Future<Either<Failure, AuthEntity>> getUserByPhoneNumber(String phoneNumber);
   Future<Either<Failure, AuthEntity>> getCurrentUser();
   Future<Either<Failure, bool>> logout();
-  Future<AuthEntity> updateProfileImage(File imageFile);
+   Future<Either<Failure, AuthEntity>> updateProfileImage(File imageFile);
   // Future<Either<Failure, bool>> isPhoneNumberExists(String phoneNumber);
 }

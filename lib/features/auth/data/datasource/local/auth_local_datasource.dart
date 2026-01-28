@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/services/hive/hive_service.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/data/datasource/auth_datasource.dart';
@@ -82,6 +84,18 @@ class AuthLocalDatasource implements IAuthLocalDatasource {
     } catch (e) {
       return false;
     }
+  }
+
+  @override
+  Future<dynamic> updateProfileImage(File imageFile) {
+    // TODO: implement updateProfileImage
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<void> saveCurrentUser(fromApiModel) {
+    // TODO: implement saveCurrentUser
+    throw UnimplementedError();
   }
   
  
