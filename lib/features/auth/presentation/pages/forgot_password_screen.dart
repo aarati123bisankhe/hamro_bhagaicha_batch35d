@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/pages/login_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/core/widget/floating_button_action.dart';
-// import 'package:hamro_bhagaicha_batch35d/widget/my_text_button.dart';
 import 'package:hamro_bhagaicha_batch35d/core/widget/my_text_field.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {

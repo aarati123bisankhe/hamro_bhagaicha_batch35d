@@ -273,31 +273,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
-  // void _handleForgotPassword() {
-  //   SnackbarUtils.showInfo(context, 'Forgot password feature coming soon');
-  // }
-
   @override
   Widget build(BuildContext context) {
-    // final authState = ref.watch(authViewModelProvider);
-
-    // ref.listen<AuthState>(authViewModelProvider, (previous, next) {
-    //   // Only navigate when login is successful (not on first build)
-    //   if (next.status == AuthStatus.authenticated &&
-    //       previous?.status != AuthStatus.authenticated) {
-    //     AppRoutes.pushReplacement(context, DashboardScreen());
-    //   } else if (next.status == AuthStatus.error && next.errorMessage != null) {
-    //     SnackbarUtils.showError(context, next.errorMessage!);
-    //   }
-    // });
     ref.listen<AuthState>(authViewModelProvider, (previous, next) {
       if (next.status == AuthStatus.authenticated &&
           previous?.status != AuthStatus.authenticated) {
         SnackbarUtils.showSuccess(context, 'Login successful');
 
-        // Future.microtask(() {
-        //   AppRoutes.pushReplacement(context, DashboardScreen());
-        // });
         if(!mounted) return;
         AppRoutes.pushReplacement(context, DashboardScreen());
       }
@@ -358,7 +340,6 @@ return Scaffold(
 
               SizedBox(height: isTablet ? 80 : 50),
 
-              /// FORM
               Form(
                 key: _loginForm,
                 child: Column(
@@ -375,7 +356,6 @@ return Scaffold(
 
                     SizedBox(height: 30),
 
-                    /// EMAIL
                     MyTextField(
                       controller: _emailController,
                       hintText: "Email",
@@ -385,7 +365,6 @@ return Scaffold(
 
                     SizedBox(height: 17),
 
-                    /// PASSWORD
                     MyTextField(
                       controller: _passwordController,
                       hintText: "Password",
@@ -393,7 +372,6 @@ return Scaffold(
                       obscureText: true,
                     ),
 
-                    /// FORGOT PASSWORD
                     Align(
                             alignment: Alignment.centerRight,
                            child: MyTextButton(
@@ -413,7 +391,6 @@ return Scaffold(
 
                     SizedBox(height: 20),
 
-                    /// LOGIN BUTTON
                     _isLoading
                         ? const Center(child: CircularProgressIndicator())
                         : MyFloatingButton(
@@ -423,7 +400,6 @@ return Scaffold(
 
                     SizedBox(height: 12),
 
-                    /// SIGN UP
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

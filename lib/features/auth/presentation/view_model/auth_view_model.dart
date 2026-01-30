@@ -219,7 +219,7 @@ Future<void> login({required String email, required String password}) async {
       },
     );
   }
-  // ---------------- Logout ----------------
+  
   Future<void> logout() async {
     state = state.copyWith(status: AuthStatus.loading);
 
@@ -247,29 +247,6 @@ Future<void> login({required String email, required String password}) async {
       },
     );
   }
-
-  // ---------------- Update Profile Image ----------------
-  // Future<void> updateProfileImage(File imageFile) async {
-  //   state = state.copywith(status: AuthStatus.loading, user: null);
-
-  //   final result = await _updateProfileImageUseCase(imageFile);
-
-  //   result.fold(
-  //     (failure) {
-  //       state = state.copywith(
-  //         status: AuthStatus.error,
-  //         errorMessage: failure.message, user: null,
-  //       );
-  //     },
-  //     (updatedUser) {
-  //       state = state.copywith(
-  //         status: AuthStatus.authenticated,
-  //         authEntity: updatedUser, user: null,
-  //       );
-  //     },
-  //   );
-  // }
-
   
 Future<void> updateProfileImage(File image) async {
     state = state.copyWith(status: AuthStatus.loading);
