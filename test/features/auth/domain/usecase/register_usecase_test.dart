@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/register_usecase.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:dartz/dartz.dart';
-
 import 'package:hamro_bhagaicha_batch35d/core/error/failure.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/entities/auth_entity.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/repositories/auth_repository.dart';
@@ -69,32 +68,32 @@ void main() {
     });
 
     test('should return failure when registration fails', () async {
-      // Arrange
+      //arrange
       final failure = ApiFailure(message: 'Email already exists');
       when(() => mockRepository.register(any()))
           .thenAnswer((_) async => Left(failure));
 
-      // Act
+      //act
       final result = await usecase(tParams);
 
-      // Assert
+      //assert
       expect(result, Left(failure));
       verify(() => mockRepository.register(any())).called(1);
       verifyNoMoreInteractions(mockRepository);
     });
 
     test('should pass AuthEntity with correct values to repository', () async {
-      // Arrange
+      //arrange
       AuthEntity? capturedEntity;
       when(() => mockRepository.register(any())).thenAnswer((invocation) {
         capturedEntity = invocation.positionalArguments[0] as AuthEntity;
         return Future.value(Right(tAuthEntity));
       });
 
-      // Act
+      //act
       await usecase(tParams);
 
-      // Assert
+      //assert
       expect(capturedEntity?.fullname, tFullName);
       expect(capturedEntity?.email, tEmail);
       expect(capturedEntity?.password, tPassword);
