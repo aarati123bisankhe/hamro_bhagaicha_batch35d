@@ -1,21 +1,4 @@
-// import 'package:flutter/material.dart';
-// import 'package:hamro_bhagaicha_batch35d/features/onboarding/presentation/pages/splash_screen.dart';
-// import 'package:hamro_bhagaicha_batch35d/theme/theme_data.dart';
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(debugShowCheckedModeBanner:
-//      false, home: SplashScreen(),
-//      theme: getApplicationTheme());
-     
-//   }
-// }
-
 import 'package:flutter/material.dart';
-import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/pages/login_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/features/onboarding/presentation/pages/splash_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/app/theme/theme_data.dart';
 
@@ -29,10 +12,6 @@ class MyApp extends StatelessWidget {
       title: "Hamro Bhagaicha",
       theme: getApplicationTheme(),
       home: const SplashScreen(),
-      routes: {
-        '/login': (context) => const LoginScreen(),
-        // you can add more routes here
-      },
     );
   }
 }

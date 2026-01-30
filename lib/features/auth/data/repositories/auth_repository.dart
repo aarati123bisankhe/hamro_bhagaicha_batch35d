@@ -40,77 +40,172 @@ class AuthRepository implements IAuthRepository {
         _authRemoteDatasource = authRemoteDatasource,
         _networkInfo = networkInfo;
 
-  @override
-  Future<Either<Failure, AuthEntity>> getCurrentUser() async {
-    try {
-      final user = await _authDatasource.getCurrentUser();
-      if (user != null) {
-        return Right(user.toEntity());
-      }
-      return Left(LocalDatabaseFailure(message: 'No user logged in'));
-    } catch (e) {
-      return Left(LocalDatabaseFailure(message: e.toString()));
-    }
-  }
 
+  // @override
+  // Future<Either<Failure, AuthEntity>> login(String email, String password) async {
+  //   if (await _networkInfo.isConnected) {
+  //     // Use remote API
+  //     try {
+  //       final apiModel = await _authRemoteDatasource.login(email, password);
+  //       if (apiModel != null) {
+  //         return Right(apiModel.toEntity());
+  //       }
+  //       return const Left(ApiFailure(message: 'Invalid email or password'));
+  //     } on DioException catch (e) {
+  //       return Left(ApiFailure(
+  //         message: e.response?.data['message'] ?? 'Login failed',
+  //         statusCode: e.response?.statusCode,
+  //       ));
+  //     } catch (e) {
+  //       return Left(ApiFailure(message: e.toString()));
+  //     }
+  //   } else {
+  //     // Use local Hive datasource
+  //     try {
+  //       final user = await _authDatasource.login(email, password);
+  //       if (user != null) {
+  //         return Right(user.toEntity());
+  //       }
+  //       return const Left(LocalDatabaseFailure(message: 'Invalid email or password'));
+  //     } catch (e) {
+  //       return Left(LocalDatabaseFailure(message: e.toString()));
+  //     }
+  //   }
+  // }
   @override
   Future<Either<Failure, AuthEntity>> login(String email, String password) async {
     if (await _networkInfo.isConnected) {
-      // Use remote API
       try {
         final apiModel = await _authRemoteDatasource.login(email, password);
         if (apiModel != null) {
-          return Right(apiModel.toEntity());
+          final entity = apiModel.toEntity();
+          return Right(entity);
         }
         return const Left(ApiFailure(message: 'Invalid email or password'));
       } on DioException catch (e) {
-        return Left(ApiFailure(
-          message: e.response?.data['message'] ?? 'Login failed',
-          statusCode: e.response?.statusCode,
-        ));
+        return Left(
+          ApiFailure(
+            message: e.response?.data['message'] ?? 'Login failed',
+            statusCode: e.response?.statusCode,
+          ),
+        );
       } catch (e) {
         return Left(ApiFailure(message: e.toString()));
       }
     } else {
-      // Use local Hive datasource
       try {
         final user = await _authDatasource.login(email, password);
         if (user != null) {
-          return Right(user.toEntity());
+          final entity = user.toEntity();
+          return Right(entity);
         }
-        return const Left(LocalDatabaseFailure(message: 'Invalid email or password'));
+        return Left(LocalDatabaseFailure(message: 'Invalid email or password'));
       } catch (e) {
         return Left(LocalDatabaseFailure(message: e.toString()));
       }
     }
   }
+  // @override
+  // Future<Either<Failure, AuthEntity>> login(String email, String password) async {
+  //   if (await _networkInfo.isConnected) {
+  //     // Use remote API
+  //     try {
+  //       final apiModel = await _authRemoteDatasource.login(email, password);
+  //       if (apiModel != null) {
+  //         return Right(apiModel.toEntity());
+  //       }
+  //       return const Left(ApiFailure(message: 'Invalid email or password'));
+  //     } on DioException catch (e) {
+  //       return Left(ApiFailure(
+  //         message: e.response?.data['message'] ?? 'Login failed',
+  //         statusCode: e.response?.statusCode,
+  //       ));
+  //     } catch (e) {
+  //       return Left(ApiFailure(message: e.toString()));
+  //     }
+  //   } else {
+  //     // Use local Hive datasource
+  //     try {
+  //       final user = await _authDatasource.login(email, password);
+  //       if (user != null) {
+  //         return Right(user.toEntity());
+  //       }
+  //       return const Left(LocalDatabaseFailure(message: 'Invalid email or password'));
+  //     } catch (e) {
+  //       return Left(LocalDatabaseFailure(message: e.toString()));
+  //     }
+  //   }
+  // }
 
 
+  // @override
+  // Future<Either<Failure, AuthEntity>> register(AuthEntity user) async {
+  //   if (await _networkInfo.isConnected) {
+  //     // Remote registration
+  //     try {
+  //       final apiModel = AuthApiModel.fromEntity(user);
+  //       final result = AuthApiModel.fromEntity(user);
+  //       await _authRemoteDatasource.register(apiModel);
+
+  //       await _authDatasource.register(AuthHiveModel.fromEntity(user));
+
+
+  //       return const Right(result.toEntity());
+  //     } on DioException catch (e) {
+  //       return Left(ApiFailure(
+  //         message: e.response?.data['message'] ?? 'Registration failed',
+  //         statusCode: e.response?.statusCode,
+  //       ));
+  //     } catch (e) {
+  //       return Left(ApiFailure(message: e.toString()));
+  //     }
+  //   } else {
+  //     // Offline registration in Hive
+  //     try {
+  //       if (await _authDatasource.isEmailExists(user.email)) {
+  //         return const Left(LocalDatabaseFailure(message: 'Email already exists'));
+  //       }
+
+  //       final authModel = AuthHiveModel(
+  //         fullName: user.fullname,
+  //         email: user.email,
+  //         password: user.password,
+  //         address: user.address,
+  //         phoneNumber: user.phoneNumber,
+  //       );
+
+  //       await _authDatasource.register(authModel);
+  //       return const Right(true);
+  //     } catch (e) {
+  //       return Left(LocalDatabaseFailure(message: e.toString()));
+  //     }
+  //   }
+    
+  // }
   @override
-  Future<Either<Failure, bool>> register(AuthEntity user) async {
+  Future<Either<Failure, AuthEntity>> register(AuthEntity user) async {
     if (await _networkInfo.isConnected) {
-      // Remote registration
       try {
         final apiModel = AuthApiModel.fromEntity(user);
-        await _authRemoteDatasource.register(apiModel);
-
-        await _authDatasource.register(AuthHiveModel.fromEntity(user));
-
-
-        return const Right(true);
+        final result = await _authRemoteDatasource.register(apiModel);
+        return Right(result.toEntity());
       } on DioException catch (e) {
-        return Left(ApiFailure(
-          message: e.response?.data['message'] ?? 'Registration failed',
-          statusCode: e.response?.statusCode,
-        ));
+        return Left(
+          ApiFailure(
+            message: e.response?.data['message'] ?? 'Registration failed',
+            statusCode: e.response?.statusCode,
+          ),
+        );
       } catch (e) {
         return Left(ApiFailure(message: e.toString()));
       }
     } else {
-      // Offline registration in Hive
       try {
-        if (await _authDatasource.isEmailExists(user.email)) {
-          return const Left(LocalDatabaseFailure(message: 'Email already exists'));
+        final existingUser = await _authDatasource.getUserByEmail(user.email);
+        if (existingUser != null) {
+          return const Left(
+            LocalDatabaseFailure(message: 'Email already exists'),
+          );
         }
 
         final authModel = AuthHiveModel(
@@ -120,9 +215,13 @@ class AuthRepository implements IAuthRepository {
           address: user.address,
           phoneNumber: user.phoneNumber,
         );
-
-        await _authDatasource.register(authModel);
-        return const Right(true);
+        final result = await _authDatasource.register(authModel);
+        if (result == null) {
+          return const Left(
+            LocalDatabaseFailure(message: 'Registration failed'),
+          );
+        }
+        return Right(result.toEntity());
       } catch (e) {
         return Left(LocalDatabaseFailure(message: e.toString()));
       }
@@ -138,25 +237,62 @@ class AuthRepository implements IAuthRepository {
     return Left(LocalDatabaseFailure(message: e.toString()));
    }
   }
-  
-@override
-Future<Either<Failure, AuthEntity>> updateProfileImage(File imageFile) async {
-  if (await _networkInfo.isConnected) {
-    try {
-      final apiModel = await _authRemoteDatasource.updateProfileImage(imageFile);
 
-      // Optional: save locally
-      await _authDatasource.saveCurrentUser(AuthHiveModel.fromApiModel(apiModel));
 
-      return Right(apiModel.toEntity());
-    } catch (e) {
-      return Left(ApiFailure(message: e.toString()));
+
+  @override
+  Future<Either<Failure, String>> updateProfileImage(File imageFile) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final fileName = await _authRemoteDatasource.updateProfileImage(imageFile);
+        
+        if(fileName.isEmpty) {
+          return const Left(ApiFailure(message: 'Profile upload returned empty filename'));
+        }
+
+        return Right(fileName);
+      } catch (e) {
+        return Left(ApiFailure(message: e.toString()));
+      }
+    } else {
+      return const Left(ApiFailure(message: 'No internet connection'));
     }
-  } else {
-    return const Left(ApiFailure(message: 'No internet connection'));
   }
-}
-
+  
+  @override
+  Future<Either<Failure, AuthEntity>> getCurrentUserById(String userId) async{
+    if (await _networkInfo.isConnected) {
+      try {
+        final apiModel = await _authRemoteDatasource.getCurrentUserById(userId);
+        if (apiModel != null) {
+          final entity = apiModel.toEntity();
+          return Right(entity);
+        }
+        return Left(ApiFailure(message: 'No user found'));
+      } on DioException catch (e) {
+        return Left(
+          ApiFailure(
+            message: e.response?.data['message'] ?? 'Failed to get user',
+            statusCode: e.response?.statusCode,
+          ),
+        );
+      } catch (e) {
+        return Left(ApiFailure(message: e.toString()));
+      }
+    } else {
+      try {
+        final user = await _authDatasource.getCurrentUser();
+        if (user != null) {
+          final entity = user.toEntity();
+          return Right(entity);
+        }
+        return Left(LocalDatabaseFailure(message: 'No user logged in'));
+      } catch (e) {
+        return Left(LocalDatabaseFailure(message: e.toString()));
+      }
+    }
+  }
+  
 }
 
 

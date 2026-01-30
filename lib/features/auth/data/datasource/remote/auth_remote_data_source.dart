@@ -1,84 +1,10 @@
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:hamro_bhagaicha_batch35d/core/api/api_client.dart';
-// import 'package:hamro_bhagaicha_batch35d/core/api/api_endpoint.dart';
-// import 'package:hamro_bhagaicha_batch35d/features/auth/data/datasource/auth_datasource.dart';
-// import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_api_model.dart';
-
-// // Provider for AuthRemoteDatasource
-// final authRemoteDatasourceProvider =
-//     Provider<IAuthRemoteDatasource>((ref) {
-//   final apiClient = ref.read(apiClientProvider);
-//   return AuthRemoteDatasource(apiClient: apiClient);
-// });
-
-// class AuthRemoteDatasource implements IAuthRemoteDatasource {
-//   final ApiClient _apiClient;
-
-//   AuthRemoteDatasource({required ApiClient apiClient})
-//       : _apiClient = apiClient;
-
-//   @override
-//   Future<AuthApiModel?> login(String phoneNumber, String password) async {
-//     try {
-//       final response = await _apiClient.post(
-//         ApiEndpoints.authLogin,
-//         data: {
-//           'phoneNumber': phoneNumber,
-//           'password': password,
-//         },
-//       );
-
-//       if (response.statusCode == 200) {
-//         final data = response.data;
-//         final authModel = AuthApiModel.fromJson(data);
-
-//         // Save token if returned
-//         if (data['token'] != null) {
-//           await _apiClient.saveToken(data['token']);
-//         }
-
-//         return authModel;
-//       }
-
-//       return null;
-//     } catch (e) {
-//       rethrow; // repository will handle DioException
-//     }
-//   }
-
-//   @override
-//   Future<AuthApiModel> register(AuthApiModel model) async {
-//     try {
-//       final response = await _apiClient.post(
-//         ApiEndpoints.authRegister,
-//         data: model.toJson(),
-//       );
-
-//       if (response.statusCode == 201 || response.statusCode == 200) {
-//         final data = response.data;
-//         final authModel = AuthApiModel.fromJson(data);
-
-//         // Save token if returned
-//         if (data['token'] != null) {
-//           await _apiClient.saveToken(data['token']);
-//         }
-
-//         return authModel;
-//       }
-
-//       throw Exception('Registration failed');
-//     } catch (e) {
-//       rethrow; // repository will handle DioException
-//     }
-//   }
-// }
-
-
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/api/api_client.dart';
+import 'package:hamro_bhagaicha_batch35d/core/api/api_endpoint.dart';
 import 'package:hamro_bhagaicha_batch35d/core/services/storage/token_service.dart';
 import 'package:hamro_bhagaicha_batch35d/core/services/storage/user_session_service.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/data/datasource/auth_datasource.dart';
@@ -98,7 +24,8 @@ class AuthRemoteDatasource implements IAuthRemoteDatasource {
    final UserSessionService _userSessionService;
    final TokenService _tokenService;
 
-  AuthRemoteDatasource({required ApiClient apiClient, 
+  AuthRemoteDatasource({
+  required ApiClient apiClient, 
   required UserSessionService userSessionService, 
   required TokenService tokenService,}) 
   : _apiClient = apiClient,
@@ -106,69 +33,120 @@ class AuthRemoteDatasource implements IAuthRemoteDatasource {
        _tokenService = tokenService;
 
   @override
-  Future<AuthApiModel> register(AuthApiModel model) async {
+  Future<AuthApiModel> register(AuthApiModel user) async {
+    // final response = await _apiClient.post(
+    //   '/auth/register',
+    //   data: model.toJson(),
+    // );
+
+    // if (response.statusCode == 201 || response.statusCode == 200) {
+    //   return AuthApiModel.fromJson(response.data);
+    // } else {
+    //   throw Exception('Failed to register user: ${response.data}');
+    // }
     final response = await _apiClient.post(
-      '/auth/register',
-      data: model.toJson(),
+      ApiEndpoints.authRegister,
+      data: user.toJson(),
     );
 
-    if (response.statusCode == 201 || response.statusCode == 200) {
-      return AuthApiModel.fromJson(response.data);
-    } else {
-      throw Exception('Failed to register user: ${response.data}');
+    if (response.data['success'] == true) {
+      final data = response.data['data'] as Map<String, dynamic>;
+      final registeredUser = AuthApiModel.fromJson(data);
+      return registeredUser;
     }
+    return user;
   }
-
-
+  
   @override
   Future<AuthApiModel?> login(String email, String password) async {
     final response = await _apiClient.post(
-      '/auth/login',
-      data: {
-        'email': email,
-        'password': password,
-      },
+      ApiEndpoints.authLogin,
+      data: {'email': email, 'password': password},
     );
+    if (response.data['success'] == true) {
+      debugPrint('Login response: ${response.data}');
+      final data = response.data['data'] as Map<String, dynamic>? ?? <String, dynamic>{};
+      final user = AuthApiModel.fromJson(data);
 
-    if (response.statusCode == 200) {
-          final apiModel = AuthApiModel.fromJson(response.data['data']); // adjust if nested
-           final token = apiModel.token;
+      // Defensive user id extraction (backend may return _id or id)
+      final userId = user.authId ?? data['_id']?.toString() ?? data['id']?.toString();
+      if (userId == null || userId.isEmpty) {
+        throw Exception('Login response missing user id');
+      }
 
-           if (token != null) {
-      await _tokenService.saveToken(token); // <- save token
+      await _userSessionService.saveUserSession(
+        userId: userId,
+        fullname: user.fullname,
+        email: user.email,
+        address: user.address,
+        phoneNumber: user.phoneNumber,
+      );
+
+      // Defensive token extraction
+      final token = response.data['token'] ?? data['token'];
+      if (token != null && token.toString().isNotEmpty) {
+        await _tokenService.saveToken(token.toString());
+      } else {
+        debugPrint('No token found in login response');
+      }
+
+      return user;
     }
-
-    return apiModel;
-
-
-    } else {
-      return null;
-    }
+    return null;
   }
 
 
+  
 
   @override
-  Future<AuthApiModel> updateProfileImage(File imageFile) async {
+  Future<String> updateProfileImage(File imageFile) async {
     final token = await _tokenService.getToken();
-    if (token == null) throw Exception('No authentication token found');
+    final fileName = imageFile.path.split('/').last;
 
-    final response = await _apiClient.post(
-      '/auth/update-profile-image',
-      data: FormData.fromMap({
-        'image': await MultipartFile.fromFile(imageFile.path),
-      }),
-      options: Options(headers: {
-        'Authorization': 'Bearer $token',
-      }),
+    final formData = FormData.fromMap({
+      'profileUrl': await MultipartFile.fromFile(
+        imageFile.path,
+        filename: fileName,
+      ),
+    });
+
+    final response = await _apiClient.put(
+      ApiEndpoints.updateProfileImage,
+      data: formData,
+      options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+        contentType: 'multipart/form-data',
+      ),
     );
 
-    if (response.statusCode == 200) {
-      return AuthApiModel.fromJson(response.data);
-    } else {
-      throw Exception('Failed to update profile image: ${response.data}');
+    final dynamic profileUrlRaw = response.data['data']?['profileUrl'] ?? response.data['profileUrl'];
+
+    if (profileUrlRaw == null) {
+      debugPrint('Update profile response: ${response.data}');
+      throw Exception('Failed to upload profile image: profileUrl missing');
     }
+
+    final profileUrl = profileUrlRaw.toString();
+    if (profileUrl.isEmpty) {
+      throw Exception('Failed to upload profile image: empty url');
+    }
+
+    return profileUrl;
   }
-
-
+  
+  @override
+  Future<AuthApiModel?> getCurrentUserById(String userId) async{
+    final token = await _tokenService.getToken();
+    final response = await _apiClient.get(
+      ApiEndpoints.getCurrentUserById(userId),
+      options: Options(headers: {'Authorization': 'Bearer $token'},contentType: 'multipart/form-data',),
+    );
+    if (response.data['success'] == true) {
+      final data = response.data['data'] as Map<String, dynamic>;
+      return AuthApiModel.fromJson(data);
+    }
+    return null;
+  }
 }
+
+

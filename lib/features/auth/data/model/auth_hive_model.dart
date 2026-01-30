@@ -12,7 +12,7 @@ class AuthHiveModel extends HiveObject{
 
 
   @HiveField(0)
-  final String authId;  
+  final String? authId;  
   @HiveField(1)
   final String fullName;
   @HiveField(2)
@@ -59,7 +59,6 @@ class AuthHiveModel extends HiveObject{
     return models.map((model) => model.toEntity()).toList();
   }
 
-  static fromApiModel(apiModel) {}
 
 }
 

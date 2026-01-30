@@ -43,7 +43,7 @@ class DashboardHomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 SizedBox(height: isTablet ? 45 : 20),
+                 SizedBox(height: isTablet ? 45 : 50),
 
                  Center(
                   child: Text(
@@ -133,7 +133,7 @@ class DashboardHomeScreen extends StatelessWidget {
                         },
                       ),
                       
-                      SizedBox(height: isTablet ? 24 : 12),
+                      SizedBox(height: isTablet ? 24 : 15),
                       HomeButtonCard(
                         icon: '🪴',
                         title: 'Pot',
@@ -146,7 +146,7 @@ class DashboardHomeScreen extends StatelessWidget {
                           );
                         },
                       ),
-                      SizedBox(height:isTablet ? 24 : 12),
+                      SizedBox(height:isTablet ? 24 : 15),
                       HomeButtonCard(
                         icon: '🌱🪴',
                         title: 'Plant + Pot Combo',
@@ -159,7 +159,7 @@ class DashboardHomeScreen extends StatelessWidget {
                           );
                         },
                       ),
-                      SizedBox(height: isTablet ? 24 : 12),
+                      SizedBox(height: isTablet ? 24 : 15),
                       HomeButtonCard(
                         icon: '💡',
                         title: "Today's Tips",

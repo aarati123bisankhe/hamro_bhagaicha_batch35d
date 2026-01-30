@@ -17,8 +17,6 @@ final userSessionServiceProvider = Provider<UserSessionService>((ref) {
 class UserSessionService {
   final SharedPreferences _prefs;
 
-  UserSessionService({required SharedPreferences prefs}) : _prefs = prefs;
-
   // Keys for storing session data
   static const String _keyIsLoggedIn = 'is_logged_in';
   static const String _keyUserId = 'user_id';
@@ -26,6 +24,9 @@ class UserSessionService {
   static const String _keyUserEmail = 'user_email';
   static const String _keyUserAddress = 'user_address';
   static const String _keyUserPhoneNumber = 'user_phone_number';
+  static const String _keyUserProfileImage = 'user_profile_image';  
+
+    UserSessionService({required SharedPreferences prefs}) : _prefs = prefs;
 
   // Save user session data
  Future<void> saveUserSession({
@@ -34,6 +35,7 @@ class UserSessionService {
   required String email,
   required String address,
   required String phoneNumber,
+  String? profileImage,
 }) async {
   await _prefs.setBool(_keyIsLoggedIn, true);
   await _prefs.setString(_keyUserId, userId);
@@ -41,20 +43,11 @@ class UserSessionService {
   await _prefs.setString(_keyUserEmail, email);
   await _prefs.setString(_keyUserAddress, address);
   await _prefs.setString(_keyUserPhoneNumber, phoneNumber);
-}
 
-  // Clear user session data
-  Future<void> clearUserSession() async {
-    await _prefs.remove(_keyIsLoggedIn);
-    await _prefs.remove(_keyUserId);
-    await _prefs.remove(_keyUserFullName);
-    await _prefs.remove(_keyUserEmail);
-    await _prefs.remove(_keyUserAddress);
-    await _prefs.remove(_keyUserPhoneNumber);
-    
+  if (profileImage != null) {
+    await _prefs.setString(_keyUserProfileImage,profileImage);
   }
-
-  // Check login status
+}
   
   // Check if user is logged in
   bool isLoggedIn() {
@@ -62,7 +55,7 @@ class UserSessionService {
   }
 
   // Getters
-  String? getUserId() => _prefs.getString(_keyUserId);
+  String? getCurrentUserId() => _prefs.getString(_keyUserId);
 
   String? getUserFullName() => _prefs.getString(_keyUserFullName);
 
@@ -71,4 +64,17 @@ class UserSessionService {
   String? getUserAddress() => _prefs.getString(_keyUserAddress);
 
   String? getUserPhoneNumber() => _prefs.getString(_keyUserPhoneNumber);
+
+  String? getUserProfileImage() => _prefs.getString(_keyUserProfileImage);
+
+
+  Future<void> clearSession() async {
+    await _prefs.remove(_keyIsLoggedIn);
+    await _prefs.remove(_keyUserId);
+    await _prefs.remove(_keyUserFullName);
+    await _prefs.remove(_keyUserEmail);
+    await _prefs.remove(_keyUserAddress);   
+    await _prefs.remove(_keyUserPhoneNumber);
+    await _prefs.remove(_keyUserProfileImage);
+  }
 }

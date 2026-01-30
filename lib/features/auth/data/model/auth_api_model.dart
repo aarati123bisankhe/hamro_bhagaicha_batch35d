@@ -8,7 +8,6 @@ class AuthApiModel {
   final String phoneNumber;
   final String? password;
   final String? profileUrl;
-  final String? token; // <- add this
 
   AuthApiModel({
     this.id,
@@ -17,7 +16,7 @@ class AuthApiModel {
     required this.address,
     required this.phoneNumber,
     this.password, 
-    this.profileUrl, this.token,
+    this.profileUrl,
   });
 
   // toJSON
@@ -37,8 +36,7 @@ class AuthApiModel {
     email: json['email'] ?? '',
     address: json['address'] ?? '',
     phoneNumber: json['phoneNumber'] ?? '',
-     profileUrl: json['profileUrl'] ?? null, 
-     token: json['token'], // <- read token from backend
+     profileUrl: json['profileUrl'], 
   );
 }
 
@@ -67,6 +65,8 @@ class AuthApiModel {
       profileUrl: entity.profilePicture, 
     );
   }
+
+  get authId => null;
 
   // toEntityList
   static List<AuthEntity> toEntityList(List<AuthApiModel> models) {

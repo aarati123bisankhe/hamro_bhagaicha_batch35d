@@ -1,69 +1,3 @@
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:hamro_bhagaicha_batch35d/core/config/hive_table_constant.dart';
-// import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_hive_model.dart';
-// import 'package:hive/hive.dart';
-// import 'package:path_provider/path_provider.dart';
-
-// final hiveServiceProvider = Provider<HiveService>((ref) => HiveService());
-
-// class HiveService {
-//   Box<AuthHiveModel>? _authBox;
-
-//   Future<void> init() async {
-//     final directory = await getApplicationDocumentsDirectory();
-//     Hive.init(directory.path);
-
-//     _registerAdapters();
-//     await _openBoxes();
-//   }
-
-//   void _registerAdapters() {
-//     if (!Hive.isAdapterRegistered(HiveTableConstant.authTypeId)) {
-//       Hive.registerAdapter(AuthHiveModelAdapter());
-//     }
-//   }
-
-//   Future<void> _openBoxes() async {
-//     _authBox ??= await Hive.openBox<AuthHiveModel>(HiveTableConstant.authTable);
-//   }
-
-//   /// ===================== Auth Methods =====================
-
-//    Future<AuthHiveModel> registerUser(AuthHiveModel user) async {
-//     if (_authBox == null) throw Exception('Hive box not initialized');
-//     // Using phoneNumber as key
-//     await _authBox!.put(user.phoneNumber, user);
-//     return user;
-//   }
-
-//   Future<AuthHiveModel?> loginUser(String email, String password) async {
-//   if (_authBox == null) return null;
-
-//   AuthHiveModel? user;
-
-//   // Iterate over all users to find match
-//   for (final u in _authBox!.values) {
-//     if (u.email.toLowerCase() == email.toLowerCase() && u.password == password) {
-//       user = u;
-//       break;
-//     }
-//   }
-
-//   return user;
-// }
-
-//   Future<bool> isPhoneNumberExists(String phoneNumber) async {
-//     if (_authBox == null) return false;
-//     return _authBox!.containsKey(phoneNumber);
-//   }
-
-//   Future<AuthHiveModel?> getUserByPhoneNumber(String phoneNumber) async {
-//     if (_authBox == null) return null;
-//     return _authBox!.get(phoneNumber);
-//   }
-// }
-
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/config/hive_table_constant.dart';
 import 'package:hamro_bhagaicha_batch35d/core/constants/hive_table_constants.dart';
@@ -168,4 +102,47 @@ class HiveService {
   }
 
   Future<void> logout() async {}
+
+  Future<AuthHiveModel> register(AuthHiveModel user) async {
+    await _authBox.put(user.authId, user);
+    return user;
+  }
+
+// Login - find user by email and password
+AuthHiveModel? login(String email, String password) {
+  try{
+    return _authBox.values.firstWhere(
+      (user) => user.email == email && user.password == password,
+    );
+  }catch (e) {
+    return null;
+  }
+}
+
+AuthHiveModel? getUserById(String authId) {
+    return _authBox.get(authId);
+  }
+
+  // Get user by email
+  AuthHiveModel? getUserByEmail(String email) {
+    try {
+      return _authBox.values.firstWhere((user) => user.email == email);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Update user
+  Future<bool> updateUser(AuthHiveModel user) async {
+    if (_authBox.containsKey(user.authId)) {
+      await _authBox.put(user.authId, user);
+      return true;
+    }
+    return false;
+  }
+
+  // Delete user
+  Future<void> deleteUser(String authId) async {
+    await _authBox.delete(authId);
+  }
 }

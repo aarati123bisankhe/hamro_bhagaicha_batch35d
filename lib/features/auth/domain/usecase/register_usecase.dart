@@ -34,21 +34,20 @@ class RegisterUsecaseParams extends Equatable {
 
 //provider
 final registerUsecaseProvider = Provider<RegisterUsecase>((ref){
-  final authRepository = ref.read(authRepositoryProvider);
+  final authRepository = ref.watch(authRepositoryProvider);
   return RegisterUsecase(authRepository: authRepository);
 });
 
 // Usecase class
-class RegisterUsecase implements UsecaseWithParams<bool, RegisterUsecaseParams> {
+class RegisterUsecase implements UsecaseWithParams<AuthEntity, RegisterUsecaseParams> {
     final IAuthRepository _authRepository;
 
     RegisterUsecase({required IAuthRepository authRepository})
     : _authRepository = authRepository;
 
   @override
-  Future<Either<Failure, bool>> call(RegisterUsecaseParams params) async {
+  Future<Either<Failure, AuthEntity>> call(RegisterUsecaseParams params) {
     final entity = AuthEntity(
-      // authId: '', // can be empty; Hive will generate
       fullname: params.fullName,
       email: params.email,
       password: params.password,

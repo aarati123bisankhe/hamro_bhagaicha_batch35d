@@ -29,22 +29,20 @@ import 'package:dartz/dartz.dart';
 import 'package:hamro_bhagaicha_batch35d/core/error/failure.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/data/repositories/auth_repository.dart';
 import '../repositories/auth_repository.dart';
-import '../../domain/entities/auth_entity.dart';
 
-// ✅ Proper Riverpod provider
 final updateProfileImageUsecaseProvider =
     Provider<UpdateProfileImageUseCase>((ref) {
-  final repository = ref.read(authRepositoryProvider); // inject your repo
+  final repository = ref.read(authRepositoryProvider); 
   return UpdateProfileImageUseCase(repository);
 });
 
 class UpdateProfileImageUseCase {
-  final IAuthRepository repository; // Use the interface, not concrete class
+  final IAuthRepository repository; 
 
   UpdateProfileImageUseCase(this.repository);
 
-  Future<Either<Failure, AuthEntity>> call(File imageFile) {
-    return repository.updateProfileImage(imageFile);
+  Future<Either<Failure, String>> call(File image) {
+    return repository.updateProfileImage(image);
   }
 }
 

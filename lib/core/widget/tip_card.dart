@@ -59,7 +59,7 @@ class _TipCardState extends State<TipCard> {
                     child: Container(
                       padding: EdgeInsets.all(isTablet ? 10 : 6),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.85),
+                        color: Colors.white.withValues(alpha:0.85),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
