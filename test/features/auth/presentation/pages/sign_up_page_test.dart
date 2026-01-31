@@ -10,7 +10,6 @@ import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/pages/sign_u
 import 'package:mocktail/mocktail.dart';
 import 'package:dartz/dartz.dart';
 
-// Mock RegisterUsecase
 class MockRegisterUsecase extends Mock implements RegisterUsecase {}
 
 void main() {
@@ -54,13 +53,12 @@ void main() {
     await tester.pumpAndSettle();
 
     final fields = find.byType(MyTextField);
-    expect(fields, findsNWidgets(5)); // Full Name, Email, Password, Address, Phone
+    expect(fields, findsNWidgets(5));
 
     expect(find.text('Sign Up'), findsOneWidget);
   });
 
   testWidgets('register success → navigates to LoginScreen', (tester) async {
-    // Mock register success
     when(() => mockRegisterUsecase(any())).thenAnswer((_) async => Right(testUser));
 
     await tester.pumpWidget(
@@ -78,19 +76,16 @@ void main() {
 
     final fields = find.byType(MyTextField);
 
-    // Fill form
-    await tester.enterText(fields.at(0), 'Test User'); // Full Name
-    await tester.enterText(fields.at(1), 'test@test.com'); // Email
-    await tester.enterText(fields.at(2), '123456'); // Password
-    await tester.enterText(fields.at(3), 'Kathmandu'); // Address
-    await tester.enterText(fields.at(4), '9800000000'); // Phone
+    await tester.enterText(fields.at(0), 'Test User'); 
+    await tester.enterText(fields.at(1), 'test@test.com'); 
+    await tester.enterText(fields.at(2), '123456'); 
+    await tester.enterText(fields.at(3), 'Kathmandu'); 
+    await tester.enterText(fields.at(4), '9800000000'); 
 
-    // Tap Sign Up
     await tester.tap(find.text('Sign Up'));
-    await tester.pump(); // first frame for async
-    await tester.pumpAndSettle(); // wait for rebuild & snackbar
+    await tester.pump(); 
+    await tester.pumpAndSettle(); 
 
-    // Verify registerUsecase called with correct parameters
     verify(() => mockRegisterUsecase(RegisterUsecaseParams(
       fullName: 'Test User',
       email: 'test@test.com',
@@ -99,13 +94,11 @@ void main() {
       phoneNumber: '9800000000',
     ))).called(1);
 
-    // Verify navigation to LoginScreen
     expect(find.byType(LoginScreen), findsOneWidget);
     expect(find.text('Registration successful! Please log in.'), findsOneWidget);
   });
 
   testWidgets('register failure → shows error snackbar', (tester) async {
-    // Mock register failure
     when(() => mockRegisterUsecase(any())).thenAnswer(
       (_) async => Left(ApiFailure(message: 'Register failed')),
     );
@@ -115,19 +108,16 @@ void main() {
 
     final fields = find.byType(MyTextField);
 
-    // Fill form
-    await tester.enterText(fields.at(0), 'Test User'); // Full Name
-    await tester.enterText(fields.at(1), 'test@test.com'); // Email
-    await tester.enterText(fields.at(2), '123456'); // Password
-    await tester.enterText(fields.at(3), 'Kathmandu'); // Address
-    await tester.enterText(fields.at(4), '9800000000'); // Phone
+    await tester.enterText(fields.at(0), 'Test User'); 
+    await tester.enterText(fields.at(1), 'test@test.com'); 
+    await tester.enterText(fields.at(2), '123456'); 
+    await tester.enterText(fields.at(3), 'Kathmandu'); 
+    await tester.enterText(fields.at(4), '9800000000'); 
 
-    // Tap Sign Up
     await tester.tap(find.text('Sign Up'));
-    await tester.pump(); // first frame for async
-    await tester.pumpAndSettle(); // wait for snackbar & rebuild
+    await tester.pump(); 
+    await tester.pumpAndSettle(); 
 
-    // Verify error snackbar is shown
     expect(find.text('Register failed'), findsOneWidget);
   });
 }
