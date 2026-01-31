@@ -17,7 +17,6 @@ void main() {
     usecase = RegisterUsecase(authRepository: mockRepository);
   });
 
-  // Register fallback value for AuthEntity
   setUpAll(() {
     registerFallbackValue(
       AuthEntity(

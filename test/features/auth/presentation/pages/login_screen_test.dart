@@ -79,7 +79,6 @@ void main() {
 
   group('LoginScreen Widget Test', () {
     testWidgets('enter email/password and tap login - success', (WidgetTester tester) async {
-      // Mock loginUsecase to return success
       when(() => mockLoginUsecase(any())).thenAnswer((_) async => Right(testUser));
 
       await tester.pumpWidget(
@@ -89,34 +88,27 @@ void main() {
         ),
       );
 
-      // Find the MyTextField widgets
       final emailField = find.byType(MyTextField).at(0);
       final passwordField = find.byType(MyTextField).at(1);
 
-      // Enter email and password
       await tester.enterText(emailField, 'test@test.com');
       await tester.enterText(passwordField, '123456');
 
-      await tester.pumpAndSettle(); // wait for UI to settle
+      await tester.pumpAndSettle(); 
 
-      // Find the login button
       final loginButton = find.byType(MyFloatingButton);
 
-      // Ensure button is visible
       await tester.ensureVisible(loginButton);
 
-      // Tap the login button
       await tester.tap(loginButton);
-      await tester.pumpAndSettle(); // wait for state change
+      await tester.pumpAndSettle();
 
-      // Verify AuthViewModel state
       final authState = container.read(authViewModelProvider);
       expect(authState.status, AuthStatus.authenticated);
       expect(authState.authEntity, testUser);
     });
 
     testWidgets('enter email/password and tap login - failure shows error', (WidgetTester tester) async {
-      // Mock loginUsecase to return error
       when(() => mockLoginUsecase(any()))
           .thenAnswer((_) async => Left(ApiFailure(message: 'Invalid credentials')));
 
