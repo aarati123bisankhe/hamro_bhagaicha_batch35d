@@ -23,7 +23,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  // final bool _obscurePassword = true;
   final bool _isLoading = false;
 
   @override
