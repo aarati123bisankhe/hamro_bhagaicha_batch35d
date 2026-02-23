@@ -152,7 +152,7 @@ class DashboardHomeScreen extends ConsumerWidget {
                         },
                       ),
 
-                      SizedBox(height: isTablet ? 24 : 15),
+                      SizedBox(height: isTablet ? 24 : 20),
                       HomeButtonCard(
                         icon: '🪴',
                         title: 'Pot',
@@ -167,7 +167,7 @@ class DashboardHomeScreen extends ConsumerWidget {
                           );
                         },
                       ),
-                      SizedBox(height: isTablet ? 24 : 15),
+                      SizedBox(height: isTablet ? 24 : 20),
                       HomeButtonCard(
                         icon: '🌱🪴',
                         title: 'Plant + Pot Combo',
@@ -182,7 +182,7 @@ class DashboardHomeScreen extends ConsumerWidget {
                           );
                         },
                       ),
-                      SizedBox(height: isTablet ? 24 : 15),
+                      SizedBox(height: isTablet ? 24 : 20),
                       HomeButtonCard(
                         icon: '💡',
                         title: "Today's Tips",
