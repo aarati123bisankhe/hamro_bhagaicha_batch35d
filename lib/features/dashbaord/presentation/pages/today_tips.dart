@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hamro_bhagaicha_batch35d/core/theme/app_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/widget/tip_card.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/state/saved_tip_state.dart';
@@ -25,22 +26,22 @@ class TodayTips extends ConsumerWidget {
       readTime: '4 min read',
     ),
     SavedTip(
-     id: 'tip-sunlight-balance',
-     imageUrl: 'assets/images/tipimage4.png',
-     title: 'Right Amount of Sunlight',
-     description:
-      'Different plants require different sunlight levels. Place sun-loving plants near windows or outdoors, while shade plants thrive in indirect light. Rotate plants regularly for even growth.',
-    readTime: '4 min read',
-   ),
+      id: 'tip-sunlight-balance',
+      imageUrl: 'assets/images/tipimage4.png',
+      title: 'Right Amount of Sunlight',
+      description:
+          'Different plants require different sunlight levels. Place sun-loving plants near windows or outdoors, while shade plants thrive in indirect light. Rotate plants regularly for even growth.',
+      readTime: '4 min read',
+    ),
 
     SavedTip(
-  id: 'tip-soil-health',
-  imageUrl: 'assets/images/tipimage5.png',
-  title: 'Healthy Soil Matters',
-  description:
-      'Good soil provides nutrients and proper drainage. Mix compost or organic matter into soil to improve fertility. Healthy soil helps roots grow stronger and plants stay vibrant.',
-  readTime: '5 min read',
-),
+      id: 'tip-soil-health',
+      imageUrl: 'assets/images/tipimage5.png',
+      title: 'Healthy Soil Matters',
+      description:
+          'Good soil provides nutrients and proper drainage. Mix compost or organic matter into soil to improve fertility. Healthy soil helps roots grow stronger and plants stay vibrant.',
+      readTime: '5 min read',
+    ),
   ];
 
   @override
@@ -52,13 +53,7 @@ class TodayTips extends ConsumerWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFFD8F3DC), Color(0xFF475E4F)],
-          ),
-        ),
+        decoration: appBackgroundDecoration(context),
         padding: EdgeInsets.symmetric(horizontal: isTablet ? 32 : 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

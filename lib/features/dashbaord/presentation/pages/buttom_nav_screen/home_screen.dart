@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:hamro_bhagaicha_batch35d/core/theme/app_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/api/api_endpoint.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/view_model/auth_view_model.dart';
@@ -72,13 +73,7 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFFD8F3DC), Color(0xFF475E4F)],
-          ),
-        ),
+        decoration: appBackgroundDecoration(context),
         child: SafeArea(
           top: true,
           bottom: true,

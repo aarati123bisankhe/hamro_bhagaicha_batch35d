@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:hamro_bhagaicha_batch35d/core/theme/app_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/app/routes/app_routes.dart';
 import 'package:hamro_bhagaicha_batch35d/core/api/api_endpoint.dart';
@@ -9,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:hamro_bhagaicha_batch35d/core/utils/snackbar_utils.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/view_model/auth_view_model.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/state/auth_state.dart';
+import 'package:hamro_bhagaicha_batch35d/app/theme/theme_mode_provider.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/chatsection.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/communitycontributed.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/savetips.dart';
@@ -97,6 +99,8 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
     final authState = ref.watch(authViewModelProvider);
     final currentUser = authState.authEntity ?? widget.userEntity;
     final savedTips = ref.watch(savedTipViewModelProvider);
+    final themeMode = ref.watch(appThemeModeProvider);
+    final isDarkMode = themeMode == ThemeMode.dark;
 
     ref.listen<AuthState>(authViewModelProvider, (previous, next) {
       if (next.status == AuthStatus.unauthenticated) {
@@ -113,13 +117,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFFD8F3DC), Color(0xFF475E4F)],
-          ),
-        ),
+        decoration: appBackgroundDecoration(context),
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: isTablet ? 50 : 20),
@@ -238,6 +236,18 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                       SizedBox(height: isTablet ? 20 : 10),
                       _activityRow('📦', 'My Orders'),
                       _activityRow('🌱', 'Plants'),
+                      _activityRow(
+                        '🌙',
+                        'Dark Mode',
+                        trailingWidget: Switch(
+                          value: isDarkMode,
+                          onChanged: (value) {
+                            ref
+                                .read(appThemeModeProvider.notifier)
+                                .setDarkMode(value);
+                          },
+                        ),
+                      ),
                       _activityRow(
                         '💡',
                         'Saved Tips',
@@ -373,6 +383,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
     String title, {
     VoidCallback? onTap,
     String? trailing,
+    Widget? trailingWidget,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -384,6 +395,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
             const SizedBox(width: 12),
             Text(title, style: const TextStyle(fontSize: 16)),
             const Spacer(),
+            if (trailingWidget != null) trailingWidget,
             if (trailing != null)
               Text(
                 trailing,

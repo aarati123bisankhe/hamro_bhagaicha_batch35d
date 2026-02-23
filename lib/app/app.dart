@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/services/deeplink/deep_link_service.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/pages/changed_password_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/features/onboarding/presentation/pages/splash_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/app/theme/theme_mode_provider.dart';
 import 'package:hamro_bhagaicha_batch35d/app/theme/theme_data.dart';
 
 class MyApp extends ConsumerStatefulWidget {
@@ -41,11 +42,15 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = ref.watch(appThemeModeProvider);
+
     return MaterialApp(
       navigatorKey: _navigatorKey,
       debugShowCheckedModeBanner: false,
       title: "Hamro Bhagaicha",
       theme: getApplicationTheme(),
+      darkTheme: getDarkApplicationTheme(),
+      themeMode: themeMode,
       home: const SplashScreen(),
     );
   }

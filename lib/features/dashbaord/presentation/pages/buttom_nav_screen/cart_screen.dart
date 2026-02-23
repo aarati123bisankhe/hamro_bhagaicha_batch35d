@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hamro_bhagaicha_batch35d/core/theme/app_background.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/cart_view_model.dart';
 
 class CartScreen extends ConsumerWidget {
@@ -18,7 +19,9 @@ class CartScreen extends ConsumerWidget {
     );
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF4FAEF),
+      backgroundColor: isDarkMode(context)
+          ? const Color(0xFF111827)
+          : const Color(0xFFF4FAEF),
       body: SafeArea(
         child: Column(
           children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hamro_bhagaicha_batch35d/core/theme/app_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/utils/snackbar_utils.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/domain/entities/notification_entity.dart';
@@ -42,13 +43,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFFD8F3DC), Color(0xFF475E4F)],
-          ),
-        ),
+        decoration: appBackgroundDecoration(context),
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: isTablet ? 28 : 16),

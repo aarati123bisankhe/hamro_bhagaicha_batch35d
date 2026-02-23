@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hamro_bhagaicha_batch35d/core/theme/app_background.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/state/cart_state.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/cart_view_model.dart';
@@ -41,13 +42,7 @@ class ComboSetScreen extends ConsumerWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFFD8F3DC), Color(0xFF475E4F)],
-          ),
-        ),
+        decoration: appBackgroundDecoration(context),
         padding: EdgeInsets.symmetric(horizontal: isTablet ? 32 : 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

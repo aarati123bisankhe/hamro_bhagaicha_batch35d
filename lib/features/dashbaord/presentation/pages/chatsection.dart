@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hamro_bhagaicha_batch35d/core/theme/app_background.dart';
 
 class ChatMessage {
   final String text;
@@ -70,101 +71,106 @@ class _ChatSectionPageState extends State<ChatSectionPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Chat & Support'),
-        backgroundColor: const Color(0xFFD8F3DC),
+        backgroundColor: isDarkMode(context)
+            ? const Color(0xFF1F2937)
+            : const Color(0xFFD8F3DC),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(12),
-              itemCount: _messages.length,
-              itemBuilder: (context, index) {
-                final message = _messages[index];
-                final align = message.isUser
-                    ? Alignment.centerRight
-                    : Alignment.centerLeft;
-                final bubbleColor = message.isUser
-                    ? const Color(0xFFB7E4C7)
-                    : const Color(0xFFE9F7DB);
+      body: Container(
+        decoration: appBackgroundDecoration(context),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.all(12),
+                itemCount: _messages.length,
+                itemBuilder: (context, index) {
+                  final message = _messages[index];
+                  final align = message.isUser
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft;
+                  final bubbleColor = message.isUser
+                      ? const Color(0xFFB7E4C7)
+                      : const Color(0xFFE9F7DB);
 
-                return Align(
-                  alignment: align,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 10,
-                    ),
-                    constraints: const BoxConstraints(maxWidth: 290),
-                    decoration: BoxDecoration(
-                      color: bubbleColor,
-                      borderRadius: BorderRadius.circular(12),
-                      border: message.isIssue
-                          ? Border.all(color: Colors.red.shade300)
-                          : null,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (message.isIssue)
-                          const Padding(
-                            padding: EdgeInsets.only(bottom: 4),
-                            child: Text(
-                              'Issue Report',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: Colors.red,
+                  return Align(
+                    alignment: align,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 5),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
+                      ),
+                      constraints: const BoxConstraints(maxWidth: 290),
+                      decoration: BoxDecoration(
+                        color: bubbleColor,
+                        borderRadius: BorderRadius.circular(12),
+                        border: message.isIssue
+                            ? Border.all(color: Colors.red.shade300)
+                            : null,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (message.isIssue)
+                            const Padding(
+                              padding: EdgeInsets.only(bottom: 4),
+                              child: Text(
+                                'Issue Report',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.red,
+                                ),
                               ),
                             ),
-                          ),
-                        Text(message.text),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(12, 8, 12, 14),
-            decoration: const BoxDecoration(color: Colors.white),
-            child: Column(
-              children: [
-                TextField(
-                  controller: _messageController,
-                  minLines: 1,
-                  maxLines: 4,
-                  decoration: InputDecoration(
-                    hintText: 'Type your message or issue...',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () => _sendMessage(isIssue: true),
-                        icon: const Icon(Icons.report_problem_outlined),
-                        label: const Text('Report Issue'),
+                          Text(message.text),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () => _sendMessage(isIssue: false),
-                        icon: const Icon(Icons.send),
-                        label: const Text('Send'),
+                  );
+                },
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 14),
+              decoration: const BoxDecoration(color: Colors.white),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: _messageController,
+                    minLines: 1,
+                    maxLines: 4,
+                    decoration: InputDecoration(
+                      hintText: 'Type your message or issue...',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () => _sendMessage(isIssue: true),
+                          icon: const Icon(Icons.report_problem_outlined),
+                          label: const Text('Report Issue'),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () => _sendMessage(isIssue: false),
+                          icon: const Icon(Icons.send),
+                          label: const Text('Send'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

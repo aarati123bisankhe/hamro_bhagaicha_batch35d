@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hamro_bhagaicha_batch35d/core/theme/app_background.dart';
 
 class CommunityContributedPage extends StatefulWidget {
   const CommunityContributedPage({super.key});
@@ -77,7 +78,9 @@ class _CommunityContributedPageState extends State<CommunityContributedPage>
     return Scaffold(
       appBar: AppBar(
         title: const Text('Community Contributed'),
-        backgroundColor: const Color(0xFFD8F3DC),
+        backgroundColor: isDarkMode(context)
+            ? const Color(0xFF1F2937)
+            : const Color(0xFFD8F3DC),
         bottom: TabBar(
           controller: _tabController,
           labelColor: Colors.green.shade900,
@@ -91,13 +94,7 @@ class _CommunityContributedPageState extends State<CommunityContributedPage>
         ),
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFFE9F7DB), Color(0xFFCFDFC8)],
-          ),
-        ),
+        decoration: appBackgroundDecoration(context),
         child: TabBarView(
           controller: _tabController,
           children: [
