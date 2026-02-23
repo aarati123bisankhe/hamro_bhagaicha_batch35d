@@ -48,6 +48,10 @@ class ApiEndpoints {
   static const String requestPasswordReset = '/auth/send-reset-password-email';
   static String resetPassword(String token) => '/auth/reset-password/$token';
   static String getCurrentUserById(String userId) => '/auth/user/$userId';
+  static const String notifications = '/notifications';
+  static const String markAllNotificationsRead = '/notifications/mark-all-read';
+  static String markNotificationRead(String notificationId) =>
+      '/notifications/$notificationId/read';
 
   // Replace with your real domain that hosts .well-known files.
   static const String deepLinkDomain = 'your-domain.com';
