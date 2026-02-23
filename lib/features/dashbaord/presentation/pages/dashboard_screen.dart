@@ -11,36 +11,38 @@ import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/b
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/buttom_nav_screen/scan_screen.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
-  const DashboardScreen({super.key});
+  final int initialIndex;
+  const DashboardScreen({super.key, this.initialIndex = 0});
 
   @override
   ConsumerState<DashboardScreen> createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
-
-  int _selectedIndex = 0;
+  late int _selectedIndex;
 
   @override
   void initState() {
     super.initState();
+    _selectedIndex = widget.initialIndex;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final userSessionService = ref.read(userSessionServiceProvider);
-      ref.
-        read(authViewModelProvider.notifier)
-        .getCurrentUser(userId: userSessionService.getCurrentUserId() ?? '');
+      ref
+          .read(authViewModelProvider.notifier)
+          .getCurrentUser(userId: userSessionService.getCurrentUserId() ?? '');
     });
   }
 
-  List<Widget>_lstBottomScreen(AuthEntity userEntity){
-    return  [
-    const DashboardHomeScreen(),
-    const OrderScreen(),
-    const ScanScreen(),
-    const CartScreen(),
-    AccountScreen(userEntity : userEntity),
-  ];
+  List<Widget> _lstBottomScreen(AuthEntity userEntity) {
+    return [
+      const DashboardHomeScreen(),
+      const OrderScreen(),
+      const ScanScreen(),
+      const CartScreen(),
+      AccountScreen(userEntity: userEntity),
+    ];
   }
+
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authViewModelProvider);
@@ -53,34 +55,38 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       }
     });
 
-    if(authState.authEntity == null){
-      return const Scaffold(body: Center(child: Text("No user data found"),),);
+    if (authState.authEntity == null) {
+      return const Scaffold(body: Center(child: Text("No user data found")));
     }
 
     final userEntity = authState.authEntity;
     final screens = _lstBottomScreen(userEntity!);
-    
+
     return Scaffold(
       body: screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        
         type: BottomNavigationBarType.fixed,
         items: const [
-          
-          BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.inventory),label: 'Order'),
-          BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner, ),label: 'Scanner'),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart),label: 'Cart'),
-          BottomNavigationBarItem(icon: Icon(Icons.person),label: 'Account'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.inventory), label: 'Order'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.qr_code_scanner),
+            label: 'Scanner',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Cart',
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
         ],
-        
+
         currentIndex: _selectedIndex,
         onTap: (index) {
           setState(() {
             _selectedIndex = index;
           });
         },
-        ),
+      ),
     );
   }
 }

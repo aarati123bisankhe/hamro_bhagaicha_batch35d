@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/widget/plant_section_card.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/dashboard_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/state/cart_state.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/cart_view_model.dart';
 
 enum PlantCategory { indoor, outdoor }
 
@@ -24,14 +27,14 @@ class PlantItem {
   });
 }
 
-class PlantScreen extends StatefulWidget {
+class PlantScreen extends ConsumerStatefulWidget {
   const PlantScreen({super.key});
 
   @override
-  State<PlantScreen> createState() => _PlantScreenState();
+  ConsumerState<PlantScreen> createState() => _PlantScreenState();
 }
 
-class _PlantScreenState extends State<PlantScreen> {
+class _PlantScreenState extends ConsumerState<PlantScreen> {
   PlantFilter _selectedFilter = PlantFilter.all;
 
   static const List<PlantItem> _allPlants = [
@@ -217,6 +220,24 @@ class _PlantScreenState extends State<PlantScreen> {
     );
   }
 
+  void _addToCart(PlantItem plant) {
+    ref
+        .read(cartViewModelProvider.notifier)
+        .addItem(
+          CartItem(
+            id: 'plant-${plant.name}-${plant.imagePath}',
+            imagePath: plant.imagePath,
+            name: plant.name,
+            price: plant.price,
+          ),
+        );
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const DashboardScreen(initialIndex: 3)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -355,6 +376,7 @@ class _PlantScreenState extends State<PlantScreen> {
                       description: plant.description,
                       price: plant.price,
                       rating: plant.rating,
+                      onAdd: () => _addToCart(plant),
                     );
                   },
                 ),

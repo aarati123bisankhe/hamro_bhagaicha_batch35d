@@ -5,7 +5,8 @@ class ComboSetCard extends StatelessWidget {
   final String name;
   final int price;
   final int rating;
-  final VoidCallback? onTap; 
+  final VoidCallback? onTap;
+  final VoidCallback? onAdd;
 
   const ComboSetCard({
     super.key,
@@ -14,21 +15,22 @@ class ComboSetCard extends StatelessWidget {
     required this.price,
     required this.rating,
     this.onTap,
+    this.onAdd,
   });
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isTablet = screenWidth > 600; 
+    final isTablet = screenWidth > 600;
     return GestureDetector(
-      onTap: onTap, 
+      onTap: onTap,
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(isTablet ? 30 :16),
-          side:  BorderSide(color: Colors.green, width: isTablet ? 2 : 1),
+          borderRadius: BorderRadius.circular(isTablet ? 30 : 16),
+          side: BorderSide(color: Colors.green, width: isTablet ? 2 : 1),
         ),
         color: const Color(0xFFE2E8DC),
-        margin:  EdgeInsets.symmetric(vertical:isTablet ? 20 : 8),
+        margin: EdgeInsets.symmetric(vertical: isTablet ? 20 : 8),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Row(
@@ -53,13 +55,13 @@ class ComboSetCard extends StatelessWidget {
                       name,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
-                      style:  TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 41, 3, 181),
-                        fontSize: isTablet ? 23  :16,
+                        fontSize: isTablet ? 23 : 16,
                       ),
                     ),
-                     SizedBox(height:isTablet ? 15 :  6),
+                    SizedBox(height: isTablet ? 15 : 6),
                     Text(
                       'NRP $price',
                       style: TextStyle(
@@ -75,21 +77,26 @@ class ComboSetCard extends StatelessWidget {
                         (index) => Icon(
                           index < rating ? Icons.star : Icons.star_border,
                           color: const Color.fromARGB(255, 60, 137, 62),
-                          size:  isTablet ? 20 :15,
+                          size: isTablet ? 20 : 15,
                         ),
                       ),
                     ),
-                     SizedBox(height: isTablet ? 12 : 6),
+                    SizedBox(height: isTablet ? 12 : 6),
                     Align(
                       alignment: Alignment.centerRight,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
-                          padding:  EdgeInsets.symmetric(
-                              horizontal: isTablet ? 20 : 12, vertical: isTablet ? 12 :6),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: isTablet ? 20 : 12,
+                            vertical: isTablet ? 12 : 6,
+                          ),
                         ),
-                        onPressed: () {},
-                        child:  Text('+ Add', style: TextStyle(fontSize: isTablet ? 18 : 14),),
+                        onPressed: onAdd,
+                        child: Text(
+                          '+ Add',
+                          style: TextStyle(fontSize: isTablet ? 18 : 14),
+                        ),
                       ),
                     ),
                   ],
@@ -102,5 +109,3 @@ class ComboSetCard extends StatelessWidget {
     );
   }
 }
-
-
