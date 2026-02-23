@@ -6,7 +6,7 @@ class AuthEntity {
   final String address;
   final String phoneNumber;
   final String? profilePicture;
-  // final String role;
+
 
   const AuthEntity({
     this.authId,
@@ -16,7 +16,6 @@ class AuthEntity {
     required this.address,
     required this.phoneNumber, 
     this.profilePicture,
-    // this.role = 'user',
   });
 
   AuthEntity copyWith({
