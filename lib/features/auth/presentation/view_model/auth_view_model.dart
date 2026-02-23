@@ -153,6 +153,7 @@ class AuthViewModel extends Notifier<AuthState> {
       (imageName) {
         state = state.copyWith(
           status: AuthStatus.loaded,
+          authEntity: state.authEntity?.copyWith(profilePicture: imageName),
           uploadProfilePhotoName: imageName,
         );
       },

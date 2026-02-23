@@ -91,6 +91,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
     final isTablet = screenWidth > 600;
 
     final authState = ref.watch(authViewModelProvider);
+    final currentUser = authState.authEntity ?? widget.userEntity;
 
     ref.listen<AuthState>(authViewModelProvider, (previous, next) {
       if (next.status == AuthStatus.unauthenticated) {
@@ -175,12 +176,12 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                               image: FileImage(_profileImage!),
                               fit: BoxFit.cover,
                             )
-                          : (widget.userEntity.profilePicture != null &&
-                                widget.userEntity.profilePicture!.isNotEmpty)
+                          : (currentUser.profilePicture != null &&
+                                currentUser.profilePicture!.isNotEmpty)
                           ? DecorationImage(
                               image: NetworkImage(
                                 ApiEndpoints.profileImageUrl(
-                                  widget.userEntity.profilePicture!,
+                                  currentUser.profilePicture!,
                                 ),
                               ),
                               fit: BoxFit.cover,
@@ -189,8 +190,8 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                     ),
                     child:
                         _profileImage == null &&
-                            (widget.userEntity.profilePicture == null ||
-                                widget.userEntity.profilePicture!.isEmpty)
+                            (currentUser.profilePicture == null ||
+                                currentUser.profilePicture!.isEmpty)
                         ? const Icon(Icons.person, size: 50)
                         : null,
                   ),
@@ -198,14 +199,14 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
 
                 SizedBox(height: isTablet ? 20 : 10),
                 Text(
-                  authState.authEntity?.fullname ?? 'Aarati Chettri',
+                  currentUser.fullname,
                   style: TextStyle(
                     fontSize: isTablet ? 28 : 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  authState.authEntity?.email ?? 'aaratichettri46@gmail.com',
+                  currentUser.email,
                   style: TextStyle(
                     fontSize: isTablet ? 20 : 14,
                     color: Colors.black54,
