@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:hamro_bhagaicha_batch35d/core/utils/snackbar_utils.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/view_model/auth_view_model.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/state/auth_state.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/savetips.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/saved_tip_view_model.dart';
 
 class AccountScreen extends ConsumerStatefulWidget {
@@ -22,7 +23,6 @@ class AccountScreen extends ConsumerStatefulWidget {
 class _AccountScreenState extends ConsumerState<AccountScreen> {
   File? _profileImage;
   final ImagePicker _picker = ImagePicker();
-  bool _showSavedTips = false;
 
   Future<void> _pickImage(ImageSource source) async {
     try {
@@ -241,51 +241,16 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                         'Saved Tips',
                         trailing: '${savedTips.length}',
                         onTap: () {
-                          setState(() {
-                            _showSavedTips = !_showSavedTips;
-                          });
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const SaveTipsPage(),
+                            ),
+                          );
                         },
                       ),
                       _activityRow('👥', 'Community Contributed'),
                       _activityRow('✉️', 'Chat'),
-                      AnimatedCrossFade(
-                        duration: const Duration(milliseconds: 220),
-                        crossFadeState: _showSavedTips
-                            ? CrossFadeState.showFirst
-                            : CrossFadeState.showSecond,
-                        firstChild: Container(
-                          width: double.infinity,
-                          margin: const EdgeInsets.only(top: 8),
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.7),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: savedTips.isEmpty
-                              ? const Text(
-                                  'No saved tips yet.',
-                                  style: TextStyle(color: Colors.black54),
-                                )
-                              : Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    for (final tip in savedTips)
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 4,
-                                        ),
-                                        child: Text(
-                                          '• ${tip.title}',
-                                          style: TextStyle(
-                                            fontSize: isTablet ? 18 : 14,
-                                          ),
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                        ),
-                        secondChild: const SizedBox.shrink(),
-                      ),
                     ],
                   ),
                 ),
