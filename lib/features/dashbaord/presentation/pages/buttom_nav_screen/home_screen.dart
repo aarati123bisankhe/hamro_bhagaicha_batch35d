@@ -220,6 +220,7 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen> {
                         icon: '💡',
                         title: "Today's Tips",
                         subtitle: _tips[_tipIndex],
+                        subtitleColor: const Color.fromARGB(255, 32, 9, 210),
                         onTap: () {
                           Navigator.push(
                             context,

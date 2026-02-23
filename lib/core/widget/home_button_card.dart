@@ -1,18 +1,19 @@
-
 import 'package:flutter/material.dart';
 
 class HomeButtonCard extends StatelessWidget {
   final String icon;
   final String title;
   final String subtitle;
-  final VoidCallback? onTap; 
+  final Color subtitleColor;
+  final VoidCallback? onTap;
 
   const HomeButtonCard({
     super.key,
     required this.icon,
     required this.title,
     required this.subtitle,
-    this.onTap, 
+    this.subtitleColor = Colors.black87,
+    this.onTap,
   });
 
   @override
@@ -20,19 +21,16 @@ class HomeButtonCard extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final isTablet = screenWidth > 600;
     return GestureDetector(
-      onTap: onTap, 
+      onTap: onTap,
       child: Container(
-        padding:  EdgeInsets.all(isTablet ? 29 :20),
+        padding: EdgeInsets.all(isTablet ? 29 : 20),
         decoration: BoxDecoration(
           color: const Color(0xFFE3EED9),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
           children: [
-            Text(
-              icon,
-              style:  TextStyle(fontSize: isTablet ? 60 :  30),
-            ),
+            Text(icon, style: TextStyle(fontSize: isTablet ? 60 : 30)),
             const SizedBox(width: 15),
             Expanded(
               child: Column(
@@ -40,7 +38,7 @@ class HomeButtonCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style:  TextStyle(
+                    style: TextStyle(
                       fontSize: isTablet ? 31 : 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -48,9 +46,9 @@ class HomeButtonCard extends StatelessWidget {
                   const SizedBox(height: 5),
                   Text(
                     subtitle,
-                    style:  TextStyle(
+                    style: TextStyle(
                       fontSize: isTablet ? 25 : 14,
-                      color: Colors.black87,
+                      color: subtitleColor,
                     ),
                   ),
                 ],
@@ -62,5 +60,3 @@ class HomeButtonCard extends StatelessWidget {
     );
   }
 }
-
-
