@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:hamro_bhagaicha_batch35d/core/utils/snackbar_utils.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/view_model/auth_view_model.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/state/auth_state.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/chatsection.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/savetips.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/saved_tip_view_model.dart';
 
@@ -250,7 +251,18 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                         },
                       ),
                       _activityRow('👥', 'Community Contributed'),
-                      _activityRow('✉️', 'Chat'),
+                      _activityRow(
+                        '✉️',
+                        'Chat',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const ChatSectionPage(),
+                            ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
