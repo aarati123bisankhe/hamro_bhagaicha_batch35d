@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/api/api_endpoint.dart';
@@ -10,11 +12,42 @@ import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/t
 import 'package:hamro_bhagaicha_batch35d/core/widget/home_button_card.dart';
 import 'package:flutter/services.dart';
 
-class DashboardHomeScreen extends ConsumerWidget {
+class DashboardHomeScreen extends ConsumerStatefulWidget {
   const DashboardHomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DashboardHomeScreen> createState() =>
+      _DashboardHomeScreenState();
+}
+
+class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen> {
+  static const List<String> _tips = [
+    'Fertilize plants every 2–4 weeks during spring and summer.',
+    'Water only when the top inch of soil feels dry.',
+  ];
+
+  int _tipIndex = 0;
+  Timer? _tipTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _tipTimer = Timer.periodic(const Duration(seconds: 2), (_) {
+      if (!mounted) return;
+      setState(() {
+        _tipIndex = (_tipIndex + 1) % _tips.length;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _tipTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -186,8 +219,7 @@ class DashboardHomeScreen extends ConsumerWidget {
                       HomeButtonCard(
                         icon: '💡',
                         title: "Today's Tips",
-                        subtitle:
-                            'Water early in the morning for the best growth!',
+                        subtitle: _tips[_tipIndex],
                         onTap: () {
                           Navigator.push(
                             context,
