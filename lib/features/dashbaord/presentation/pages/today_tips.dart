@@ -24,6 +24,23 @@ class TodayTips extends ConsumerWidget {
           'Keep your plants safe naturally with simple remedies. Use neem oil spray to repel insects and pests. Garlic or chili water can act as a natural insect deterrent. These remedies protect plants without harmful chemicals.',
       readTime: '4 min read',
     ),
+    SavedTip(
+     id: 'tip-sunlight-balance',
+     imageUrl: 'assets/images/tipimage4.png',
+     title: 'Right Amount of Sunlight',
+     description:
+      'Different plants require different sunlight levels. Place sun-loving plants near windows or outdoors, while shade plants thrive in indirect light. Rotate plants regularly for even growth.',
+    readTime: '4 min read',
+   ),
+
+    SavedTip(
+  id: 'tip-soil-health',
+  imageUrl: 'assets/images/tipimage5.png',
+  title: 'Healthy Soil Matters',
+  description:
+      'Good soil provides nutrients and proper drainage. Mix compost or organic matter into soil to improve fertility. Healthy soil helps roots grow stronger and plants stay vibrant.',
+  readTime: '5 min read',
+),
   ];
 
   @override
