@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:hamro_bhagaicha_batch35d/core/utils/snackbar_utils.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/view_model/auth_view_model.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/state/auth_state.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/saved_tip_view_model.dart';
 
 class AccountScreen extends ConsumerStatefulWidget {
   final AuthEntity userEntity;
@@ -21,6 +22,7 @@ class AccountScreen extends ConsumerStatefulWidget {
 class _AccountScreenState extends ConsumerState<AccountScreen> {
   File? _profileImage;
   final ImagePicker _picker = ImagePicker();
+  bool _showSavedTips = false;
 
   Future<void> _pickImage(ImageSource source) async {
     try {
@@ -92,6 +94,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
 
     final authState = ref.watch(authViewModelProvider);
     final currentUser = authState.authEntity ?? widget.userEntity;
+    final savedTips = ref.watch(savedTipViewModelProvider);
 
     ref.listen<AuthState>(authViewModelProvider, (previous, next) {
       if (next.status == AuthStatus.unauthenticated) {
@@ -233,9 +236,56 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                       SizedBox(height: isTablet ? 20 : 10),
                       _activityRow('📦', 'My Orders'),
                       _activityRow('🌱', 'Plants'),
-                      _activityRow('💡', 'Saved Tips'),
+                      _activityRow(
+                        '💡',
+                        'Saved Tips',
+                        trailing: '${savedTips.length}',
+                        onTap: () {
+                          setState(() {
+                            _showSavedTips = !_showSavedTips;
+                          });
+                        },
+                      ),
                       _activityRow('👥', 'Community Contributed'),
                       _activityRow('✉️', 'Chat'),
+                      AnimatedCrossFade(
+                        duration: const Duration(milliseconds: 220),
+                        crossFadeState: _showSavedTips
+                            ? CrossFadeState.showFirst
+                            : CrossFadeState.showSecond,
+                        firstChild: Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(top: 8),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.7),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: savedTips.isEmpty
+                              ? const Text(
+                                  'No saved tips yet.',
+                                  style: TextStyle(color: Colors.black54),
+                                )
+                              : Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    for (final tip in savedTips)
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 4,
+                                        ),
+                                        child: Text(
+                                          '• ${tip.title}',
+                                          style: TextStyle(
+                                            fontSize: isTablet ? 18 : 14,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                        ),
+                        secondChild: const SizedBox.shrink(),
+                      ),
                     ],
                   ),
                 ),
@@ -329,15 +379,33 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
     );
   }
 
-  Widget _activityRow(String icon, String title) {
+  Widget _activityRow(
+    String icon,
+    String title, {
+    VoidCallback? onTap,
+    String? trailing,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Text(icon, style: const TextStyle(fontSize: 20)),
-          const SizedBox(width: 12),
-          Text(title, style: const TextStyle(fontSize: 16)),
-        ],
+      child: InkWell(
+        onTap: onTap,
+        child: Row(
+          children: [
+            Text(icon, style: const TextStyle(fontSize: 20)),
+            const SizedBox(width: 12),
+            Text(title, style: const TextStyle(fontSize: 16)),
+            const Spacer(),
+            if (trailing != null)
+              Text(
+                trailing,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black54,
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

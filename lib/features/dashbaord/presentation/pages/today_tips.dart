@@ -1,13 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/widget/tip_card.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/state/saved_tip_state.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/saved_tip_view_model.dart';
 
-class TodayTips extends StatelessWidget {
+class TodayTips extends ConsumerWidget {
   const TodayTips({super.key});
 
+  static const List<SavedTip> _tips = [
+    SavedTip(
+      id: 'tip-water-time',
+      imageUrl: 'assets/images/tipimage1.png',
+      title: 'The best time to water your plants',
+      description:
+          'The best time to water your plants is early in the morning or late in the evening. During these hours, temperatures are cooler and water absorbs into the soil efficiently. ',
+      readTime: '3 min read',
+    ),
+    SavedTip(
+      id: 'tip-natural-pest-remedies',
+      imageUrl: 'assets/images/tipimage2.png',
+      title: 'Nature Pest Remedies',
+      description:
+          'Keep your plants safe naturally with simple remedies. Use neem oil spray to repel insects and pests. Garlic or chili water can act as a natural insect deterrent. These remedies protect plants without harmful chemicals.',
+      readTime: '4 min read',
+    ),
+  ];
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isTablet = screenWidth > 600; 
+    final isTablet = screenWidth > 600;
+    final savedTips = ref.watch(savedTipViewModelProvider);
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -16,19 +39,15 @@ class TodayTips extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFD8F3DC),
-              Color(0xFF475E4F),
-            ],
+            colors: [Color(0xFFD8F3DC), Color(0xFF475E4F)],
           ),
         ),
-        padding:  EdgeInsets.symmetric(horizontal: isTablet ? 32 :  16),
+        padding: EdgeInsets.symmetric(horizontal: isTablet ? 32 : 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             SizedBox(height: isTablet ? 100 :  90),
+            SizedBox(height: isTablet ? 100 : 90),
 
-          
             Row(
               children: [
                 GestureDetector(
@@ -41,12 +60,12 @@ class TodayTips extends StatelessWidget {
                     width: isTablet ? 40 : 28,
                   ),
                 ),
-                 Expanded(
+                Expanded(
                   child: Center(
                     child: Text(
                       'Hamro Bhagaicha 🌿',
                       style: TextStyle(
-                        fontSize:  isTablet ? 34 : 26,
+                        fontSize: isTablet ? 34 : 26,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
                       ),
@@ -56,8 +75,8 @@ class TodayTips extends StatelessWidget {
               ],
             ),
 
-            SizedBox(height: isTablet ? 80 :  40),
-             Text(
+            SizedBox(height: isTablet ? 80 : 40),
+            Text(
               "Today Tips",
               style: TextStyle(
                 fontSize: isTablet ? 28 : 18,
@@ -65,46 +84,49 @@ class TodayTips extends StatelessWidget {
                 color: Color.fromARGB(221, 128, 56, 1),
               ),
             ),
-            SizedBox(height: isTablet ? 40 :  20),
+            SizedBox(height: isTablet ? 40 : 20),
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(isTablet ? 40 :20),
+                  borderRadius: BorderRadius.circular(isTablet ? 40 : 20),
                 ),
-                padding:
-                     EdgeInsets.symmetric(horizontal: isTablet ? 40 : 20, 
-                     vertical: isTablet ? 11 :  10),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isTablet ? 40 : 20,
+                  vertical: isTablet ? 11 : 10,
+                ),
               ),
-              child:  Text(
+              child: Text(
                 "All Tips",
-                
-                style: TextStyle(color: Colors.white, fontSize: isTablet ? 21 :14),
+
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: isTablet ? 21 : 14,
+                ),
               ),
             ),
-           
 
             const SizedBox(height: 35),
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
-                children: const [
-                  TipCard(
-                    imageUrl: 'assets/images/tipimage1.png',
-                    title: 'The best time to water your plants',
-                    description:
-                        'The best time to water your plants is early in the morning or late in the evening. During these hours, temperatures are cooler and water absorbs into the soil efficiently. ',
-                    readTime: '3 min read',
-                  ),
-                  SizedBox(height: 16),
-                  TipCard(
-                    imageUrl: 'assets/images/tipimage2.png',
-                    title: 'Nature Pest Remedies',
-                    description:
-                        'Keep your plants safe naturally with simple remedies. Use neem oil spray to repel insects and pests. Garlic or chili water can act as a natural insect deterrent. These remedies protect plants without harmful chemicals.',
-                    readTime: '4 min read',
-                  ),
+                children: [
+                  for (var i = 0; i < _tips.length; i++) ...[
+                    TipCard(
+                      imageUrl: _tips[i].imageUrl,
+                      title: _tips[i].title,
+                      description: _tips[i].description,
+                      readTime: _tips[i].readTime,
+                      isSaved: savedTips.any((tip) => tip.id == _tips[i].id),
+                      onToggleSave: () {
+                        ref
+                            .read(savedTipViewModelProvider.notifier)
+                            .toggleTip(_tips[i]);
+                      },
+                    ),
+                    if (i != _tips.length - 1) const SizedBox(height: 16),
+                  ],
                 ],
               ),
             ),

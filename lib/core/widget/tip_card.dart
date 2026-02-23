@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-class TipCard extends StatefulWidget {
+class TipCard extends StatelessWidget {
   final String imageUrl;
   final String title;
   final String description;
   final String readTime;
+  final bool isSaved;
+  final VoidCallback onToggleSave;
 
   const TipCard({
     super.key,
@@ -12,14 +14,9 @@ class TipCard extends StatefulWidget {
     required this.title,
     required this.description,
     required this.readTime,
+    required this.isSaved,
+    required this.onToggleSave,
   });
-
-  @override
-  State<TipCard> createState() => _TipCardState();
-}
-
-class _TipCardState extends State<TipCard> {
-  bool isSaved = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +37,7 @@ class _TipCardState extends State<TipCard> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.asset(
-                    widget.imageUrl,
+                    imageUrl,
                     width: isTablet ? 250 : 150,
                     height: isTablet ? 250 : 150,
                     fit: BoxFit.cover,
@@ -51,21 +48,15 @@ class _TipCardState extends State<TipCard> {
                   top: isTablet ? 12 : 8,
                   right: isTablet ? 12 : 8,
                   child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isSaved = !isSaved;
-                      });
-                    },
+                    onTap: onToggleSave,
                     child: Container(
                       padding: EdgeInsets.all(isTablet ? 10 : 6),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha:0.85),
+                        color: Colors.white.withValues(alpha: 0.85),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        isSaved
-                            ? Icons.bookmark
-                            : Icons.bookmark_border,
+                        isSaved ? Icons.bookmark : Icons.bookmark_border,
                         color: Colors.green,
                         size: isTablet ? 30 : 22,
                       ),
@@ -82,7 +73,7 @@ class _TipCardState extends State<TipCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.title,
+                    title,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: isTablet ? 26 : 16,
@@ -91,7 +82,7 @@ class _TipCardState extends State<TipCard> {
                   ),
                   SizedBox(height: isTablet ? 15 : 6),
                   Text(
-                    widget.description,
+                    description,
                     maxLines: isTablet ? 8 : 4,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -101,7 +92,7 @@ class _TipCardState extends State<TipCard> {
                   ),
                   SizedBox(height: isTablet ? 12 : 8),
                   Text(
-                    widget.readTime,
+                    readTime,
                     style: TextStyle(
                       fontSize: isTablet ? 20 : 12,
                       color: const Color.fromARGB(255, 138, 136, 136),
@@ -116,4 +107,3 @@ class _TipCardState extends State<TipCard> {
     );
   }
 }
-
