@@ -24,8 +24,6 @@ class ApiEndpoints {
     return "http://localhost:$port/api";
   }
 
-
-
   /// Profile image URL
   static String profileImageUrl(String fileName) {
     if (fileName.startsWith('http')) return fileName;
@@ -41,18 +39,21 @@ class ApiEndpoints {
     return "http://localhost:$port/uploads/profile/$fileName";
   }
 
-  
-
   static const Duration connectionTimeout = Duration(seconds: 30);
   static const Duration receiveTimeout = Duration(seconds: 30);
 
   static const String authLogin = '/auth/login';
   static const String authRegister = '/auth/register';
   static const String whoAmI = '/auth/whoami';
+  static const String requestPasswordReset = '/auth/send-reset-password-email';
+  static String resetPassword(String token) => '/auth/reset-password/$token';
   static String getCurrentUserById(String userId) => '/auth/user/$userId';
 
+  // Replace with your real domain that hosts .well-known files.
+  static const String deepLinkDomain = 'your-domain.com';
+  static const String resetPasswordDeepLink =
+      'https://$deepLinkDomain/reset-password';
 
   // Profile picture upload
   static const String updateProfileImage = '/auth/update-profile';
-
 }

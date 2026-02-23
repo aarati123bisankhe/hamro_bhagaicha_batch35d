@@ -10,26 +10,26 @@ import 'package:hamro_bhagaicha_batch35d/core/services/storage/user_session_serv
 import 'package:hamro_bhagaicha_batch35d/features/auth/data/datasource/auth_datasource.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_api_model.dart';
 
-
 final authRemoteDatasourceProvider = Provider<IAuthRemoteDatasource>((ref) {
   final apiClient = ref.read(apiClientProvider);
-  return AuthRemoteDatasource(apiClient: apiClient, 
-  userSessionService: ref.read(userSessionServiceProvider),
+  return AuthRemoteDatasource(
+    apiClient: apiClient,
+    userSessionService: ref.read(userSessionServiceProvider),
     tokenService: ref.read(tokenServiceProvider),
   );
 });
 
 class AuthRemoteDatasource implements IAuthRemoteDatasource {
   final ApiClient _apiClient;
-   final UserSessionService _userSessionService;
-   final TokenService _tokenService;
+  final UserSessionService _userSessionService;
+  final TokenService _tokenService;
 
   AuthRemoteDatasource({
-  required ApiClient apiClient, 
-  required UserSessionService userSessionService, 
-  required TokenService tokenService,}) 
-  : _apiClient = apiClient,
-  _userSessionService = userSessionService,
+    required ApiClient apiClient,
+    required UserSessionService userSessionService,
+    required TokenService tokenService,
+  }) : _apiClient = apiClient,
+       _userSessionService = userSessionService,
        _tokenService = tokenService;
 
   @override
@@ -56,7 +56,7 @@ class AuthRemoteDatasource implements IAuthRemoteDatasource {
     }
     return user;
   }
-  
+
   @override
   Future<AuthApiModel?> login(String email, String password) async {
     final response = await _apiClient.post(
@@ -65,11 +65,13 @@ class AuthRemoteDatasource implements IAuthRemoteDatasource {
     );
     if (response.data['success'] == true) {
       debugPrint('Login response: ${response.data}');
-      final data = response.data['data'] as Map<String, dynamic>? ?? <String, dynamic>{};
+      final data =
+          response.data['data'] as Map<String, dynamic>? ?? <String, dynamic>{};
       final user = AuthApiModel.fromJson(data);
 
       // Defensive user id extraction (backend may return _id or id)
-      final userId = user.authId ?? data['_id']?.toString() ?? data['id']?.toString();
+      final userId =
+          user.authId ?? data['_id']?.toString() ?? data['id']?.toString();
       if (userId == null || userId.isEmpty) {
         throw Exception('Login response missing user id');
       }
@@ -95,9 +97,6 @@ class AuthRemoteDatasource implements IAuthRemoteDatasource {
     return null;
   }
 
-
-  
-
   @override
   Future<String> updateProfileImage(File imageFile) async {
     final token = await _tokenService.getToken();
@@ -119,7 +118,8 @@ class AuthRemoteDatasource implements IAuthRemoteDatasource {
       ),
     );
 
-    final dynamic profileUrlRaw = response.data['data']?['profileUrl'] ?? response.data['profileUrl'];
+    final dynamic profileUrlRaw =
+        response.data['data']?['profileUrl'] ?? response.data['profileUrl'];
 
     if (profileUrlRaw == null) {
       debugPrint('Update profile response: ${response.data}');
@@ -133,13 +133,16 @@ class AuthRemoteDatasource implements IAuthRemoteDatasource {
 
     return profileUrl;
   }
-  
+
   @override
-  Future<AuthApiModel?> getCurrentUserById(String userId) async{
+  Future<AuthApiModel?> getCurrentUserById(String userId) async {
     final token = await _tokenService.getToken();
     final response = await _apiClient.get(
       ApiEndpoints.getCurrentUserById(userId),
-      options: Options(headers: {'Authorization': 'Bearer $token'},contentType: 'multipart/form-data',),
+      options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+        contentType: 'multipart/form-data',
+      ),
     );
     if (response.data['success'] == true) {
       final data = response.data['data'] as Map<String, dynamic>;
@@ -147,6 +150,31 @@ class AuthRemoteDatasource implements IAuthRemoteDatasource {
     }
     return null;
   }
+
+  @override
+  Future<void> requestPasswordReset({
+    required String email,
+    required String platform,
+    String? resetUrl,
+  }) async {
+    await _apiClient.post(
+      ApiEndpoints.requestPasswordReset,
+      data: {
+        'email': email,
+        'platform': platform,
+        if (resetUrl != null && resetUrl.isNotEmpty) 'resetUrl': resetUrl,
+      },
+    );
+  }
+
+  @override
+  Future<void> resetPassword({
+    required String token,
+    required String newPassword,
+  }) async {
+    await _apiClient.post(
+      ApiEndpoints.resetPassword(token),
+      data: {'newPassword': newPassword},
+    );
+  }
 }
-
-

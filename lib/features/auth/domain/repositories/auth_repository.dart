@@ -10,6 +10,15 @@ abstract interface class IAuthRepository {
   // Future<Either<Failure, AuthEntity>> getUserByPhoneNumber(String phoneNumber);
   Future<Either<Failure, AuthEntity>> getCurrentUserById(String userId);
   Future<Either<Failure, bool>> logout();
-   Future<Either<Failure, String>> updateProfileImage(File image);
+  Future<Either<Failure, String>> updateProfileImage(File image);
+  Future<Either<Failure, bool>> requestPasswordReset({
+    required String email,
+    required String platform,
+    String? resetUrl,
+  });
+  Future<Either<Failure, bool>> resetPassword({
+    required String token,
+    required String newPassword,
+  });
   // Future<Either<Failure, bool>> isPhoneNumberExists(String phoneNumber);
 }

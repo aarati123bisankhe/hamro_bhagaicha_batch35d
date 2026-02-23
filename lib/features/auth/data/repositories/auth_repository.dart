@@ -15,7 +15,7 @@ import 'package:hamro_bhagaicha_batch35d/features/auth/domain/repositories/auth_
 
 /// Provider
 final authRepositoryProvider = Provider<IAuthRepository>((ref) {
-final authLocalDatasource = ref.read(authLocalDatasourceProvider);
+  final authLocalDatasource = ref.read(authLocalDatasourceProvider);
 
   final authRemoteDatasource = ref.read(authRemoteDatasourceProvider);
   final networkInfo = ref.read(networkInfoProvider);
@@ -36,10 +36,9 @@ class AuthRepository implements IAuthRepository {
     required IAuthLocalDatasource authDatasource,
     required IAuthRemoteDatasource authRemoteDatasource,
     required NetworkInfo networkInfo,
-  })  : _authDatasource = authDatasource,
-        _authRemoteDatasource = authRemoteDatasource,
-        _networkInfo = networkInfo;
-
+  }) : _authDatasource = authDatasource,
+       _authRemoteDatasource = authRemoteDatasource,
+       _networkInfo = networkInfo;
 
   // @override
   // Future<Either<Failure, AuthEntity>> login(String email, String password) async {
@@ -73,7 +72,10 @@ class AuthRepository implements IAuthRepository {
   //   }
   // }
   @override
-  Future<Either<Failure, AuthEntity>> login(String email, String password) async {
+  Future<Either<Failure, AuthEntity>> login(
+    String email,
+    String password,
+  ) async {
     if (await _networkInfo.isConnected) {
       try {
         final apiModel = await _authRemoteDatasource.login(email, password);
@@ -137,7 +139,6 @@ class AuthRepository implements IAuthRepository {
   //   }
   // }
 
-
   // @override
   // Future<Either<Failure, AuthEntity>> register(AuthEntity user) async {
   //   if (await _networkInfo.isConnected) {
@@ -148,7 +149,6 @@ class AuthRepository implements IAuthRepository {
   //       await _authRemoteDatasource.register(apiModel);
 
   //       await _authDatasource.register(AuthHiveModel.fromEntity(user));
-
 
   //       return const Right(result.toEntity());
   //     } on DioException catch (e) {
@@ -180,7 +180,7 @@ class AuthRepository implements IAuthRepository {
   //       return Left(LocalDatabaseFailure(message: e.toString()));
   //     }
   //   }
-    
+
   // }
   @override
   Future<Either<Failure, AuthEntity>> register(AuthEntity user) async {
@@ -227,27 +227,29 @@ class AuthRepository implements IAuthRepository {
       }
     }
   }
-  
+
   @override
   Future<Either<Failure, bool>> logout() async {
-      try {
-    await _authDatasource.logout();
-    return const Right(true);
-   }catch (e) {
-    return Left(LocalDatabaseFailure(message: e.toString()));
-   }
+    try {
+      await _authDatasource.logout();
+      return const Right(true);
+    } catch (e) {
+      return Left(LocalDatabaseFailure(message: e.toString()));
+    }
   }
-
-
 
   @override
   Future<Either<Failure, String>> updateProfileImage(File imageFile) async {
     if (await _networkInfo.isConnected) {
       try {
-        final fileName = await _authRemoteDatasource.updateProfileImage(imageFile);
-        
-        if(fileName.isEmpty) {
-          return const Left(ApiFailure(message: 'Profile upload returned empty filename'));
+        final fileName = await _authRemoteDatasource.updateProfileImage(
+          imageFile,
+        );
+
+        if (fileName.isEmpty) {
+          return const Left(
+            ApiFailure(message: 'Profile upload returned empty filename'),
+          );
         }
 
         return Right(fileName);
@@ -258,9 +260,9 @@ class AuthRepository implements IAuthRepository {
       return const Left(ApiFailure(message: 'No internet connection'));
     }
   }
-  
+
   @override
-  Future<Either<Failure, AuthEntity>> getCurrentUserById(String userId) async{
+  Future<Either<Failure, AuthEntity>> getCurrentUserById(String userId) async {
     if (await _networkInfo.isConnected) {
       try {
         final apiModel = await _authRemoteDatasource.getCurrentUserById(userId);
@@ -292,7 +294,60 @@ class AuthRepository implements IAuthRepository {
       }
     }
   }
-  
+
+  @override
+  Future<Either<Failure, bool>> requestPasswordReset({
+    required String email,
+    required String platform,
+    String? resetUrl,
+  }) async {
+    if (!await _networkInfo.isConnected) {
+      return const Left(ApiFailure(message: 'No internet connection'));
+    }
+
+    try {
+      await _authRemoteDatasource.requestPasswordReset(
+        email: email,
+        platform: platform,
+        resetUrl: resetUrl,
+      );
+      return const Right(true);
+    } on DioException catch (e) {
+      return Left(
+        ApiFailure(
+          message: e.response?.data['message'] ?? 'Failed to send reset email',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> resetPassword({
+    required String token,
+    required String newPassword,
+  }) async {
+    if (!await _networkInfo.isConnected) {
+      return const Left(ApiFailure(message: 'No internet connection'));
+    }
+
+    try {
+      await _authRemoteDatasource.resetPassword(
+        token: token,
+        newPassword: newPassword,
+      );
+      return const Right(true);
+    } on DioException catch (e) {
+      return Left(
+        ApiFailure(
+          message: e.response?.data['message'] ?? 'Failed to reset password',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
+  }
 }
-
-

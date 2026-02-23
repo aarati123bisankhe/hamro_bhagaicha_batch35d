@@ -4,11 +4,14 @@ import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/get_curren
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/login_usecase.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/logout_usecase.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/register_usecase.dart';
+import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/request_password_reset_usecase.dart';
+import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/reset_password_usecase.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/update_profile_image_usecase.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/state/auth_state.dart';
 
-final authViewModelProvider =
-    NotifierProvider<AuthViewModel, AuthState>(AuthViewModel.new);
+final authViewModelProvider = NotifierProvider<AuthViewModel, AuthState>(
+  AuthViewModel.new,
+);
 
 class AuthViewModel extends Notifier<AuthState> {
   late final RegisterUsecase _registerUseCase;
@@ -16,6 +19,8 @@ class AuthViewModel extends Notifier<AuthState> {
   late final LogoutUsecase _logoutUsecase;
   late final GetCurrentUserUsecase _getCurrentUserUsecase;
   late final UpdateProfileImageUseCase _updateProfileImageUseCase;
+  late final RequestPasswordResetUsecase _requestPasswordResetUsecase;
+  late final ResetPasswordUsecase _resetPasswordUsecase;
 
   @override
   AuthState build() {
@@ -24,10 +29,13 @@ class AuthViewModel extends Notifier<AuthState> {
     _logoutUsecase = ref.read(logoutUsecaseProvider);
     _getCurrentUserUsecase = ref.read(getCurrentUserUsecaseProvider);
     _updateProfileImageUseCase = ref.read(updateProfileImageUsecaseProvider);
+    _requestPasswordResetUsecase = ref.read(
+      requestPasswordResetUsecaseProvider,
+    );
+    _resetPasswordUsecase = ref.read(resetPasswordUsecaseProvider);
 
     return const AuthState(status: AuthStatus.checking);
   }
-
 
   Future<void> register({
     required String fullName,
@@ -61,8 +69,7 @@ class AuthViewModel extends Notifier<AuthState> {
     );
   }
 
-
-Future<void> login({required String email, required String password}) async {
+  Future<void> login({required String email, required String password}) async {
     state = state.copyWith(status: AuthStatus.loading);
 
     final result = await _loginUsecase(
@@ -102,7 +109,7 @@ Future<void> login({required String email, required String password}) async {
       },
     );
   }
-  
+
   Future<void> logout() async {
     state = state.copyWith(status: AuthStatus.loading);
 
@@ -130,8 +137,8 @@ Future<void> login({required String email, required String password}) async {
       },
     );
   }
-  
-Future<void> updateProfileImage(File image) async {
+
+  Future<void> updateProfileImage(File image) async {
     state = state.copyWith(status: AuthStatus.loading);
 
     final result = await _updateProfileImageUseCase(image);
@@ -146,10 +153,66 @@ Future<void> updateProfileImage(File image) async {
       (imageName) {
         state = state.copyWith(
           status: AuthStatus.loaded,
-          uploadProfilePhotoName: imageName
+          uploadProfilePhotoName: imageName,
+        );
+      },
+    );
+  }
+
+  Future<void> requestPasswordReset({
+    required String email,
+    required String platform,
+    String? resetUrl,
+  }) async {
+    state = state.copyWith(status: AuthStatus.loading);
+
+    final result = await _requestPasswordResetUsecase(
+      RequestPasswordResetUsecaseParams(
+        email: email,
+        platform: platform,
+        resetUrl: resetUrl,
+      ),
+    );
+
+    result.fold(
+      (failure) {
+        state = state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: failure.message,
+        );
+      },
+      (_) {
+        state = state.copyWith(
+          status: AuthStatus.passwordResetEmailSent,
+          errorMessage: null,
+        );
+      },
+    );
+  }
+
+  Future<void> resetPassword({
+    required String token,
+    required String newPassword,
+  }) async {
+    state = state.copyWith(status: AuthStatus.loading);
+
+    final result = await _resetPasswordUsecase(
+      ResetPasswordUsecaseParams(token: token, newPassword: newPassword),
+    );
+
+    result.fold(
+      (failure) {
+        state = state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: failure.message,
+        );
+      },
+      (_) {
+        state = state.copyWith(
+          status: AuthStatus.passwordResetSuccess,
+          errorMessage: null,
         );
       },
     );
   }
 }
-

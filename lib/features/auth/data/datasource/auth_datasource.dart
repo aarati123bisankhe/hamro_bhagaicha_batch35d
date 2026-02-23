@@ -4,7 +4,7 @@ import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_api_model
 import 'package:hamro_bhagaicha_batch35d/features/auth/data/model/auth_hive_model.dart';
 
 abstract interface class IAuthLocalDatasource {
-   Future<AuthHiveModel?> register(AuthHiveModel user);
+  Future<AuthHiveModel?> register(AuthHiveModel user);
   Future<AuthHiveModel?> login(String email, String password);
   Future<AuthHiveModel?> getCurrentUser();
   Future<bool> logout();
@@ -19,4 +19,13 @@ abstract interface class IAuthRemoteDatasource {
   Future<AuthApiModel?> login(String email, String password);
   Future<AuthApiModel?> getCurrentUserById(String userId);
   Future<String> updateProfileImage(File imageFile);
+  Future<void> requestPasswordReset({
+    required String email,
+    required String platform,
+    String? resetUrl,
+  });
+  Future<void> resetPassword({
+    required String token,
+    required String newPassword,
+  });
 }
