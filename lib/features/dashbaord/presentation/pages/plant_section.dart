@@ -36,6 +36,7 @@ class PlantScreen extends ConsumerStatefulWidget {
 
 class _PlantScreenState extends ConsumerState<PlantScreen> {
   PlantFilter _selectedFilter = PlantFilter.all;
+  String _searchQuery = '';
 
   static const List<PlantItem> _allPlants = [
     PlantItem(
@@ -164,79 +165,32 @@ class _PlantScreenState extends ConsumerState<PlantScreen> {
   ];
 
   List<PlantItem> get _filteredPlants {
-    switch (_selectedFilter) {
-      case PlantFilter.indoor:
-        return _allPlants
+    final query = _searchQuery.trim().toLowerCase();
+
+    final categoryFiltered = switch (_selectedFilter) {
+      PlantFilter.indoor =>
+        _allPlants
             .where((plant) => plant.category == PlantCategory.indoor)
-            .toList();
-      case PlantFilter.outdoor:
-        return _allPlants
+            .toList(),
+      PlantFilter.outdoor =>
+        _allPlants
             .where((plant) => plant.category == PlantCategory.outdoor)
-            .toList();
-      case PlantFilter.all:
-        return _allPlants;
-    }
+            .toList(),
+      PlantFilter.all => _allPlants,
+    };
+
+    if (query.isEmpty) return categoryFiltered;
+
+    return categoryFiltered
+        .where(
+          (plant) =>
+              plant.name.toLowerCase().contains(query) ||
+              plant.description.toLowerCase().contains(query),
+        )
+        .toList();
   }
 
-  Widget _buildFilterChip({
-    required String label,
-    required bool selected,
-    required VoidCallback onTap,
-    required bool isTablet,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeOutCubic,
-        margin: const EdgeInsets.only(right: 8),
-        padding: EdgeInsets.symmetric(
-          horizontal: isTablet ? 25 : 15,
-          vertical: isTablet ? 11 : 6,
-        ),
-        decoration: BoxDecoration(
-          color: selected ? Colors.green : Colors.white,
-          borderRadius: BorderRadius.circular(isTablet ? 25 : 10),
-          border: Border.all(color: Colors.green),
-          boxShadow: selected
-              ? [
-                  BoxShadow(
-                    color: Colors.green.withValues(alpha: 0.25),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ]
-              : null,
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: isTablet ? 20 : 14,
-            fontWeight: FontWeight.w600,
-            color: selected ? Colors.white : Colors.green,
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _addToCart(PlantItem plant) {
-    ref
-        .read(cartViewModelProvider.notifier)
-        .addItem(
-          CartItem(
-            id: 'plant-${plant.name}-${plant.imagePath}',
-            imagePath: plant.imagePath,
-            name: plant.name,
-            price: plant.price,
-          ),
-        );
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const DashboardScreen(initialIndex: 3)),
-    );
-  }
+  String get _activeResultKey => '${_selectedFilter.name}::$_searchQuery';
 
   @override
   Widget build(BuildContext context) {
@@ -293,6 +247,11 @@ class _PlantScreenState extends ConsumerState<PlantScreen> {
             ),
             SizedBox(height: isTablet ? 60 : 30),
             TextField(
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value;
+                });
+              },
               decoration: InputDecoration(
                 hintText: 'Search for a specific plant...',
                 prefixIcon: Icon(Icons.search, size: isTablet ? 35 : 24),
@@ -358,33 +317,105 @@ class _PlantScreenState extends ConsumerState<PlantScreen> {
                     ),
                   );
                 },
-                child: GridView.builder(
-                  key: ValueKey(_selectedFilter),
-                  padding: EdgeInsets.zero,
-                  itemCount: filteredPlants.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: isTablet ? 3 : 2,
-                    mainAxisSpacing: isTablet ? 20 : 15,
-                    crossAxisSpacing: isTablet ? 20 : 15,
-                    childAspectRatio: isTablet ? 0.8 : 0.65,
-                  ),
-                  itemBuilder: (context, index) {
-                    final plant = filteredPlants[index];
-                    return PlantCard(
-                      imagePath: plant.imagePath,
-                      name: plant.name,
-                      description: plant.description,
-                      price: plant.price,
-                      rating: plant.rating,
-                      onAdd: () => _addToCart(plant),
-                    );
-                  },
-                ),
+                child: filteredPlants.isEmpty
+                    ? Center(
+                        key: ValueKey(_activeResultKey),
+                        child: Text(
+                          'No plants found for "$_searchQuery".',
+                          style: TextStyle(
+                            fontSize: isTablet ? 20 : 15,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      )
+                    : GridView.builder(
+                        key: ValueKey(_activeResultKey),
+                        padding: EdgeInsets.zero,
+                        itemCount: filteredPlants.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: isTablet ? 3 : 2,
+                          mainAxisSpacing: isTablet ? 20 : 15,
+                          crossAxisSpacing: isTablet ? 20 : 15,
+                          childAspectRatio: isTablet ? 0.8 : 0.65,
+                        ),
+                        itemBuilder: (context, index) {
+                          final plant = filteredPlants[index];
+                          return PlantCard(
+                            imagePath: plant.imagePath,
+                            name: plant.name,
+                            description: plant.description,
+                            price: plant.price,
+                            rating: plant.rating,
+                            onAdd: () => _addToCart(plant),
+                          );
+                        },
+                      ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildFilterChip({
+    required String label,
+    required bool selected,
+    required VoidCallback onTap,
+    required bool isTablet,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOutCubic,
+        margin: const EdgeInsets.only(right: 8),
+        padding: EdgeInsets.symmetric(
+          horizontal: isTablet ? 25 : 15,
+          vertical: isTablet ? 11 : 6,
+        ),
+        decoration: BoxDecoration(
+          color: selected ? Colors.green : Colors.white,
+          borderRadius: BorderRadius.circular(isTablet ? 25 : 10),
+          border: Border.all(color: Colors.green),
+          boxShadow: selected
+              ? [
+                  BoxShadow(
+                    color: Colors.green.withValues(alpha: 0.25),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
+              : null,
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: isTablet ? 20 : 14,
+            fontWeight: FontWeight.w600,
+            color: selected ? Colors.white : Colors.green,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _addToCart(PlantItem plant) {
+    ref
+        .read(cartViewModelProvider.notifier)
+        .addItem(
+          CartItem(
+            id: 'plant-${plant.name}-${plant.imagePath}',
+            imagePath: plant.imagePath,
+            name: plant.name,
+            price: plant.price,
+          ),
+        );
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const DashboardScreen(initialIndex: 3)),
     );
   }
 }
