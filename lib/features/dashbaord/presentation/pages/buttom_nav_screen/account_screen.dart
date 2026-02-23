@@ -10,7 +10,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:hamro_bhagaicha_batch35d/core/utils/snackbar_utils.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/view_model/auth_view_model.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/state/auth_state.dart';
-import 'package:hamro_bhagaicha_batch35d/app/theme/theme_mode_provider.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/chatsection.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/communitycontributed.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/savetips.dart';
@@ -100,8 +99,6 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
     final authState = ref.watch(authViewModelProvider);
     final currentUser = authState.authEntity ?? widget.userEntity;
     final savedTips = ref.watch(savedTipViewModelProvider);
-    final themeMode = ref.watch(appThemeModeProvider);
-    final isDarkMode = themeMode == ThemeMode.dark;
 
     ref.listen<AuthState>(authViewModelProvider, (previous, next) {
       if (next.status == AuthStatus.unauthenticated) {
@@ -244,18 +241,6 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                       SizedBox(height: isTablet ? 20 : 10),
                       _activityRow('📦', 'My Orders'),
                       _activityRow('🌱', 'Plants'),
-                      _activityRow(
-                        '🌙',
-                        'Dark Mode',
-                        trailingWidget: Switch(
-                          value: isDarkMode,
-                          onChanged: (value) {
-                            ref
-                                .read(appThemeModeProvider.notifier)
-                                .setDarkMode(value);
-                          },
-                        ),
-                      ),
                       _activityRow(
                         '💡',
                         'Saved Tips',
