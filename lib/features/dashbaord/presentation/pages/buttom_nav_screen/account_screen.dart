@@ -14,6 +14,7 @@ import 'package:hamro_bhagaicha_batch35d/app/theme/theme_mode_provider.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/chatsection.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/communitycontributed.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/savetips.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/system.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/saved_tip_view_model.dart';
 
 class AccountScreen extends ConsumerStatefulWidget {
@@ -158,7 +159,14 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                           size: isTablet ? 36 : 24,
                           color: Colors.black87,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const SystemPage(),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],
