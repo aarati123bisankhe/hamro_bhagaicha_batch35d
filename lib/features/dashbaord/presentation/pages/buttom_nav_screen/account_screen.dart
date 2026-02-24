@@ -171,7 +171,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                   ],
                 ),
 
-                SizedBox(height: isTablet ? 40 : 50),
+                SizedBox(height: isTablet ? 40 : 30),
 
                 GestureDetector(
                   onTap: _showImageSourceDialog,
@@ -404,7 +404,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
     Widget? trailingWidget,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: InkWell(
         onTap: onTap,
         child: Row(

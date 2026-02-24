@@ -16,7 +16,8 @@ class _SystemPageState extends ConsumerState<SystemPage> {
   @override
   Widget build(BuildContext context) {
     final themeMode = ref.watch(appThemeModeProvider);
-    final isDark = themeMode == ThemeMode.dark;
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -33,14 +34,65 @@ class _SystemPageState extends ConsumerState<SystemPage> {
           padding: const EdgeInsets.all(16),
           children: [
             _settingCard(
-              child: SwitchListTile(
-                value: isDark,
-                title: const Text('Dark Mode'),
-                subtitle: const Text('Turn app theme dark/light'),
-                secondary: const Icon(Icons.dark_mode_outlined),
-                onChanged: (value) {
-                  ref.read(appThemeModeProvider.notifier).setDarkMode(value);
-                },
+              child: Padding(
+                padding: const EdgeInsets.all(14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.palette_outlined,
+                          color: colorScheme.primary,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Appearance',
+                          style: textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Choose Light, Dark, or Auto based on your device.',
+                      style: textTheme.bodySmall,
+                    ),
+                    const SizedBox(height: 14),
+                    SegmentedButton<ThemeMode>(
+                      showSelectedIcon: false,
+                      style: ButtonStyle(
+                        minimumSize: WidgetStateProperty.all(
+                          const Size.fromHeight(44),
+                        ),
+                      ),
+                      segments: const [
+                        ButtonSegment<ThemeMode>(
+                          value: ThemeMode.light,
+                          icon: Icon(Icons.light_mode_outlined),
+                          label: Text('Light'),
+                        ),
+                        ButtonSegment<ThemeMode>(
+                          value: ThemeMode.dark,
+                          icon: Icon(Icons.dark_mode_outlined),
+                          label: Text('Dark'),
+                        ),
+                        ButtonSegment<ThemeMode>(
+                          value: ThemeMode.system,
+                          icon: Icon(Icons.brightness_auto_outlined),
+                          label: Text('Auto'),
+                        ),
+                      ],
+                      selected: {themeMode},
+                      onSelectionChanged: (selection) {
+                        ref
+                            .read(appThemeModeProvider.notifier)
+                            .setThemeMode(selection.first);
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 12),
@@ -96,9 +148,13 @@ class _SystemPageState extends ConsumerState<SystemPage> {
   }
 
   Widget _settingCard({required Widget child}) {
+    final isDark = isDarkMode(context);
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.85),
+        color: (isDark ? Colors.black : Colors.white).withValues(alpha: 0.82),
+        border: Border.all(
+          color: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.06),
+        ),
         borderRadius: BorderRadius.circular(14),
       ),
       child: child,

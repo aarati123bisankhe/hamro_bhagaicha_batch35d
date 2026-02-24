@@ -23,7 +23,7 @@ class HomeButtonCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all(isTablet ? 29 : 20),
+        padding: EdgeInsets.all(isTablet ? 29 : 10),
         decoration: BoxDecoration(
           color: const Color(0xFFE3EED9),
           borderRadius: BorderRadius.circular(20),

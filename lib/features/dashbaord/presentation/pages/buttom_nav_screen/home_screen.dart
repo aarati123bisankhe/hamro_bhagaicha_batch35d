@@ -83,7 +83,7 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: isTablet ? 45 : 50),
+                SizedBox(height: isTablet ? 45 : 30),
 
                 Center(
                   child: Text(
@@ -170,7 +170,7 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen> {
                   ),
                 ),
 
-                SizedBox(height: 30),
+                SizedBox(height: 20),
                 Expanded(
                   child: ListView(
                     padding: EdgeInsets.zero,
@@ -190,7 +190,7 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen> {
                         },
                       ),
 
-                      SizedBox(height: isTablet ? 24 : 20),
+                      SizedBox(height: isTablet ? 24 : 15),
                       HomeButtonCard(
                         icon: '🪴',
                         title: 'Pot',
@@ -205,7 +205,7 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen> {
                           );
                         },
                       ),
-                      SizedBox(height: isTablet ? 24 : 20),
+                      SizedBox(height: isTablet ? 24 : 15),
                       HomeButtonCard(
                         icon: '🌱🪴',
                         title: 'Plant + Pot Combo',
@@ -220,7 +220,7 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen> {
                           );
                         },
                       ),
-                      SizedBox(height: isTablet ? 24 : 20),
+                      SizedBox(height: isTablet ? 24 : 15),
                       HomeButtonCard(
                         icon: '💡',
                         title: "Today's Tips",

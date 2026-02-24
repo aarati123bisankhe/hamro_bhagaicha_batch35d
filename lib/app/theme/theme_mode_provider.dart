@@ -7,18 +7,40 @@ final appThemeModeProvider = NotifierProvider<AppThemeModeNotifier, ThemeMode>(
 );
 
 class AppThemeModeNotifier extends Notifier<ThemeMode> {
-  static const String _themeModeKey = 'app_theme_mode_dark';
+  static const String _themeModeKey = 'app_theme_mode';
+  static const String _legacyThemeModeKey = 'app_theme_mode_dark';
 
   @override
   ThemeMode build() {
     final prefs = ref.read(sharedPreferencesProvider);
-    final isDark = prefs.getBool(_themeModeKey) ?? false;
-    return isDark ? ThemeMode.dark : ThemeMode.light;
+    final storedMode = prefs.getString(_themeModeKey);
+    if (storedMode != null) {
+      return _themeModeFromStorage(storedMode);
+    }
+
+    final legacyDarkFlag = prefs.getBool(_legacyThemeModeKey);
+    if (legacyDarkFlag != null) {
+      return legacyDarkFlag ? ThemeMode.dark : ThemeMode.light;
+    }
+
+    return ThemeMode.system;
   }
 
-  Future<void> setDarkMode(bool enabled) async {
-    state = enabled ? ThemeMode.dark : ThemeMode.light;
+  Future<void> setThemeMode(ThemeMode mode) async {
+    state = mode;
     final prefs = ref.read(sharedPreferencesProvider);
-    await prefs.setBool(_themeModeKey, enabled);
+    await prefs.setString(_themeModeKey, mode.name);
+  }
+
+  ThemeMode _themeModeFromStorage(String value) {
+    switch (value) {
+      case 'light':
+        return ThemeMode.light;
+      case 'dark':
+        return ThemeMode.dark;
+      case 'system':
+      default:
+        return ThemeMode.system;
+    }
   }
 }
