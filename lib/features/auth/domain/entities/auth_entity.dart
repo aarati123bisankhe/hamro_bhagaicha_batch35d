@@ -1,5 +1,5 @@
 class AuthEntity {
-  final String? authId;      // nullable
+  final String? authId;   
   final String fullname;
   final String email;
   final String password;
@@ -26,7 +26,7 @@ class AuthEntity {
     String? address,
     String? phoneNumber,
     String? profilePicture,
-    // String? role,
+
   }) {
     return AuthEntity(
       authId: authId ?? this.authId,
