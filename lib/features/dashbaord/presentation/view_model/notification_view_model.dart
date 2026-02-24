@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/domain/entities/notification_entity.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/domain/usecase/get_notifications_usecase.dart';
@@ -34,30 +36,55 @@ class NotificationViewModel extends Notifier<NotificationState> {
       errorMessage: null,
     );
 
-    final result = await _getNotificationsUsecase();
+    try {
+      final result = await _getNotificationsUsecase().timeout(
+        const Duration(seconds: 8),
+      );
 
-    result.fold(
-      (failure) {
-        state = state.copyWith(
-          status: NotificationStatus.error,
-          errorMessage: failure.message,
-        );
-      },
-      (notifications) {
-        final resolvedNotifications = notifications.isEmpty
-            ? _defaultNotifications()
-            : notifications;
+      result.fold(
+        (failure) {
+          final fallbackNotifications = _defaultNotifications();
+          fallbackNotifications.sort(
+            (a, b) => b.createdAt.compareTo(a.createdAt),
+          );
+          state = state.copyWith(
+            status: NotificationStatus.loaded,
+            notifications: fallbackNotifications,
+            errorMessage: failure.message,
+          );
+        },
+        (notifications) {
+          final resolvedNotifications = notifications.isEmpty
+              ? _defaultNotifications()
+              : notifications;
 
-        resolvedNotifications.sort(
-          (a, b) => b.createdAt.compareTo(a.createdAt),
-        );
-        state = state.copyWith(
-          status: NotificationStatus.loaded,
-          notifications: resolvedNotifications,
-          errorMessage: null,
-        );
-      },
-    );
+          resolvedNotifications.sort(
+            (a, b) => b.createdAt.compareTo(a.createdAt),
+          );
+          state = state.copyWith(
+            status: NotificationStatus.loaded,
+            notifications: resolvedNotifications,
+            errorMessage: null,
+          );
+        },
+      );
+    } on TimeoutException {
+      final fallbackNotifications = _defaultNotifications();
+      fallbackNotifications.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      state = state.copyWith(
+        status: NotificationStatus.loaded,
+        notifications: fallbackNotifications,
+        errorMessage: 'Notification request timed out',
+      );
+    } catch (e) {
+      final fallbackNotifications = _defaultNotifications();
+      fallbackNotifications.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      state = state.copyWith(
+        status: NotificationStatus.loaded,
+        notifications: fallbackNotifications,
+        errorMessage: e.toString(),
+      );
+    }
   }
 
   List<NotificationEntity> _defaultNotifications() {
