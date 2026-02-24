@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/api/api_endpoint.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/view_model/auth_view_model.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/combo_set_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/nearest_nursery_search_page.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/notification.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/plant_section.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/pot_section_screen.dart';
@@ -142,6 +143,15 @@ class _DashboardHomeScreenState extends ConsumerState<DashboardHomeScreen> {
 
                 SizedBox(height: isTablet ? 50 : 20),
                 TextField(
+                  readOnly: true,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SearchNearestNurseryPage(),
+                      ),
+                    );
+                  },
                   decoration: InputDecoration(
                     hintText: 'Search nearest nursery...',
                     prefixIcon: Icon(Icons.search, size: isTablet ? 35 : 20),
