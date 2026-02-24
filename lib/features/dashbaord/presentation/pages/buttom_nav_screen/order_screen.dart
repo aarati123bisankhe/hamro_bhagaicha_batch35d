@@ -48,11 +48,43 @@ class OrderScreen extends ConsumerWidget {
     SnackbarUtils.showInfo(context, 'Order #${order.id} has been cancelled.');
   }
 
+  Future<void> _deleteCancelledOrder(
+    BuildContext context,
+    WidgetRef ref,
+    OrderEntity order,
+  ) async {
+    final shouldDelete = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Cancelled Order'),
+        content: Text(
+          'Permanently delete cancelled Order #${order.id} from your list?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('No'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldDelete != true || !context.mounted) return;
+
+    ref.read(orderViewModelProvider.notifier).deleteOrder(order.id);
+    SnackbarUtils.showInfo(context, 'Cancelled order #${order.id} deleted.');
+  }
+
   Widget _buildOrderCard(
     BuildContext context,
     WidgetRef ref,
     OrderEntity order, {
     bool showCancelAction = false,
+    bool showDeleteAction = false,
   }) {
     final orderedAt = DateFormat('yyyy-MM-dd hh:mm a').format(order.orderedAt);
 
@@ -108,6 +140,16 @@ class OrderScreen extends ConsumerWidget {
               child: OutlinedButton(
                 onPressed: () => _cancelPlacedOrder(context, ref, order),
                 child: const Text('Cancel Order'),
+              ),
+            ),
+          ],
+          if (showDeleteAction) ...[
+            const SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => _deleteCancelledOrder(context, ref, order),
+                child: const Text('Delete'),
               ),
             ),
           ],
@@ -201,7 +243,12 @@ class OrderScreen extends ConsumerWidget {
                       ...cancelledOrders.map(
                         (order) => Padding(
                           padding: const EdgeInsets.only(bottom: 12),
-                          child: _buildOrderCard(context, ref, order),
+                          child: _buildOrderCard(
+                            context,
+                            ref,
+                            order,
+                            showDeleteAction: true,
+                          ),
                         ),
                       ),
                   ],

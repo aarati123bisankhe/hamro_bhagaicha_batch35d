@@ -21,4 +21,8 @@ class OrderViewModel extends Notifier<List<OrderEntity>> {
         )
         .toList();
   }
+
+  void deleteOrder(String orderId) {
+    state = state.where((order) => order.id != orderId).toList();
+  }
 }
