@@ -12,7 +12,13 @@ class OrderViewModel extends Notifier<List<OrderEntity>> {
     state = [order, ...state];
   }
 
-  void removeOrder(String orderId) {
-    state = state.where((order) => order.id != orderId).toList();
+  void cancelOrder(String orderId) {
+    state = state
+        .map(
+          (order) => order.id == orderId
+              ? order.copyWith(status: OrderStatus.cancelled)
+              : order,
+        )
+        .toList();
   }
 }
