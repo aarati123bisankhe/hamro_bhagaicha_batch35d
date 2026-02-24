@@ -52,6 +52,7 @@ class ApiEndpoints {
   static const String markAllNotificationsRead = '/notifications/mark-all-read';
   static String markNotificationRead(String notificationId) =>
       '/notifications/$notificationId/read';
+  static const String sendOrderConfirmationSms = '/sms/send-order-confirmation';
 
   // Replace with your real domain that hosts .well-known files.
   static const String deepLinkDomain = 'your-domain.com';

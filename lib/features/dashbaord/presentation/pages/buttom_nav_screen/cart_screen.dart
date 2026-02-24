@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/theme/app_background.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/buttom_nav_screen/checkout_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/cart_view_model.dart';
 
 class CartScreen extends ConsumerWidget {
@@ -130,18 +131,45 @@ class CartScreen extends ConsumerWidget {
               ),
             Container(
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
-              decoration: const BoxDecoration(color: Colors.white),
-              child: Row(
+              decoration: BoxDecoration(
+                color: isDarkMode(context)
+                    ? const Color(0xFF0B1220)
+                    : Colors.white,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(
-                    child: Text(
-                      'Items: $totalItems  |  Total: NRP $totalPrice',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
+                  Text(
+                    'Items: $totalItems  |  Total: NRP $totalPrice',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: isDarkMode(context)
+                          ? Colors.white
+                          : Colors.black87,
                     ),
                   ),
+                  if (cartItems.isNotEmpty) ...[
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const CheckoutScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text('Proceed to Checkout'),
+                    ),
+                  ],
+                  if (cartItems.isEmpty) ...[
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Add items to continue checkout.',
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                  ],
                 ],
               ),
             ),

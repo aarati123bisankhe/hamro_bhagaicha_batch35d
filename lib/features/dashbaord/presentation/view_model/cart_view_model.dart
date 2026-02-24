@@ -57,6 +57,10 @@ class CartViewModel extends Notifier<List<CartItem>> {
     state = state.where((item) => item.id != itemId).toList();
   }
 
+  void clearCart() {
+    state = [];
+  }
+
   int get totalItems => state.fold(0, (total, item) => total + item.quantity);
 
   int get totalPrice =>
