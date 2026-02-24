@@ -204,151 +204,213 @@ class _PlantScreenState extends ConsumerState<PlantScreen> {
         width: double.infinity,
         height: double.infinity,
         decoration: appBackgroundDecoration(context),
-        padding: EdgeInsets.symmetric(horizontal: isTablet ? 32 : 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: isTablet ? 100 : 80),
-            Row(
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: isTablet ? 28 : 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const DashboardScreen(),
-                      ),
-                    );
-                  },
-                  child: Image.asset(
-                    'assets/icons/arrow icon.png',
-                    height: isTablet ? 40 : 28,
-                    width: isTablet ? 40 : 28,
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      'Hamro Bhagaicha 🌿',
-                      style: TextStyle(
-                        fontSize: isTablet ? 34 : 26,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                SizedBox(height: isTablet ? 14 : 10),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const DashboardScreen(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.72),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Image.asset(
+                          'assets/icons/arrow icon.png',
+                          height: isTablet ? 26 : 22,
+                          width: isTablet ? 26 : 22,
+                        ),
                       ),
                     ),
+                    const Spacer(),
+                    Text(
+                      'Plants',
+                      style: TextStyle(
+                        fontSize: isTablet ? 34 : 24,
+                        fontWeight: FontWeight.w800,
+                        color: const Color(0xFF0A2515),
+                      ),
+                    ),
+                    const Spacer(),
+                    SizedBox(width: isTablet ? 42 : 38),
+                  ],
+                ),
+                SizedBox(height: isTablet ? 18 : 12),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(isTablet ? 18 : 14),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
+                    color: Colors.white.withValues(alpha: 0.74),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.94),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF244935).withValues(alpha: 0.15),
+                        blurRadius: 16,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Healthy Plants Collection',
+                        style: TextStyle(
+                          fontSize: isTablet ? 28 : 20,
+                          fontWeight: FontWeight.w800,
+                          color: const Color(0xFF0D2F1B),
+                        ),
+                      ),
+                      SizedBox(height: isTablet ? 8 : 6),
+                      Text(
+                        'Explore indoor and outdoor varieties selected for every space and season.',
+                        style: TextStyle(
+                          fontSize: isTablet ? 18 : 13,
+                          height: 1.35,
+                          color: const Color(0xFF325442),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: isTablet ? 12 : 10),
+                      TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            _searchQuery = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Search for a specific plant...',
+                          prefixIcon: Icon(
+                            Icons.search,
+                            size: isTablet ? 30 : 20,
+                          ),
+                          hintStyle: TextStyle(fontSize: isTablet ? 18 : 13),
+                          filled: true,
+                          fillColor: const Color(0xFFF2FBE9),
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: isTablet ? 18 : 12,
+                            horizontal: 16,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(
+                              isTablet ? 24 : 16,
+                            ),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: isTablet ? 12 : 10),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      _buildFilterChip(
+                        label: 'All',
+                        selected: _selectedFilter == PlantFilter.all,
+                        onTap: () =>
+                            setState(() => _selectedFilter = PlantFilter.all),
+                        isTablet: isTablet,
+                      ),
+                      _buildFilterChip(
+                        label: 'Indoor Plants',
+                        selected: _selectedFilter == PlantFilter.indoor,
+                        onTap: () => setState(
+                          () => _selectedFilter = PlantFilter.indoor,
+                        ),
+                        isTablet: isTablet,
+                      ),
+                      _buildFilterChip(
+                        label: 'Outdoor Plants',
+                        selected: _selectedFilter == PlantFilter.outdoor,
+                        onTap: () => setState(
+                          () => _selectedFilter = PlantFilter.outdoor,
+                        ),
+                        isTablet: isTablet,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: isTablet ? 12 : 10),
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 280),
+                    switchInCurve: Curves.easeOutCubic,
+                    switchOutCurve: Curves.easeInCubic,
+                    transitionBuilder: (child, animation) {
+                      final slideAnimation = Tween<Offset>(
+                        begin: const Offset(0.03, 0),
+                        end: Offset.zero,
+                      ).animate(animation);
+
+                      return FadeTransition(
+                        opacity: animation,
+                        child: SlideTransition(
+                          position: slideAnimation,
+                          child: child,
+                        ),
+                      );
+                    },
+                    child: filteredPlants.isEmpty
+                        ? Center(
+                            key: ValueKey(_activeResultKey),
+                            child: Text(
+                              'No plants found for "$_searchQuery".',
+                              style: TextStyle(
+                                fontSize: isTablet ? 20 : 15,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          )
+                        : GridView.builder(
+                            key: ValueKey(_activeResultKey),
+                            padding: EdgeInsets.only(
+                              bottom: isTablet ? 20 : 12,
+                            ),
+                            itemCount: filteredPlants.length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: isTablet ? 3 : 2,
+                                  mainAxisSpacing: isTablet ? 18 : 12,
+                                  crossAxisSpacing: isTablet ? 18 : 12,
+                                  childAspectRatio: isTablet ? 0.66 : 0.58,
+                                ),
+                            itemBuilder: (context, index) {
+                              final plant = filteredPlants[index];
+                              return PlantCard(
+                                imagePath: plant.imagePath,
+                                name: plant.name,
+                                description: plant.description,
+                                price: plant.price,
+                                rating: plant.rating,
+                                onAdd: () => _addToCart(plant),
+                              );
+                            },
+                          ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: isTablet ? 60 : 30),
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value;
-                });
-              },
-              decoration: InputDecoration(
-                hintText: 'Search for a specific plant...',
-                prefixIcon: Icon(Icons.search, size: isTablet ? 35 : 24),
-                hintStyle: TextStyle(fontSize: isTablet ? 20 : 14),
-                filled: true,
-                fillColor: const Color.fromARGB(255, 242, 251, 233),
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: isTablet ? 19 : 12,
-                  horizontal: 20,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(isTablet ? 40 : 20),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            SizedBox(height: isTablet ? 45 : 25),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  _buildFilterChip(
-                    label: 'All',
-                    selected: _selectedFilter == PlantFilter.all,
-                    onTap: () =>
-                        setState(() => _selectedFilter = PlantFilter.all),
-                    isTablet: isTablet,
-                  ),
-                  _buildFilterChip(
-                    label: 'Indoor Plants',
-                    selected: _selectedFilter == PlantFilter.indoor,
-                    onTap: () =>
-                        setState(() => _selectedFilter = PlantFilter.indoor),
-                    isTablet: isTablet,
-                  ),
-                  _buildFilterChip(
-                    label: 'Outdoor Plants',
-                    selected: _selectedFilter == PlantFilter.outdoor,
-                    onTap: () =>
-                        setState(() => _selectedFilter = PlantFilter.outdoor),
-                    isTablet: isTablet,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: isTablet ? 45 : 26),
-            Expanded(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 280),
-                switchInCurve: Curves.easeOutCubic,
-                switchOutCurve: Curves.easeInCubic,
-                transitionBuilder: (child, animation) {
-                  final slideAnimation = Tween<Offset>(
-                    begin: const Offset(0.03, 0),
-                    end: Offset.zero,
-                  ).animate(animation);
-
-                  return FadeTransition(
-                    opacity: animation,
-                    child: SlideTransition(
-                      position: slideAnimation,
-                      child: child,
-                    ),
-                  );
-                },
-                child: filteredPlants.isEmpty
-                    ? Center(
-                        key: ValueKey(_activeResultKey),
-                        child: Text(
-                          'No plants found for "$_searchQuery".',
-                          style: TextStyle(
-                            fontSize: isTablet ? 20 : 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black87,
-                          ),
-                        ),
-                      )
-                    : GridView.builder(
-                        key: ValueKey(_activeResultKey),
-                        padding: EdgeInsets.zero,
-                        itemCount: filteredPlants.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: isTablet ? 3 : 2,
-                          mainAxisSpacing: isTablet ? 20 : 15,
-                          crossAxisSpacing: isTablet ? 20 : 15,
-                          childAspectRatio: isTablet ? 0.8 : 0.65,
-                        ),
-                        itemBuilder: (context, index) {
-                          final plant = filteredPlants[index];
-                          return PlantCard(
-                            imagePath: plant.imagePath,
-                            name: plant.name,
-                            description: plant.description,
-                            price: plant.price,
-                            rating: plant.rating,
-                            onAdd: () => _addToCart(plant),
-                          );
-                        },
-                      ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -367,17 +429,17 @@ class _PlantScreenState extends ConsumerState<PlantScreen> {
         curve: Curves.easeOutCubic,
         margin: const EdgeInsets.only(right: 8),
         padding: EdgeInsets.symmetric(
-          horizontal: isTablet ? 25 : 15,
-          vertical: isTablet ? 11 : 6,
+          horizontal: isTablet ? 22 : 14,
+          vertical: isTablet ? 10 : 6,
         ),
         decoration: BoxDecoration(
-          color: selected ? Colors.green : Colors.white,
-          borderRadius: BorderRadius.circular(isTablet ? 25 : 10),
-          border: Border.all(color: Colors.green),
+          color: selected ? const Color(0xFF1B5E20) : Colors.white,
+          borderRadius: BorderRadius.circular(isTablet ? 24 : 12),
+          border: Border.all(color: const Color(0xFF1B5E20)),
           boxShadow: selected
               ? [
                   BoxShadow(
-                    color: Colors.green.withValues(alpha: 0.25),
+                    color: const Color(0xFF1B5E20).withValues(alpha: 0.25),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -387,9 +449,9 @@ class _PlantScreenState extends ConsumerState<PlantScreen> {
         child: Text(
           label,
           style: TextStyle(
-            fontSize: isTablet ? 20 : 14,
+            fontSize: isTablet ? 18 : 13,
             fontWeight: FontWeight.w600,
-            color: selected ? Colors.white : Colors.green,
+            color: selected ? Colors.white : const Color(0xFF1B5E20),
           ),
         ),
       ),

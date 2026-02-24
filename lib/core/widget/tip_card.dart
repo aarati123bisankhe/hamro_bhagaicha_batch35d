@@ -23,14 +23,27 @@ class TipCard extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final isTablet = screenWidth > 600;
 
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(isTablet ? 20 : 16),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFFF4FBF0), Color(0xFFE3F1DC)],
+        ),
+        border: Border.all(color: const Color(0xFFB8D7B9), width: 1.1),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF244935).withValues(alpha: 0.14),
+            blurRadius: 14,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
-      color: const Color(0xFFE2E8DC),
       child: Padding(
-        padding: EdgeInsets.all(isTablet ? 16 : 8),
+        padding: EdgeInsets.all(isTablet ? 14 : 10),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               children: [
@@ -38,65 +51,100 @@ class TipCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   child: Image.asset(
                     imageUrl,
-                    width: isTablet ? 250 : 150,
-                    height: isTablet ? 250 : 150,
+                    width: isTablet ? 165 : 110,
+                    height: isTablet ? 165 : 110,
                     fit: BoxFit.cover,
                   ),
                 ),
-
                 Positioned(
-                  top: isTablet ? 12 : 8,
-                  right: isTablet ? 12 : 8,
-                  child: GestureDetector(
-                    onTap: onToggleSave,
-                    child: Container(
-                      padding: EdgeInsets.all(isTablet ? 10 : 6),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.85),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        isSaved ? Icons.bookmark : Icons.bookmark_border,
-                        color: Colors.green,
-                        size: isTablet ? 30 : 22,
+                  top: isTablet ? 8 : 6,
+                  right: isTablet ? 8 : 6,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(999),
+                      onTap: onToggleSave,
+                      child: Container(
+                        padding: EdgeInsets.all(isTablet ? 8 : 6),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.9),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          isSaved ? Icons.bookmark : Icons.bookmark_border,
+                          color: const Color(0xFF1B5E20),
+                          size: isTablet ? 22 : 18,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ],
             ),
-
-            SizedBox(width: isTablet ? 22 : 12),
-
+            SizedBox(width: isTablet ? 16 : 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 9,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF2E7D32).withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                    child: Text(
+                      'Garden Tip',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: isTablet ? 12 : 10,
+                        color: const Color(0xFF1B5E20),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: isTablet ? 8 : 6),
                   Text(
                     title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: isTablet ? 26 : 16,
-                      color: const Color.fromARGB(255, 32, 66, 93),
-                    ),
-                  ),
-                  SizedBox(height: isTablet ? 15 : 6),
-                  Text(
-                    description,
-                    maxLines: isTablet ? 8 : 4,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: isTablet ? 24 : 14,
-                      color: Colors.black87,
+                      fontWeight: FontWeight.w800,
+                      fontSize: isTablet ? 20 : 14,
+                      color: const Color(0xFF0D2F1B),
+                      height: 1.2,
                     ),
                   ),
-                  SizedBox(height: isTablet ? 12 : 8),
+                  SizedBox(height: isTablet ? 8 : 6),
                   Text(
-                    readTime,
+                    description,
+                    maxLines: isTablet ? 4 : 3,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: isTablet ? 20 : 12,
-                      color: const Color.fromARGB(255, 138, 136, 136),
+                      fontSize: isTablet ? 14 : 11,
+                      color: const Color(0xFF3D5C4C),
+                      height: 1.35,
                     ),
+                  ),
+                  SizedBox(height: isTablet ? 10 : 8),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.schedule_rounded,
+                        size: isTablet ? 16 : 13,
+                        color: const Color(0xFF5A7A68),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        readTime,
+                        style: TextStyle(
+                          fontSize: isTablet ? 12 : 10,
+                          color: const Color(0xFF5A7A68),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

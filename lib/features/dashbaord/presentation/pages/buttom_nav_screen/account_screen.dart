@@ -12,6 +12,8 @@ import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/view_model/a
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/state/auth_state.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/chatsection.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/communitycontributed.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/dashboard_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/plant_section.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/savetips.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/system.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/saved_tip_view_model.dart';
@@ -239,8 +241,31 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                         ),
                       ),
                       SizedBox(height: isTablet ? 20 : 10),
-                      _activityRow('📦', 'My Orders'),
-                      _activityRow('🌱', 'Plants'),
+                      _activityRow(
+                        '📦',
+                        'My Orders',
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  const DashboardScreen(initialIndex: 1),
+                            ),
+                          );
+                        },
+                      ),
+                      _activityRow(
+                        '🌱',
+                        'Plants',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const PlantScreen(),
+                            ),
+                          );
+                        },
+                      ),
                       _activityRow(
                         '💡',
                         'Saved Tips',

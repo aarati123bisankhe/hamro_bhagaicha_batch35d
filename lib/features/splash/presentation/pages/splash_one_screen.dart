@@ -78,7 +78,7 @@ class SplashOneScreen extends StatelessWidget {
                           'Welcome to\nHamro Bhagaicha',
                           style: TextStyle(
                             fontSize: isTablet ? 52 : 34,
-                            height: 1.02,
+                            height: 1.02, 
                             fontWeight: FontWeight.w800,
                             color: const Color(0xFF0B2015),
                           ),
