@@ -1,3 +1,4 @@
+import 'package:hamro_bhagaicha_batch35d/app/settings/shake_to_exit_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/app/theme/theme_mode_provider.dart';
@@ -16,6 +17,7 @@ class _SystemPageState extends ConsumerState<SystemPage> {
   @override
   Widget build(BuildContext context) {
     final themeMode = ref.watch(appThemeModeProvider);
+    final shakeToExitEnabled = ref.watch(shakeToExitEnabledProvider);
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
@@ -93,6 +95,22 @@ class _SystemPageState extends ConsumerState<SystemPage> {
                     ),
                   ],
                 ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            _settingCard(
+              child: SwitchListTile(
+                value: shakeToExitEnabled,
+                title: const Text('Shake To Exit Dashboard'),
+                subtitle: const Text(
+                  'Exit dashboard when the phone is strongly shaken',
+                ),
+                secondary: const Icon(Icons.vibration_outlined),
+                onChanged: (value) {
+                  ref
+                      .read(shakeToExitEnabledProvider.notifier)
+                      .setEnabled(value);
+                },
               ),
             ),
             const SizedBox(height: 12),

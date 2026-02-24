@@ -57,7 +57,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           previous?.status != AuthStatus.authenticated) {
         SnackbarUtils.showSuccess(context, 'Login successful');
 
-        if(!mounted) return;
+        if (!mounted) return;
         AppRoutes.pushReplacement(context, DashboardScreen());
       }
 
@@ -69,149 +69,142 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     bool isTablet = screenWidth > 600;
 
-return Scaffold(
-    body: Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(0xFFD8F3DC),
-            Color(0xFF475E4F),
-          ],
-        ),
-      ),
-      child: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: isTablet ? 50 : 25,
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFD8F3DC), Color(0xFF475E4F)],
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: isTablet ? 120 : 100),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: isTablet ? 50 : 25),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: isTablet ? 120 : 100),
 
-              /// LOGO + TITLE
-              Center(
-                child: Column(
-                  children: [
-                    Image.asset(
-                      "assets/icons/house_icon.png",
-                      height: isTablet ? 220 : 130,
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      "Hamro Bhagaicha 🌿",
-                      style: TextStyle(
-                        fontSize: isTablet ? 46 : 28,
-                        fontWeight: FontWeight.w600,
-                        color: Color.fromARGB(255, 4, 17, 5),
-                        fontFamily: 'OpenSans Regular',
+                /// LOGO + TITLE
+                Center(
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        "assets/icons/house_icon.png",
+                        height: isTablet ? 220 : 130,
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 10),
+                      Text(
+                        "Hamro Bhagaicha 🌿",
+                        style: TextStyle(
+                          fontSize: isTablet ? 46 : 28,
+                          fontWeight: FontWeight.w600,
+                          color: Color.fromARGB(255, 4, 17, 5),
+                          fontFamily: 'OpenSans Regular',
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
 
-              SizedBox(height: isTablet ? 80 : 50),
+                SizedBox(height: isTablet ? 80 : 50),
 
-              Form(
-                key: _loginForm,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Login",
-                      style: TextStyle(
-                        fontSize: isTablet ? 40 : 22,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'OpenSans Bold',
+                Form(
+                  key: _loginForm,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Login",
+                        style: TextStyle(
+                          fontSize: isTablet ? 40 : 22,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'OpenSans Bold',
+                        ),
                       ),
-                    ),
 
-                    SizedBox(height: 30),
+                      SizedBox(height: 30),
 
-                    MyTextField(
-                      controller: _emailController,
-                      hintText: "Email",
-                      errorText: "Please enter an email",
-                      keyboardType: TextInputType.emailAddress,
-                    ),
+                      MyTextField(
+                        controller: _emailController,
+                        hintText: "Email",
+                        errorText: "Please enter an email",
+                        keyboardType: TextInputType.emailAddress,
+                      ),
 
-                    SizedBox(height: 17),
+                      SizedBox(height: 17),
 
-                    MyTextField(
-                      controller: _passwordController,
-                      hintText: "Password",
-                      errorText: "Please enter a password",
-                      obscureText: true,
-                    ),
+                      MyTextField(
+                        controller: _passwordController,
+                        hintText: "Password",
+                        errorText: "Please enter a password",
+                        obscureText: true,
+                      ),
 
-                    Align(
-                            alignment: Alignment.centerRight,
-                           child: MyTextButton(
-                             onPressed: () {
-                             Navigator.push(
-                               context,
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: MyTextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
                               MaterialPageRoute(
                                 builder: (context) =>
                                     const ForgotPasswordScreen(),
-                                  ),
-                               );
-                             },
-                              text: 'Forget Password?',
-                             textColor: const Color.fromARGB(255, 1, 23, 88),
-                           ),
-                          ),
-
-                    SizedBox(height: 20),
-
-                    _isLoading
-                        ? const Center(child: CircularProgressIndicator())
-                        : MyFloatingButton(
-                            text: "Login",
-                            onPressed: _handleLogin,
-                          ),
-
-                    SizedBox(height: 12),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Don't have an account?",
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: isTablet ? 22 : 15,
-                            fontFamily: 'OpenSans Regular',
-                          ),
+                              ),
+                            );
+                          },
+                          text: 'Forget Password?',
+                          textColor: const Color.fromARGB(255, 1, 23, 88),
                         ),
-                        const SizedBox(width: 5),
-                        GestureDetector(
-                          onTap: _navigateToSignup,
-                          child: Text(
-                            "Create one.",
+                      ),
+
+                      SizedBox(height: 20),
+
+                      _isLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : MyFloatingButton(
+                              text: "Login",
+                              onPressed: _handleLogin,
+                            ),
+
+                      SizedBox(height: 12),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Don't have an account?",
                             style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
                               fontSize: isTablet ? 22 : 15,
-                              fontFamily: 'OpenSans Bold',
+                              fontFamily: 'OpenSans Regular',
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          const SizedBox(width: 5),
+                          GestureDetector(
+                            onTap: _navigateToSignup,
+                            child: Text(
+                              "Create one.",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: isTablet ? 22 : 15,
+                                fontFamily: 'OpenSans Bold',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
-}
-
-
