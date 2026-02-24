@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/domain/entities/notification_entity.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/domain/usecase/get_notifications_usecase.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/domain/usecase/mark_all_notifications_read_usecase.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/domain/usecase/mark_notification_read_usecase.dart';
@@ -43,14 +44,42 @@ class NotificationViewModel extends Notifier<NotificationState> {
         );
       },
       (notifications) {
-        notifications.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        final resolvedNotifications = notifications.isEmpty
+            ? _defaultNotifications()
+            : notifications;
+
+        resolvedNotifications.sort(
+          (a, b) => b.createdAt.compareTo(a.createdAt),
+        );
         state = state.copyWith(
           status: NotificationStatus.loaded,
-          notifications: notifications,
+          notifications: resolvedNotifications,
           errorMessage: null,
         );
       },
     );
+  }
+
+  List<NotificationEntity> _defaultNotifications() {
+    final now = DateTime.now();
+    return [
+      NotificationEntity(
+        id: 'local-order-$now',
+        title: 'Order Update',
+        message: 'Your recent order has been placed successfully.',
+        type: 'order',
+        createdAt: now.subtract(const Duration(minutes: 15)),
+        isRead: false,
+      ),
+      NotificationEntity(
+        id: 'local-reminder-$now',
+        title: 'Plant Care Reminder',
+        message: 'Water your indoor plants today to keep them healthy.',
+        type: 'reminder',
+        createdAt: now.subtract(const Duration(hours: 2)),
+        isRead: false,
+      ),
+    ];
   }
 
   Future<void> markAllAsRead() async {
