@@ -158,10 +158,14 @@ class ApiEndpoints {
   static const String sendOrderConfirmationSms = '/sms/send-order-confirmation';
   static const String nearestNurseries = '/nurseries/nearest';
 
-  // Replace with your real domain that hosts .well-known files.
-  static const String deepLinkDomain = 'your-domain.com';
-  static const String resetPasswordDeepLink =
-      'https://$deepLinkDomain/reset-password';
+  static const String deepLinkDomain = String.fromEnvironment(
+    'DEEP_LINK_DOMAIN',
+    defaultValue: 'hamrobhagicha.com',
+  );
+  static const String resetPasswordDeepLink = String.fromEnvironment(
+    'RESET_PASSWORD_DEEP_LINK',
+    defaultValue: 'hamrobhagaicha://reset-password',
+  );
 
   // Profile picture upload
   static const String updateProfileImage = '/auth/update-profile';

@@ -34,6 +34,18 @@
                     android:scheme="https"
                     android:host="your-domain.com"
                     android:pathPrefix="/reset-password" />
+                <data
+                    android:scheme="https"
+                    android:host="your-domain.com"
+                    android:pathPrefix="/auth/reset-password" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="hamrobhagaicha" android:host="reset-password" />
+                <data android:scheme="hamrobhagaicha" android:pathPrefix="/reset-password" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

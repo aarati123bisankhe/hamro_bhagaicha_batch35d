@@ -43,6 +43,9 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     final themeMode = ref.watch(appThemeModeProvider);
+    final appliedThemeMode = themeMode == ThemeMode.system
+        ? ThemeMode.light
+        : themeMode;
 
     return MaterialApp(
       navigatorKey: _navigatorKey,
@@ -50,7 +53,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       title: "Hamro Bhagaicha",
       theme: getApplicationTheme(),
       darkTheme: getDarkApplicationTheme(),
-      themeMode: themeMode,
+      themeMode: appliedThemeMode,
       home: const SplashScreen(),
     );
   }
