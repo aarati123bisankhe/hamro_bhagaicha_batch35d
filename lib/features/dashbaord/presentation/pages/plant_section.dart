@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/core/widget/plant_section_card.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/dashboard_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/state/cart_state.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/state/wishlist_state.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/cart_view_model.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/wishlist_view_model.dart';
 
 enum PlantCategory { indoor, outdoor }
 
@@ -198,6 +200,7 @@ class _PlantScreenState extends ConsumerState<PlantScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final isTablet = screenWidth > 600;
     final filteredPlants = _filteredPlants;
+    final wishlistState = ref.watch(wishlistViewModelProvider);
 
     return Scaffold(
       body: Container(
@@ -402,6 +405,12 @@ class _PlantScreenState extends ConsumerState<PlantScreen> {
                                 description: plant.description,
                                 price: plant.price,
                                 rating: plant.rating,
+                                isWishlisted: wishlistState.any(
+                                  (item) =>
+                                      item.id ==
+                                      'plant-${plant.name}-${plant.imagePath}',
+                                ),
+                                onToggleWishlist: () => _toggleWishlist(plant),
                                 onAdd: () => _addToCart(plant),
                               );
                             },
@@ -474,5 +483,19 @@ class _PlantScreenState extends ConsumerState<PlantScreen> {
       context,
       MaterialPageRoute(builder: (_) => const DashboardScreen(initialIndex: 3)),
     );
+  }
+
+  void _toggleWishlist(PlantItem plant) {
+    ref
+        .read(wishlistViewModelProvider.notifier)
+        .toggleItem(
+          WishlistItem(
+            id: 'plant-${plant.name}-${plant.imagePath}',
+            imagePath: plant.imagePath,
+            name: plant.name,
+            price: plant.price,
+            type: WishlistItemType.plant,
+          ),
+        );
   }
 }

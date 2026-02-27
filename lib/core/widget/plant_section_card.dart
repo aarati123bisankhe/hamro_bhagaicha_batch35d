@@ -6,8 +6,10 @@ class PlantCard extends StatelessWidget {
   final String description;
   final int price;
   final int rating;
+  final bool isWishlisted;
   final VoidCallback? onTap;
   final VoidCallback? onAdd;
+  final VoidCallback? onToggleWishlist;
 
   const PlantCard({
     super.key,
@@ -16,8 +18,10 @@ class PlantCard extends StatelessWidget {
     required this.description,
     required this.price,
     required this.rating,
+    this.isWishlisted = false,
     this.onTap,
     this.onAdd,
+    this.onToggleWishlist,
   });
 
   @override
@@ -48,20 +52,42 @@ class PlantCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
-              decoration: BoxDecoration(
-                color: const Color(0xFF2E7D32).withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(999),
-              ),
-              child: Text(
-                'Plant',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: isTablet ? 13 : 10,
-                  color: const Color(0xFF1B5E20),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 9,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2E7D32).withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Text(
+                    'Plant',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: isTablet ? 13 : 10,
+                      color: const Color(0xFF1B5E20),
+                    ),
+                  ),
                 ),
-              ),
+                const Spacer(),
+                InkWell(
+                  onTap: onToggleWishlist,
+                  borderRadius: BorderRadius.circular(999),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: Icon(
+                      isWishlisted ? Icons.favorite : Icons.favorite_border,
+                      color: isWishlisted
+                          ? Colors.redAccent
+                          : const Color(0xFF1B5E20),
+                      size: isTablet ? 22 : 18,
+                    ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: isTablet ? 10 : 8),
             Expanded(

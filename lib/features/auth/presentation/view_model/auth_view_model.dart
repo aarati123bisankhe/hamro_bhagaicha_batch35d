@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hamro_bhagaicha_batch35d/core/services/security/biometric_auth_service.dart';
+import 'package:hamro_bhagaicha_batch35d/core/services/storage/token_service.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/get_current_usecase.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/login_usecase.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/logout_usecase.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/register_usecase.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/request_password_reset_usecase.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/reset_password_usecase.dart';
+import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/reset_password_with_code_usecase.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/domain/usecase/update_profile_image_usecase.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/state/auth_state.dart';
 
@@ -21,6 +24,9 @@ class AuthViewModel extends Notifier<AuthState> {
   late final UpdateProfileImageUseCase _updateProfileImageUseCase;
   late final RequestPasswordResetUsecase _requestPasswordResetUsecase;
   late final ResetPasswordUsecase _resetPasswordUsecase;
+  late final ResetPasswordWithCodeUsecase _resetPasswordWithCodeUsecase;
+  late final TokenService _tokenService;
+  late final BiometricAuthService _biometricAuthService;
 
   @override
   AuthState build() {
@@ -33,6 +39,11 @@ class AuthViewModel extends Notifier<AuthState> {
       requestPasswordResetUsecaseProvider,
     );
     _resetPasswordUsecase = ref.read(resetPasswordUsecaseProvider);
+    _resetPasswordWithCodeUsecase = ref.read(
+      resetPasswordWithCodeUsecaseProvider,
+    );
+    _tokenService = ref.read(tokenServiceProvider);
+    _biometricAuthService = ref.read(biometricAuthServiceProvider);
 
     return const AuthState(status: AuthStatus.checking);
   }
@@ -215,5 +226,99 @@ class AuthViewModel extends Notifier<AuthState> {
         );
       },
     );
+  }
+
+  Future<void> resetPasswordWithCode({
+    required String email,
+    required String code,
+    required String newPassword,
+  }) async {
+    state = state.copyWith(status: AuthStatus.loading);
+
+    final result = await _resetPasswordWithCodeUsecase(
+      ResetPasswordWithCodeUsecaseParams(
+        email: email,
+        code: code,
+        newPassword: newPassword,
+      ),
+    );
+
+    result.fold(
+      (failure) {
+        state = state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: failure.message,
+        );
+      },
+      (_) {
+        state = state.copyWith(
+          status: AuthStatus.passwordResetSuccess,
+          errorMessage: null,
+        );
+      },
+    );
+  }
+
+  Future<bool> canUseBiometricLogin() async {
+    final supported = await _biometricAuthService.isBiometricSupported();
+    if (!supported) {
+      return false;
+    }
+    return _biometricAuthService.hasStoredToken();
+  }
+
+  Future<bool> isBiometricSupportedOnDevice() async {
+    return _biometricAuthService.isBiometricSupported();
+  }
+
+  Future<bool> requestBiometricPermission() async {
+    return (await requestBiometricPermissionWithReason()) == null;
+  }
+
+  Future<String?> requestBiometricPermissionWithReason() async {
+    final supportIssue = await _biometricAuthService.getSupportIssueMessage();
+    if (supportIssue != null) {
+      return supportIssue;
+    }
+
+    final result = await _biometricAuthService.authenticateWithDetails();
+    return result.success ? null : result.message;
+  }
+
+  Future<bool> setBiometricLoginEnabled(bool enabled) async {
+    if (!enabled) {
+      await _biometricAuthService.clearToken();
+      return true;
+    }
+
+    final token = await _tokenService.getToken();
+    if (token != null && token.isNotEmpty) {
+      await _biometricAuthService.saveToken(token);
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> loginWithBiometrics() async {
+    final isAuthenticated = await _biometricAuthService.authenticate();
+    if (!isAuthenticated) {
+      return false;
+    }
+
+    final token = await _biometricAuthService.getStoredToken();
+    if (token == null || token.isEmpty) {
+      state = state.copyWith(
+        status: AuthStatus.error,
+        errorMessage: 'Biometric login is not enabled on this device',
+      );
+      return false;
+    }
+
+    await _tokenService.saveToken(token);
+    state = state.copyWith(
+      status: AuthStatus.authenticated,
+      errorMessage: null,
+    );
+    return true;
   }
 }

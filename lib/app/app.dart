@@ -35,8 +35,9 @@ class _MyAppState extends ConsumerState<MyApp> {
       return;
     }
 
-    navigator.push(
+    navigator.pushAndRemoveUntil(
       MaterialPageRoute(builder: (_) => ChangedPasswordScreen(token: token)),
+      (route) => false,
     );
   }
 

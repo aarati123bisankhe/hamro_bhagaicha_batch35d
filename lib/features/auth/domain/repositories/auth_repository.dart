@@ -19,4 +19,9 @@ abstract interface class IAuthRepository {
     required String token,
     required String newPassword,
   });
+  Future<Either<Failure, bool>> resetPasswordWithCode({
+    required String email,
+    required String code,
+    required String newPassword,
+  });
 }

@@ -5,8 +5,10 @@ class ComboSetCard extends StatelessWidget {
   final String name;
   final int price;
   final int rating;
+  final bool isWishlisted;
   final VoidCallback? onTap;
   final VoidCallback? onAdd;
+  final VoidCallback? onToggleWishlist;
 
   const ComboSetCard({
     super.key,
@@ -14,8 +16,10 @@ class ComboSetCard extends StatelessWidget {
     required this.name,
     required this.price,
     required this.rating,
+    this.isWishlisted = false,
     this.onTap,
     this.onAdd,
+    this.onToggleWishlist,
   });
 
   @override
@@ -77,6 +81,25 @@ class ComboSetCard extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                           fontSize: isTablet ? 14 : 11,
                           color: const Color(0xFF1B5E20),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: InkWell(
+                        onTap: onToggleWishlist,
+                        borderRadius: BorderRadius.circular(999),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Icon(
+                            isWishlisted
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: isWishlisted
+                                ? Colors.redAccent
+                                : const Color(0xFF1B5E20),
+                            size: isTablet ? 24 : 20,
+                          ),
                         ),
                       ),
                     ),

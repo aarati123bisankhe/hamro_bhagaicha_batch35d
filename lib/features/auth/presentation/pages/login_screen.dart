@@ -24,6 +24,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final bool _isLoading = false;
+  bool _enableBiometricLogin = false;
+  bool _showBiometricButton = false;
+  bool _isBiometricSupported = false;
+  bool _isBiometricAuthFlow = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBiometricAvailability();
+  }
 
   @override
   void dispose() {
@@ -34,6 +44,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<void> _handleLogin() async {
     if (_loginForm.currentState!.validate()) {
+      _isBiometricAuthFlow = false;
       await ref
           .read(authViewModelProvider.notifier)
           .login(
@@ -41,6 +52,38 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             password: _passwordController.text.trim(),
           );
     }
+  }
+
+  Future<void> _loadBiometricAvailability() async {
+    final viewModel = ref.read(authViewModelProvider.notifier);
+    final supported = await viewModel.isBiometricSupportedOnDevice();
+    if (!mounted) return;
+    setState(() {
+      _isBiometricSupported = supported;
+      _showBiometricButton = supported;
+    });
+  }
+
+  Future<void> _handleBiometricLogin() async {
+    _isBiometricAuthFlow = true;
+    final success = await ref
+        .read(authViewModelProvider.notifier)
+        .loginWithBiometrics();
+    if (!success) {
+      _isBiometricAuthFlow = false;
+    }
+  }
+
+  Future<void> _handleAuthenticated() async {
+    if (!_isBiometricAuthFlow) {
+      await ref
+          .read(authViewModelProvider.notifier)
+          .setBiometricLoginEnabled(_enableBiometricLogin);
+    }
+    if (!mounted) return;
+    _isBiometricAuthFlow = false;
+    SnackbarUtils.showSuccess(context, 'Login successful');
+    AppRoutes.pushReplacement(context, DashboardScreen());
   }
 
   void _navigateToSignup() {
@@ -55,10 +98,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     ref.listen<AuthState>(authViewModelProvider, (previous, next) {
       if (next.status == AuthStatus.authenticated &&
           previous?.status != AuthStatus.authenticated) {
-        SnackbarUtils.showSuccess(context, 'Login successful');
-
-        if (!mounted) return;
-        AppRoutes.pushReplacement(context, DashboardScreen());
+        _handleAuthenticated();
       }
 
       if (next.status == AuthStatus.error && next.errorMessage != null) {
@@ -143,6 +183,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         errorText: "Please enter a password",
                         obscureText: true,
                       ),
+                      CheckboxListTile(
+                        value: _enableBiometricLogin,
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text('Use Face Lock next time'),
+                        controlAffinity: ListTileControlAffinity.leading,
+                        onChanged: (value) {
+                          setState(() {
+                            _enableBiometricLogin = value ?? false;
+                          });
+                        },
+                      ),
+                      if (!_isBiometricSupported)
+                        const Padding(
+                          padding: EdgeInsets.only(top: 8),
+                          child: Text(
+                            'Face Lock is not available on this device.',
+                          ),
+                        ),
 
                       Align(
                         alignment: Alignment.centerRight,
@@ -165,9 +223,41 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                       _isLoading
                           ? const Center(child: CircularProgressIndicator())
-                          : MyFloatingButton(
-                              text: "Login",
-                              onPressed: _handleLogin,
+                          : Row(
+                              children: [
+                                Expanded(
+                                  child: MyFloatingButton(
+                                    text: "Login",
+                                    onPressed: _handleLogin,
+                                  ),
+                                ),
+                                if (_showBiometricButton) ...[
+                                  const SizedBox(width: 10),
+                                  SizedBox(
+                                    width: isTablet ? 72 : 54,
+                                    height: isTablet ? 64 : 48,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(
+                                          0xFF1B4332,
+                                        ),
+                                        padding: EdgeInsets.zero,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: _handleBiometricLogin,
+                                      child: Icon(
+                                        Icons.face,
+                                        color: Colors.white,
+                                        size: isTablet ? 30 : 24,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ],
                             ),
 
                       SizedBox(height: 12),

@@ -5,7 +5,9 @@ import 'package:hamro_bhagaicha_batch35d/core/widget/pot_section_card.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/dashboard_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/plant_section.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/state/cart_state.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/state/wishlist_state.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/cart_view_model.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/wishlist_view_model.dart';
 
 class PotSectionScreen extends ConsumerWidget {
   const PotSectionScreen({super.key});
@@ -14,6 +16,7 @@ class PotSectionScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isTablet = screenWidth > 600;
+    final wishlistState = ref.watch(wishlistViewModelProvider);
 
     void addToCart({
       required String name,
@@ -37,6 +40,24 @@ class PotSectionScreen extends ConsumerWidget {
           builder: (_) => const DashboardScreen(initialIndex: 3),
         ),
       );
+    }
+
+    void toggleWishlist({
+      required String name,
+      required String imagePath,
+      required int price,
+    }) {
+      ref
+          .read(wishlistViewModelProvider.notifier)
+          .toggleItem(
+            WishlistItem(
+              id: 'pot-$name-$imagePath',
+              imagePath: imagePath,
+              name: name,
+              price: price,
+              type: WishlistItemType.pot,
+            ),
+          );
     }
 
     return Scaffold(
@@ -157,6 +178,16 @@ class PotSectionScreen extends ConsumerWidget {
                         name: '9 Inch Wall Hanging Half Round Planter/Flower',
                         price: 250,
                         rating: 4,
+                        isWishlisted: wishlistState.any(
+                          (item) =>
+                              item.id ==
+                              'pot-9 Inch Wall Hanging Half Round Planter/Flower-assets/images/pot1.png',
+                        ),
+                        onToggleWishlist: () => toggleWishlist(
+                          name: '9 Inch Wall Hanging Half Round Planter/Flower',
+                          imagePath: 'assets/images/pot1.png',
+                          price: 250,
+                        ),
                         onAdd: () => addToCart(
                           name: '9 Inch Wall Hanging Half Round Planter/Flower',
                           imagePath: 'assets/images/pot1.png',
@@ -168,6 +199,17 @@ class PotSectionScreen extends ConsumerWidget {
                         name: '5 pics Beautiful 5 Inch Table Decor Flower pot',
                         price: 300,
                         rating: 4,
+                        isWishlisted: wishlistState.any(
+                          (item) =>
+                              item.id ==
+                              'pot-5 pics Beautiful 5 Inch Table Decor Flower pot-assets/images/pot2.jpeg',
+                        ),
+                        onToggleWishlist: () => toggleWishlist(
+                          name:
+                              '5 pics Beautiful 5 Inch Table Decor Flower pot',
+                          imagePath: 'assets/images/pot2.jpeg',
+                          price: 300,
+                        ),
                         onAdd: () => addToCart(
                           name:
                               '5 pics Beautiful 5 Inch Table Decor Flower pot',
@@ -180,6 +222,16 @@ class PotSectionScreen extends ConsumerWidget {
                         name: 'Small White Bonsai Bowl Planter',
                         price: 1000,
                         rating: 2,
+                        isWishlisted: wishlistState.any(
+                          (item) =>
+                              item.id ==
+                              'pot-Small White Bonsai Bowl Planter-assets/images/pot3.png',
+                        ),
+                        onToggleWishlist: () => toggleWishlist(
+                          name: 'Small White Bonsai Bowl Planter',
+                          imagePath: 'assets/images/pot3.png',
+                          price: 1000,
+                        ),
                         onAdd: () => addToCart(
                           name: 'Small White Bonsai Bowl Planter',
                           imagePath: 'assets/images/pot3.png',
@@ -191,6 +243,16 @@ class PotSectionScreen extends ConsumerWidget {
                         name: 'Cute Ceramic Succulent Pot (4 Inch)',
                         price: 2400,
                         rating: 5,
+                        isWishlisted: wishlistState.any(
+                          (item) =>
+                              item.id ==
+                              'pot-Cute Ceramic Succulent Pot (4 Inch)-assets/images/pot4.png',
+                        ),
+                        onToggleWishlist: () => toggleWishlist(
+                          name: 'Cute Ceramic Succulent Pot (4 Inch)',
+                          imagePath: 'assets/images/pot4.png',
+                          price: 2400,
+                        ),
                         onAdd: () => addToCart(
                           name: 'Cute Ceramic Succulent Pot (4 Inch)',
                           imagePath: 'assets/images/pot4.png',
@@ -203,6 +265,17 @@ class PotSectionScreen extends ConsumerWidget {
                             '8 Inch White Cylindrical Ceramic Pot For Indoor ',
                         price: 1200,
                         rating: 4,
+                        isWishlisted: wishlistState.any(
+                          (item) =>
+                              item.id ==
+                              'pot-8 Inch White Cylindrical Ceramic Pot For Indoor -assets/images/pot5.png',
+                        ),
+                        onToggleWishlist: () => toggleWishlist(
+                          name:
+                              '8 Inch White Cylindrical Ceramic Pot For Indoor ',
+                          imagePath: 'assets/images/pot5.png',
+                          price: 1200,
+                        ),
                         onAdd: () => addToCart(
                           name:
                               '8 Inch White Cylindrical Ceramic Pot For Indoor ',
@@ -215,6 +288,16 @@ class PotSectionScreen extends ConsumerWidget {
                         name: 'Cute Ceramic Succulent Planter For Indoor',
                         price: 1500,
                         rating: 3,
+                        isWishlisted: wishlistState.any(
+                          (item) =>
+                              item.id ==
+                              'pot-Cute Ceramic Succulent Planter For Indoor-assets/images/pot6.png',
+                        ),
+                        onToggleWishlist: () => toggleWishlist(
+                          name: 'Cute Ceramic Succulent Planter For Indoor',
+                          imagePath: 'assets/images/pot6.png',
+                          price: 1500,
+                        ),
                         onAdd: () => addToCart(
                           name: 'Cute Ceramic Succulent Planter For Indoor',
                           imagePath: 'assets/images/pot6.png',
@@ -226,6 +309,16 @@ class PotSectionScreen extends ConsumerWidget {
                         name: 'Reusable 104 Holes Seedling Tray (Set of 3)',
                         price: 2000,
                         rating: 5,
+                        isWishlisted: wishlistState.any(
+                          (item) =>
+                              item.id ==
+                              'pot-Reusable 104 Holes Seedling Tray (Set of 3)-assets/images/pot7.png',
+                        ),
+                        onToggleWishlist: () => toggleWishlist(
+                          name: 'Reusable 104 Holes Seedling Tray (Set of 3)',
+                          imagePath: 'assets/images/pot7.png',
+                          price: 2000,
+                        ),
                         onAdd: () => addToCart(
                           name: 'Reusable 104 Holes Seedling Tray (Set of 3)',
                           imagePath: 'assets/images/pot7.png',
@@ -238,6 +331,17 @@ class PotSectionScreen extends ConsumerWidget {
                             '5Pcs 6 Inch Multicolor Hooked Hanging Flower Pot',
                         price: 900,
                         rating: 3,
+                        isWishlisted: wishlistState.any(
+                          (item) =>
+                              item.id ==
+                              'pot-5Pcs 6 Inch Multicolor Hooked Hanging Flower Pot-assets/images/pot8.png',
+                        ),
+                        onToggleWishlist: () => toggleWishlist(
+                          name:
+                              '5Pcs 6 Inch Multicolor Hooked Hanging Flower Pot',
+                          imagePath: 'assets/images/pot8.png',
+                          price: 900,
+                        ),
                         onAdd: () => addToCart(
                           name:
                               '5Pcs 6 Inch Multicolor Hooked Hanging Flower Pot',
@@ -250,6 +354,16 @@ class PotSectionScreen extends ConsumerWidget {
                         name: '10 Pcs 6 Inch Soft Flexible Nursery Planter',
                         price: 500,
                         rating: 4,
+                        isWishlisted: wishlistState.any(
+                          (item) =>
+                              item.id ==
+                              'pot-10 Pcs 6 Inch Soft Flexible Nursery Planter-assets/images/pot9.png',
+                        ),
+                        onToggleWishlist: () => toggleWishlist(
+                          name: '10 Pcs 6 Inch Soft Flexible Nursery Planter',
+                          imagePath: 'assets/images/pot9.png',
+                          price: 500,
+                        ),
                         onAdd: () => addToCart(
                           name: '10 Pcs 6 Inch Soft Flexible Nursery Planter',
                           imagePath: 'assets/images/pot9.png',

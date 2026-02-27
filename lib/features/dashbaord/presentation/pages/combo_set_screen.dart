@@ -4,7 +4,9 @@ import 'package:hamro_bhagaicha_batch35d/core/theme/app_background.dart';
 import 'package:hamro_bhagaicha_batch35d/core/widget/combo_set_card.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/dashboard_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/state/cart_state.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/state/wishlist_state.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/cart_view_model.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/wishlist_view_model.dart';
 
 class ComboSetScreen extends ConsumerWidget {
   const ComboSetScreen({super.key});
@@ -13,6 +15,7 @@ class ComboSetScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isTablet = screenWidth > 600;
+    final wishlistState = ref.watch(wishlistViewModelProvider);
 
     void addToCart({
       required String name,
@@ -36,6 +39,24 @@ class ComboSetScreen extends ConsumerWidget {
           builder: (_) => const DashboardScreen(initialIndex: 3),
         ),
       );
+    }
+
+    void toggleWishlist({
+      required String name,
+      required String imagePath,
+      required int price,
+    }) {
+      ref
+          .read(wishlistViewModelProvider.notifier)
+          .toggleItem(
+            WishlistItem(
+              id: 'combo-$name-$imagePath',
+              imagePath: imagePath,
+              name: name,
+              price: price,
+              type: WishlistItemType.combo,
+            ),
+          );
     }
 
     return Scaffold(
@@ -149,6 +170,17 @@ class ComboSetScreen extends ConsumerWidget {
                             'Kraft Seeds 10 Inch Pack of 6 Flower Pots for Garden with Bottom Plate & Drainage Hole,Plastic Pot for Plants,',
                         price: 1000,
                         rating: 4,
+                        isWishlisted: wishlistState.any(
+                          (item) =>
+                              item.id ==
+                              'combo-Kraft Seeds 10 Inch Pack of 6 Flower Pots for Garden with Bottom Plate & Drainage Hole,Plastic Pot for Plants,-assets/images/combo1.png',
+                        ),
+                        onToggleWishlist: () => toggleWishlist(
+                          name:
+                              'Kraft Seeds 10 Inch Pack of 6 Flower Pots for Garden with Bottom Plate & Drainage Hole,Plastic Pot for Plants,',
+                          imagePath: 'assets/images/combo1.png',
+                          price: 1000,
+                        ),
                         onAdd: () => addToCart(
                           name:
                               'Kraft Seeds 10 Inch Pack of 6 Flower Pots for Garden with Bottom Plate & Drainage Hole,Plastic Pot for Plants,',
@@ -162,6 +194,17 @@ class ComboSetScreen extends ConsumerWidget {
                             'Set of 4 Indoor Plants: Spider Plant, Peace Lily, Snake Plant, & Money Plant',
                         price: 2500,
                         rating: 5,
+                        isWishlisted: wishlistState.any(
+                          (item) =>
+                              item.id ==
+                              'combo-Set of 4 Indoor Plants: Spider Plant, Peace Lily, Snake Plant, & Money Plant-assets/images/combo2.png',
+                        ),
+                        onToggleWishlist: () => toggleWishlist(
+                          name:
+                              'Set of 4 Indoor Plants: Spider Plant, Peace Lily, Snake Plant, & Money Plant',
+                          imagePath: 'assets/images/combo2.png',
+                          price: 2500,
+                        ),
                         onAdd: () => addToCart(
                           name:
                               'Set of 4 Indoor Plants: Spider Plant, Peace Lily, Snake Plant, & Money Plant',
@@ -175,6 +218,17 @@ class ComboSetScreen extends ConsumerWidget {
                             'Set of 6 live Adenium Obesum (Desert Rose) plants, ready for transplanting into your preferred containers, delivered with 4 pots',
                         price: 3500,
                         rating: 4,
+                        isWishlisted: wishlistState.any(
+                          (item) =>
+                              item.id ==
+                              'combo-Set of 6 live Adenium Obesum (Desert Rose) plants, ready for transplanting into your preferred containers, delivered with 4 pots-assets/images/combo3.png',
+                        ),
+                        onToggleWishlist: () => toggleWishlist(
+                          name:
+                              'Set of 6 live Adenium Obesum (Desert Rose) plants, ready for transplanting into your preferred containers, delivered with 4 pots',
+                          imagePath: 'assets/images/combo3.png',
+                          price: 3500,
+                        ),
                         onAdd: () => addToCart(
                           name:
                               'Set of 6 live Adenium Obesum (Desert Rose) plants, ready for transplanting into your preferred containers, delivered with 4 pots',
@@ -188,6 +242,17 @@ class ComboSetScreen extends ConsumerWidget {
                             'Spider Plant, Snake Plant & Money Plant Combo – Set of 3 ',
                         price: 1500,
                         rating: 3,
+                        isWishlisted: wishlistState.any(
+                          (item) =>
+                              item.id ==
+                              'combo-Spider Plant, Snake Plant & Money Plant Combo – Set of 3 -assets/images/combo4.png',
+                        ),
+                        onToggleWishlist: () => toggleWishlist(
+                          name:
+                              'Spider Plant, Snake Plant & Money Plant Combo – Set of 3 ',
+                          imagePath: 'assets/images/combo4.png',
+                          price: 1500,
+                        ),
                         onAdd: () => addToCart(
                           name:
                               'Spider Plant, Snake Plant & Money Plant Combo – Set of 3 ',

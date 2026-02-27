@@ -16,7 +16,9 @@ import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/d
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/plant_section.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/savetips.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/system.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/pages/wishlist_page.dart';
 import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/saved_tip_view_model.dart';
+import 'package:hamro_bhagaicha_batch35d/features/dashbaord/presentation/view_model/wishlist_view_model.dart';
 
 class AccountScreen extends ConsumerStatefulWidget {
   final AuthEntity userEntity;
@@ -101,6 +103,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
     final authState = ref.watch(authViewModelProvider);
     final currentUser = authState.authEntity ?? widget.userEntity;
     final savedTips = ref.watch(savedTipViewModelProvider);
+    final wishlistItems = ref.watch(wishlistViewModelProvider);
 
     ref.listen<AuthState>(authViewModelProvider, (previous, next) {
       if (next.status == AuthStatus.unauthenticated) {
@@ -275,6 +278,19 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (_) => const SaveTipsPage(),
+                            ),
+                          );
+                        },
+                      ),
+                      _activityRow(
+                        '❤️',
+                        'Wishlist',
+                        trailing: '${wishlistItems.length}',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const WishlistPage(),
                             ),
                           );
                         },

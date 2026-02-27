@@ -40,7 +40,6 @@ class AuthRepository implements IAuthRepository {
        _authRemoteDatasource = authRemoteDatasource,
        _networkInfo = networkInfo;
 
-  
   @override
   Future<Either<Failure, AuthEntity>> login(
     String email,
@@ -77,7 +76,7 @@ class AuthRepository implements IAuthRepository {
       }
     }
   }
-  
+
   @override
   Future<Either<Failure, AuthEntity>> register(AuthEntity user) async {
     if (await _networkInfo.isConnected) {
@@ -239,6 +238,37 @@ class AuthRepository implements IAuthRepository {
       return Left(
         ApiFailure(
           message: e.response?.data['message'] ?? 'Failed to reset password',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> resetPasswordWithCode({
+    required String email,
+    required String code,
+    required String newPassword,
+  }) async {
+    if (!await _networkInfo.isConnected) {
+      return const Left(ApiFailure(message: 'No internet connection'));
+    }
+
+    try {
+      await _authRemoteDatasource.resetPasswordWithCode(
+        email: email,
+        code: code,
+        newPassword: newPassword,
+      );
+      return const Right(true);
+    } on DioException catch (e) {
+      return Left(
+        ApiFailure(
+          message:
+              e.response?.data['message'] ??
+              'Failed to reset password with code',
           statusCode: e.response?.statusCode,
         ),
       );

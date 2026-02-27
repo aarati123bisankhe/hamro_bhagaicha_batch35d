@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hamro_bhagaicha_batch35d/core/api/api_endpoint.dart';
 import 'package:hamro_bhagaicha_batch35d/core/utils/snackbar_utils.dart';
 import 'package:hamro_bhagaicha_batch35d/core/widget/floating_button_action.dart';
 import 'package:hamro_bhagaicha_batch35d/core/widget/my_text_field.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/pages/login_screen.dart';
+import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/pages/reset_password_code_screen.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/state/auth_state.dart';
 import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/view_model/auth_view_model.dart';
 
@@ -36,7 +36,6 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         .requestPasswordReset(
           email: emailController.text.trim(),
           platform: 'mobile',
-          resetUrl: ApiEndpoints.resetPasswordDeepLink,
         );
   }
 
@@ -47,7 +46,14 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           previous?.status != AuthStatus.passwordResetEmailSent) {
         SnackbarUtils.showSuccess(
           context,
-          'Reset email sent. Check your inbox and open the link.',
+          'Reset code sent. Check your email.',
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) =>
+                ResetPasswordCodeScreen(email: emailController.text.trim()),
+          ),
         );
       }
 
@@ -95,7 +101,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                         child: Column(
                           children: [
                             Text(
-                              "Enter your email below. We'll send you",
+                              "Enter your email below. We'll send a",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: isTablet ? 23 : 15,
@@ -103,7 +109,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                               ),
                             ),
                             Text(
-                              'instructions to reset your password.',
+                              '6-digit code to reset your password.',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: isTablet ? 23 : 15,

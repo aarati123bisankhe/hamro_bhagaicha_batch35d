@@ -28,4 +28,9 @@ abstract interface class IAuthRemoteDatasource {
     required String token,
     required String newPassword,
   });
+  Future<void> resetPasswordWithCode({
+    required String email,
+    required String code,
+    required String newPassword,
+  });
 }

@@ -30,7 +30,7 @@ class ApiEndpoints {
   );
   static const String apiHostIos = String.fromEnvironment('API_HOST_IOS');
 
-    static const String computerIpAddress = "192.168.18.41";
+  static const String computerIpAddress = "192.168.18.41";
 
   // Backward compatibility for previous upload override key.
   static const String legacyUploadsBaseUrlOverride = String.fromEnvironment(
@@ -81,8 +81,8 @@ class ApiEndpoints {
     // }
 
     if (Platform.isAndroid) {
-  return computerIpAddress;
-}
+      return computerIpAddress;
+    }
     if (Platform.isIOS) {
       return 'localhost'; // iOS simulator -> host machine
     }
@@ -148,6 +148,7 @@ class ApiEndpoints {
   static const String whoAmI = '/auth/whoami';
   static const String requestPasswordReset = '/auth/send-reset-password-email';
   static String resetPassword(String token) => '/auth/reset-password/$token';
+  static const String resetPasswordWithCode = '/auth/reset-password-with-code';
   static String getCurrentUserById(String userId) => '/auth/user/$userId';
 
   static const String notifications = '/notifications';

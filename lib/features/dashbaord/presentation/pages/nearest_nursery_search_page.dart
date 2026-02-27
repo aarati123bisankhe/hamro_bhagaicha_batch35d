@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hamro_bhagaicha_batch35d/core/api/api_client.dart';
 import 'package:hamro_bhagaicha_batch35d/core/api/api_endpoint.dart';
 import 'package:hamro_bhagaicha_batch35d/core/theme/app_background.dart';
+import 'package:latlong2/latlong.dart' as latlng;
 
 class SearchNearestNurseryPage extends ConsumerStatefulWidget {
   const SearchNearestNurseryPage({super.key});
@@ -17,7 +18,7 @@ class SearchNearestNurseryPage extends ConsumerStatefulWidget {
 
 class _SearchNearestNurseryPageState
     extends ConsumerState<SearchNearestNurseryPage> {
-  static const LatLng _defaultCenter = LatLng(27.7172, 85.3240);
+  static const latlng.LatLng _defaultCenter = latlng.LatLng(27.7172, 85.3240);
 
   static const List<_NurserySeed> _seedNurseries = [
     _NurserySeed(
@@ -58,20 +59,21 @@ class _SearchNearestNurseryPageState
     ),
   ];
 
-  static const Map<String, LatLng> _knownLocations = {
-    'kathmandu': LatLng(27.7172, 85.3240),
-    'lalitpur': LatLng(27.6588, 85.3247),
-    'bhaktapur': LatLng(27.6710, 85.4298),
-    'pokhara': LatLng(28.2096, 83.9856),
-    'chitwan': LatLng(27.6838, 84.4320),
-    'butwal': LatLng(27.7006, 83.4483),
-    'biratnagar': LatLng(26.4525, 87.2718),
+  static const Map<String, latlng.LatLng> _knownLocations = {
+    'kathmandu': latlng.LatLng(27.7172, 85.3240),
+    'lalitpur': latlng.LatLng(27.6588, 85.3247),
+    'bhaktapur': latlng.LatLng(27.6710, 85.4298),
+    'pokhara': latlng.LatLng(28.2096, 83.9856),
+    'chitwan': latlng.LatLng(27.6838, 84.4320),
+    'butwal': latlng.LatLng(27.7006, 83.4483),
+    'biratnagar': latlng.LatLng(26.4525, 87.2718),
   };
 
   final TextEditingController _locationController = TextEditingController();
+  final MapController _mapController = MapController();
 
-  GoogleMapController? _mapController;
-  LatLng _searchCenter = _defaultCenter;
+  latlng.LatLng _searchCenter = _defaultCenter;
+  double _mapZoom = 11;
   String _locationLabel = 'Current location';
   bool _isLoading = false;
   String? _errorMessage;
@@ -85,7 +87,6 @@ class _SearchNearestNurseryPageState
 
   @override
   void dispose() {
-    _mapController?.dispose();
     _locationController.dispose();
     super.dispose();
   }
@@ -111,7 +112,7 @@ class _SearchNearestNurseryPageState
       center: targetCenter,
       query: query.isEmpty ? null : query,
     );
-    await _moveMapTo(targetCenter);
+    _moveMapTo(targetCenter);
   }
 
   Future<void> _useCurrentLocation() async {
@@ -122,7 +123,7 @@ class _SearchNearestNurseryPageState
 
     try {
       final position = await _determinePosition();
-      final center = LatLng(position.latitude, position.longitude);
+      final center = latlng.LatLng(position.latitude, position.longitude);
 
       if (!mounted) return;
       setState(() {
@@ -132,8 +133,8 @@ class _SearchNearestNurseryPageState
       });
 
       await _loadNearestNurseries(center: center);
-      await _moveMapTo(center);
-    } catch (e) {
+      _moveMapTo(center);
+    } catch (_) {
       if (!mounted) return;
       setState(() {
         _errorMessage =
@@ -144,7 +145,7 @@ class _SearchNearestNurseryPageState
   }
 
   Future<void> _loadNearestNurseries({
-    required LatLng center,
+    required latlng.LatLng center,
     String? query,
   }) async {
     setState(() {
@@ -191,7 +192,7 @@ class _SearchNearestNurseryPageState
 
   List<_NurseryResult> _parseNurseryResponse(
     dynamic payload,
-    LatLng center,
+    latlng.LatLng center,
     String? query,
   ) {
     final listData = payload is Map<String, dynamic>
@@ -268,7 +269,7 @@ class _SearchNearestNurseryPageState
     return items;
   }
 
-  List<_NurseryResult> _fallbackNearest(LatLng center, String? query) {
+  List<_NurseryResult> _fallbackNearest(latlng.LatLng center, String? query) {
     final q = query?.trim().toLowerCase();
 
     final candidates = _seedNurseries.where((seed) {
@@ -301,34 +302,33 @@ class _SearchNearestNurseryPageState
     return ranked;
   }
 
-  Future<void> _moveMapTo(LatLng target) async {
-    await _mapController?.animateCamera(CameraUpdate.newLatLng(target));
+  void _moveMapTo(latlng.LatLng target) {
+    _mapController.move(target, _mapZoom);
   }
 
-  Set<Marker> _buildMarkers() {
+  List<Marker> _buildMarkers() {
     final topThreeNames = _nearestNurseries.take(3).map((e) => e.name).toSet();
 
-    final markers = <Marker>{
+    final markers = <Marker>[
       Marker(
-        markerId: const MarkerId('search_center'),
-        position: _searchCenter,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-        infoWindow: InfoWindow(title: _locationLabel),
+        point: _searchCenter,
+        width: 44,
+        height: 44,
+        child: const Icon(Icons.my_location, color: Colors.blue, size: 34),
       ),
-    };
+    ];
 
     for (final item in _nearestNurseries) {
       final isTop = topThreeNames.contains(item.name);
       markers.add(
         Marker(
-          markerId: MarkerId('${item.name}_${item.lat}_${item.lng}'),
-          position: LatLng(item.lat, item.lng),
-          icon: BitmapDescriptor.defaultMarkerWithHue(
-            isTop ? BitmapDescriptor.hueRed : BitmapDescriptor.hueGreen,
-          ),
-          infoWindow: InfoWindow(
-            title: item.name,
-            snippet: '${item.area} • ${item.distanceKm.toStringAsFixed(1)} km',
+          point: latlng.LatLng(item.lat, item.lng),
+          width: 40,
+          height: 40,
+          child: Icon(
+            Icons.location_on,
+            color: isTop ? Colors.red : Colors.green,
+            size: 34,
           ),
         ),
       );
@@ -406,19 +406,24 @@ class _SearchNearestNurseryPageState
                   width: double.infinity,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14),
-                    child: GoogleMap(
-                      initialCameraPosition: CameraPosition(
-                        target: _searchCenter,
-                        zoom: 11,
+                    child: FlutterMap(
+                      mapController: _mapController,
+                      options: MapOptions(
+                        initialCenter: _searchCenter,
+                        initialZoom: _mapZoom,
+                        onPositionChanged: (position, hasGesture) {
+                          _mapZoom = position.zoom;
+                        },
                       ),
-                      myLocationEnabled: true,
-                      myLocationButtonEnabled: false,
-                      zoomControlsEnabled: false,
-                      mapToolbarEnabled: false,
-                      markers: _buildMarkers(),
-                      onMapCreated: (controller) {
-                        _mapController = controller;
-                      },
+                      children: [
+                        TileLayer(
+                          urlTemplate:
+                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          userAgentPackageName:
+                              'com.aarati.hamro_bhagaicha_batch35d.hamro_bhagaicha_batch35d',
+                        ),
+                        MarkerLayer(markers: _buildMarkers()),
+                      ],
                     ),
                   ),
                 ),
@@ -457,6 +462,14 @@ class _SearchNearestNurseryPageState
                         ),
                       );
                     },
+                  ),
+                ),
+                const SizedBox(height: 6),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Map data © OpenStreetMap contributors',
+                    style: TextStyle(fontSize: 12, color: Colors.black54),
                   ),
                 ),
               ],
