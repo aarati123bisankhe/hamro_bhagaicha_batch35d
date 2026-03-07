@@ -157,6 +157,8 @@ class ApiEndpoints {
       '/notifications/$notificationId/read';
 
   static const String sendOrderConfirmationSms = '/sms/send-order-confirmation';
+  static const String sendOrderConfirmationEmail =
+      '/email/send-order-confirmation';
   static const String nearestNurseries = '/nurseries/nearest';
 
   static const String deepLinkDomain = String.fromEnvironment(

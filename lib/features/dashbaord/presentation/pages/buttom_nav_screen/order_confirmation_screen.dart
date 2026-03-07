@@ -41,6 +41,12 @@ class _OrderConfirmationScreenState
         'Payment: ${_paymentLabel(order.paymentOption)}.';
   }
 
+  String _buildEmailMessage(OrderEntity order) {
+    return 'Hello ${order.customerInfo.name}, your order ${order.id} is confirmed. '
+        'Total: NRP ${order.total}. Delivery: ${_deliveryLabel(order.deliveryOption)}. '
+        'Payment: ${_paymentLabel(order.paymentOption)}.';
+  }
+
   String _toE164Phone(String rawPhone) {
     final digitsOnly = rawPhone.replaceAll(RegExp(r'[^0-9+]'), '');
 
@@ -104,6 +110,28 @@ class _OrderConfirmationScreenState
     );
   }
 
+  Future<void> _sendOrderConfirmationEmail(OrderEntity order) async {
+    final apiClient = ref.read(apiClientProvider);
+    final email = order.customerInfo.email.trim();
+
+    if (email.isEmpty) {
+      throw const FormatException('Customer email is required.');
+    }
+
+    await apiClient.post(
+      ApiEndpoints.sendOrderConfirmationEmail,
+      data: {
+        'to': email,
+        'orderId': order.id,
+        'customerName': order.customerInfo.name,
+        'totalAmount': order.total,
+        'currency': 'NPR',
+        'subject': 'Order Confirmation - ${order.id}',
+        'message': _buildEmailMessage(order),
+      },
+    );
+  }
+
   Future<void> _confirmOrder() async {
     if (_isSubmitting) return;
 
@@ -157,6 +185,37 @@ class _OrderConfirmationScreenState
         SnackbarUtils.showWarning(
           context,
           'Order placed, but SMS could not be sent.',
+        );
+      }
+    }
+
+    try {
+      await _sendOrderConfirmationEmail(createdOrder);
+      if (mounted) {
+        SnackbarUtils.showSuccess(
+          context,
+          'Confirmation email sent to ${createdOrder.customerInfo.email}.',
+        );
+      }
+    } on FormatException catch (e) {
+      if (mounted) {
+        SnackbarUtils.showWarning(context, e.message);
+      }
+    } on DioException catch (e) {
+      if (mounted) {
+        final responseMessage = e.response?.data is Map<String, dynamic>
+            ? (e.response?.data['message']?.toString())
+            : null;
+        SnackbarUtils.showWarning(
+          context,
+          responseMessage ?? 'Order placed, but email could not be sent.',
+        );
+      }
+    } catch (_) {
+      if (mounted) {
+        SnackbarUtils.showWarning(
+          context,
+          'Order placed, but email could not be sent.',
         );
       }
     }
