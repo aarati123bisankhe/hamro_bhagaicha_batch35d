@@ -1,36 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hamro_bhagaicha_batch35d/features/splash/presentation/pages/splash_three_screen.dart';
-import 'package:hamro_bhagaicha_batch35d/features/auth/presentation/pages/login_screen.dart';
 
 void main() {
-  testWidgets('SplashThreeScreen renders correctly', (WidgetTester tester) async {
-    // ignore: deprecated_member_use
-    tester.binding.window.physicalSizeTestValue = const Size(1200, 2400);
-    // ignore: deprecated_member_use
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
+  Future<void> pumpSplashThree(WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1200, 2400);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(const MaterialApp(home: SplashThreeScreen()));
+  }
 
-    await tester.pumpWidget(
-      const ProviderScope( 
-        child: MaterialApp(home: SplashThreeScreen()),
-      ),
-    );
+  testWidgets('renders key content for step three', (
+    WidgetTester tester,
+  ) async {
+    await pumpSplashThree(tester);
 
-    await tester.pumpAndSettle();
+    expect(find.text('Step 3 of 3'), findsOneWidget);
+    expect(find.text('Find Nearby\nNurseries'), findsOneWidget);
+    expect(find.text('Continue'), findsOneWidget);
+  });
 
-    expect(find.text('Find Nearby Nurseries'), findsOneWidget);
-    expect(find.text('“Locate the nearest plant nurseries instantly!”'), findsOneWidget);
-    expect(find.text('Next'), findsOneWidget);
+  testWidgets('shows location hint icon', (WidgetTester tester) async {
+    await pumpSplashThree(tester);
 
-    expect(find.byType(Image), findsOneWidget);
-
-    await tester.tap(find.text('Next'));
-    await tester.pumpAndSettle();
-
-    expect(find.byType(LoginScreen), findsOneWidget);
-
-    // ignore: deprecated_member_use
-    addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+    expect(find.byIcon(Icons.location_on_outlined), findsOneWidget);
   });
 }

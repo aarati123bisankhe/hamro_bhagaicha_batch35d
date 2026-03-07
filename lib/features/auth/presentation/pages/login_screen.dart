@@ -133,7 +133,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   child: Column(
                     children: [
                       Image.asset(
-                        "assets/icons/house_icon.png",
+                        "assets/icons/icon.png",
                         height: isTablet ? 220 : 130,
                       ),
                       const SizedBox(height: 10),

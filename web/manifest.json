@@ -1,11 +1,11 @@
 {
-    "name": "hamro_bhagaicha_batch35d",
-    "short_name": "hamro_bhagaicha_batch35d",
+    "name": "Hamro Bhagaicha",
+    "short_name": "Hamro Bhagaicha",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Hamro Bhagaicha",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

@@ -33,8 +33,9 @@ void main() {
 
   group('GetCurrentUserUsecase', () {
     test('should return AuthEntity when user exists', () async {
-      when(() => mockRepository.getCurrentUserById(tUserId))
-          .thenAnswer((_) async => const Right(tUser));
+      when(
+        () => mockRepository.getCurrentUserById(tUserId),
+      ).thenAnswer((_) async => const Right(tUser));
 
       final result = await usecase(params);
 
@@ -46,8 +47,9 @@ void main() {
     test('should return ApiFailure when user not found', () async {
       const failure = ApiFailure(message: 'User not found');
 
-      when(() => mockRepository.getCurrentUserById(tUserId))
-          .thenAnswer((_) async => const Left(failure));
+      when(
+        () => mockRepository.getCurrentUserById(tUserId),
+      ).thenAnswer((_) async => const Left(failure));
 
       final result = await usecase(params);
 
@@ -66,23 +68,21 @@ void main() {
         profilePicture: 'https://example.com/pic.jpg',
       );
 
-      when(() => mockRepository.getCurrentUserById(tUserId))
-          .thenAnswer((_) async => const Right(userWithAllFields));
+      when(
+        () => mockRepository.getCurrentUserById(tUserId),
+      ).thenAnswer((_) async => const Right(userWithAllFields));
 
       final result = await usecase(params);
 
-      result.fold(
-        (failure) => fail('Expected AuthEntity'),
-        (user) {
-          expect(user.authId, '1');
-          expect(user.fullname, 'Test User');
-          expect(user.email, 'test@example.com');
-          expect(user.password, 'password123');
-          expect(user.address, 'Test Address');
-          expect(user.phoneNumber, '1234567890');
-          expect(user.profilePicture, 'https://example.com/pic.jpg');
-        },
-      );
+      result.fold((failure) => fail('Expected AuthEntity'), (user) {
+        expect(user.authId, '1');
+        expect(user.fullname, 'Test User');
+        expect(user.email, 'test@example.com');
+        expect(user.password, 'password123');
+        expect(user.address, 'Test Address');
+        expect(user.phoneNumber, '1234567890');
+        expect(user.profilePicture, 'https://example.com/pic.jpg');
+      });
     });
   });
 }

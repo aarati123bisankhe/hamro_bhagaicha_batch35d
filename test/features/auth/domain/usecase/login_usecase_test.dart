@@ -20,10 +20,7 @@ void main() {
   final tEmail = 'test@example.com';
   final tPassword = 'password123';
 
-  final tParams = LoginUsecaseParams(
-    email: tEmail,
-    password: tPassword,
-  );
+  final tParams = LoginUsecaseParams(email: tEmail, password: tPassword);
 
   final tAuthEntity = AuthEntity(
     fullname: 'Test User',
@@ -48,8 +45,9 @@ void main() {
   group('LoginUsecase', () {
     test('should return AuthEntity when login is successful', () async {
       //arrange
-      when(() => mockRepository.login(tEmail, tPassword))
-          .thenAnswer((_) async => Right(tAuthEntity));
+      when(
+        () => mockRepository.login(tEmail, tPassword),
+      ).thenAnswer((_) async => Right(tAuthEntity));
 
       //act
       final result = await usecase(tParams);
@@ -63,8 +61,9 @@ void main() {
     test('should return failure when login fails', () async {
       //arrange
       final failure = ApiFailure(message: 'Invalid credentials');
-      when(() => mockRepository.login(tEmail, tPassword))
-          .thenAnswer((_) async => Left(failure));
+      when(
+        () => mockRepository.login(tEmail, tPassword),
+      ).thenAnswer((_) async => Left(failure));
 
       //act
       final result = await usecase(tParams);

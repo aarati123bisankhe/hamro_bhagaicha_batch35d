@@ -54,8 +54,9 @@ void main() {
   group('RegisterUsecase', () {
     test('should return AuthEntity when registration is successful', () async {
       // Arrange
-      when(() => mockRepository.register(any()))
-          .thenAnswer((_) async => Right(tAuthEntity));
+      when(
+        () => mockRepository.register(any()),
+      ).thenAnswer((_) async => Right(tAuthEntity));
 
       // Act
       final result = await usecase(tParams);
@@ -69,8 +70,9 @@ void main() {
     test('should return failure when registration fails', () async {
       //arrange
       final failure = ApiFailure(message: 'Email already exists');
-      when(() => mockRepository.register(any()))
-          .thenAnswer((_) async => Left(failure));
+      when(
+        () => mockRepository.register(any()),
+      ).thenAnswer((_) async => Left(failure));
 
       //act
       final result = await usecase(tParams);

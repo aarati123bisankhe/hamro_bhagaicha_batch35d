@@ -23,8 +23,9 @@ void main() {
   group('UpdateProfileImageUseCase', () {
     test('should return URL string when image upload succeeds', () async {
       //arrange
-      when(() => mockRepository.updateProfileImage(testFile))
-          .thenAnswer((_) async => const Right(uploadedUrl));
+      when(
+        () => mockRepository.updateProfileImage(testFile),
+      ).thenAnswer((_) async => const Right(uploadedUrl));
 
       //act
       final result = await usecase(testFile);
@@ -38,8 +39,9 @@ void main() {
     test('should return Failure when image upload fails', () async {
       //arrange
       const failure = ApiFailure(message: 'Upload failed');
-      when(() => mockRepository.updateProfileImage(testFile))
-          .thenAnswer((_) async => const Left(failure));
+      when(
+        () => mockRepository.updateProfileImage(testFile),
+      ).thenAnswer((_) async => const Left(failure));
 
       //act
       final result = await usecase(testFile);

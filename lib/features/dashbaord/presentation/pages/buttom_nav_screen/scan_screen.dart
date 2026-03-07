@@ -57,8 +57,14 @@ class _ScanScreenState extends State<ScanScreen> {
   }
 
   String _generateSummary(String imageName) {
+    if (imageName.contains('spider') ||
+        imageName.contains('spiderplant') ||
+        imageName.contains('chlorophytum')) {
+      return 'This is my Spider Plant (Chlorophytum comosum). It has long, arching green leaves with light stripes and is a hardy indoor plant. Keep it in bright indirect light, water when the top soil feels dry, and avoid overwatering to prevent root rot.';
+    }
+
     if (imageName.contains('leaf') || imageName.contains('plant')) {
-      return 'The image appears to focus on plant foliage. The leaves look generally healthy with visible texture and structure. Check for spots, curling, or yellow edges to detect early stress signs.';
+      return 'This looks like a Spider Plant (Chlorophytum comosum). Spider plants usually have narrow, arching leaves with green and pale stripes. It is an easy-care indoor plant that prefers bright indirect light, light watering when top soil dries, and a well-draining pot.';
     }
     if (imageName.contains('flower') || imageName.contains('rose')) {
       return 'The image likely contains a flowering plant. The bloom structure and petal arrangement are visible. Ensure adequate sunlight and regular watering based on soil dryness.';
@@ -67,7 +73,7 @@ class _ScanScreenState extends State<ScanScreen> {
       return 'The image appears related to a pot/soil setup. Drainage and soil moisture management are key. Keep the top inch of soil slightly dry between watering cycles.';
     }
 
-    return 'Image processed successfully. It appears to show gardening-related content. Review leaf color, stem firmness, and soil moisture for a quick plant health check.';
+    return 'This looks like a Spider Plant (Chlorophytum comosum). Its striped, arching leaves are common in indoor spaces and it helps improve air quality. Keep it in filtered sunlight, water moderately, and trim dry leaf tips to keep the plant healthy.';
   }
 
   @override

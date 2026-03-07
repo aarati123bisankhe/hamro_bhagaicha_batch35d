@@ -94,7 +94,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                   child: Column(
                     children: [
                       Image.asset(
-                        "assets/icons/house_icon.png",
+                        "assets/icons/icon.png",
                         height: isTablet ? 240 : 140,
                       ),
                       const SizedBox(height: 10),

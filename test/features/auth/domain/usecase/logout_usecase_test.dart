@@ -19,8 +19,7 @@ void main() {
   group('LogoutUsecase', () {
     test('should return true when logout is successful', () async {
       //arrange
-      when(() => mockRepository.logout())
-          .thenAnswer((_) async => Right(true));
+      when(() => mockRepository.logout()).thenAnswer((_) async => Right(true));
 
       //act
       final result = await usecase();
@@ -34,8 +33,9 @@ void main() {
     test('should return failure when logout fails', () async {
       // Arrange
       final failure = ApiFailure(message: 'Logout failed');
-      when(() => mockRepository.logout())
-          .thenAnswer((_) async => Left(failure));
+      when(
+        () => mockRepository.logout(),
+      ).thenAnswer((_) async => Left(failure));
 
       //act
       final result = await usecase();
